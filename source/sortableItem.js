@@ -4,7 +4,7 @@
     'use strict';
     angular.module('ui.sortable')
 
-        .directive('sortable', [
+        .directive('sortableItem', [
             function () {
                 return {
                     require: [],

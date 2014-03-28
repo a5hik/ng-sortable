@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Angular Sortable and Draggable Demo.</title>
+    <!--styles -->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <!--scripts-->
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="dist/ng-drag-drop.min.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
+</head>
+<body ng-app="demoApp">
+
+<div class="container-fluid" id="board" ng-controller="demoController">
+    <div ng-model="board">
+        <div id="columns" class="row">
+            <div class="col-md-{{12/board.numberOfColumns}}" ng-repeat="column in board.columns"
+                 data-columnindex="{{$index}}" id="column{{$index}}">
+                <div class="column">
+                    <div class="columnHeader"><span>{{column.name}} ({{column.cards.length}})</span></div>
+                    <ul class="cards" ng-model="column.cards">
+                        <li class="card" ng-repeat="card in column.cards">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

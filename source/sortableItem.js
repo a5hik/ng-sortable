@@ -8,18 +8,18 @@
      * Controller for sortable item.
      * @param $scope
      */
-    function sortableItemCtrl($scope) {
+    function sortableItemController($scope) {
 
     }
 
-    sortableItemCtrl.$inject = ['$scope'];
+    sortableItemController.$inject = ['$scope'];
 
     mainModule.directive('sortableItem', [
             function () {
                 return {
                     require: [],
                     restrict: 'A',
-                    controller: 'sortableItemCtrl',
+                    controller: 'sortableItemController',
                     link: function (scope, element, attrs) {
 
                     }

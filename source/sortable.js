@@ -8,10 +8,10 @@
      * Controller for Sortable.
      * @param $scope
      */
-    function sortableCtrl($scope) {
+    function sortableController($scope) {
 
     }
-    sortableCtrl.$inject = ['$scope'];
+    sortableController.$inject = ['$scope'];
 
     mainModule.directive('sortable', [
             function () {
@@ -19,7 +19,7 @@
                     require: [],
                     restrict: 'A',
                     scope: true,
-                    controller: 'sortableCtrl',
+                    controller: 'sortableController',
                     link: function (scope, element, attrs) {
 
                     }

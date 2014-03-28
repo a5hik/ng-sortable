@@ -8,17 +8,17 @@
      * Controller for sortableItemHandle
      * @param $scope
      */
-    function sortableItemHandleCtrl($scope) {
+    function sortableItemHandleController($scope) {
 
     }
-    sortableItemHandleCtrl.$inject = ['$scope'];
+    sortableItemHandleController.$inject = ['$scope'];
 
     mainModule.directive('sortableItemHandle', [
             function () {
                 return {
                     require: [],
                     restrict: 'A',
-                    controller: 'sortableItemHandleCtrl',
+                    controller: 'sortableItemHandleController',
                     link: function (scope, element, attrs) {
 
                     }

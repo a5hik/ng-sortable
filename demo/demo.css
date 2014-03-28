@@ -1,0 +1,64 @@
+
+#boardName a { color: #333 ;}
+div.navbar-header a { color: #333;}
+.row { margin-left: 0px;}
+
+.navbar { background-image: linear-gradient(to bottom, #fff, #ddd); }
+.nav a { color: #333; }
+.noDisplay { display: none; }
+.error { border-color: red;}
+a { padding-left: 2px; padding-right: 2px;}
+
+#columns { margin: 55px 0px 0px 0px;}
+#columns > div { padding-left: 5px; padding-right:5px;}
+#columns a { color: #444; }
+
+
+.card {
+    padding: 10px;
+    font-weight: 200;
+
+    border: solid 1px #ffffff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    list-style: none;
+
+    -webkit-box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    margin: 2px;
+    cursor: move;
+}
+.cards { margin: 0px;}
+.card a { color: #444; }
+.card a:hover { text-decoration: none; cursor: pointer; color: #777;}
+
+.column {
+    border: solid 1px #ffffff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+
+    background-color: #f9f9f9;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+}
+
+.columnHeader {
+    margin: 10px 0px;
+    padding: 0px 3px;
+    font-size: 15px;
+    color: #777;
+}
+
+.noMargin { margin-bottom: 0px;}
+
+
+.default {
+    -webkit-box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+}
+.default-color { background-color: #ffffff; }
+
+

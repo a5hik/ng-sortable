@@ -22,7 +22,7 @@ module.exports = function (config) {
             'source/**/*.js',
 
             // tests
-            'tests/**/*.spec.js'
+            'test/**/*.spec.js'
         ],
 
         // generate js files from html templates to expose them during testing

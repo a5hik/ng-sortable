@@ -87,7 +87,10 @@ module.exports = function(grunt) {
         concat: {
             build: {
                 src: [
-                    '<%= cfg.srcDir %>/*.js'
+                    '<%= cfg.srcDir %>/sortableMain.js',
+                    '<%= cfg.srcDir %>/sortable.js',
+                    '<%= cfg.srcDir %>/sortableItem.js',
+                    '<%= cfg.srcDir %>/sortableItemHandle.js'
                 ],
                 dest: '<%= cfg.buildDir %>/ng-drag-drop.js'
             }

@@ -5,10 +5,11 @@
     angular.module('demoApp', ['ui.sortable'])
         .controller('demoController', function($scope) {
 
-            $scope.board = {"name":"Stuff to do at home","numberOfColumns":3,
+            $scope.board = {"name":"Stuff to do at home","numberOfColumns":4,
                 "columns":[
-                    {"name":"Not started","cards":[{"name":"This little piggy went to lunch"},{"name":"Foo bar"}]},
-                    {"name":"In progress","cards":[{"name":"another on a bit longer text this time"},{"name":"And another one"}]},
-                    {"name":"Done","cards":[{"name":"bar foo"},{"name":"Another on"},{"name":"New one"}]}]};
+                    {"name":"Not started","cards":[{"name":"Come up with a POC for new Project"},{"name":"Design new framework for reporting module"}]},
+                    {"name":"Not started","cards":[{"name":"Explore new IDE for Development"},{"name":"Get new resource for new Project"}]},
+                    {"name":"In progress","cards":[{"name":"Develop ui for tracker module"},{"name":"Develop backend for plan module"}]},
+                    {"name":"Done","cards":[{"name":"Test user module"},{"name":"End to End Testing for user group module"},{"name":"CI for user module"}]}]};
         });
 })();

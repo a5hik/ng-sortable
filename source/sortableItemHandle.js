@@ -2,15 +2,23 @@
 (function () {
 
     'use strict';
-    angular.module('ui.sortable')
+    var mainModule = angular.module('ui.sortable');
 
-        .directive('sortableItemHandle', [
+    /**
+     * Controller for sortableItemHandle
+     * @param $scope
+     */
+    function sortableItemHandleCtrl($scope) {
+
+    }
+    sortableItemHandleCtrl.$inject = ['$scope'];
+
+    mainModule.directive('sortableItemHandle', [
             function () {
                 return {
                     require: [],
                     restrict: 'A',
-                    scope: true,
-                    controller: '',
+                    controller: 'sortableItemHandleCtrl',
                     link: function (scope, element, attrs) {
 
                     }

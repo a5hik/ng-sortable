@@ -19,7 +19,7 @@
                  data-columnindex="{{$index}}" id="column{{$index}}">
                 <div class="column">
                     <div class="columnHeader"><span>{{column.name}} ({{column.cards.length}})</span></div>
-                    <ul class="cards list-unstyled" ng-model="column.cards">
+                    <ul class="cards list-unstyled" sortable= "sortOptions" ng-model="column.cards">
                         <li class="card" ng-repeat="card in column.cards">
                             <span>{{card.name}}</span>
                         </li>

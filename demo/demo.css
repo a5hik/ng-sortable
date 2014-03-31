@@ -1,4 +1,6 @@
 
+
+#board { margin: 0; padding: 0 10px 0 10px;}
 #columns { margin: 55px 0 0 0;}
 #columns > div { padding-left: 5px; padding-right:5px;}
 #columns a { color: #444; }
@@ -23,7 +25,7 @@
 .column {
     border: solid 1px darkgrey;
     border-radius: 10px;
-    margin-left: 10px;
+    margin-left: 5px;
 
     background-color: #666;
     box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;

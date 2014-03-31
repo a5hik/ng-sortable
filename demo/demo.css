@@ -1,5 +1,5 @@
 
-#columns { margin: 55px 0px 0px 0px;}
+#columns { margin: 55px 0 0 0;}
 #columns > div { padding-left: 5px; padding-right:5px;}
 #columns a { color: #444; }
 
@@ -11,12 +11,12 @@
     border: solid 1px darkgrey;
     border-radius: 10px;
     list-style: none;
-    box-shadow: inset rgba(0, 0, 0, 0.35) 0px 1px 10px 0px;
+    box-shadow: inset rgba(0, 0, 0, 0.35) 0 1px 10px 0;
     margin: 2px;
     cursor: move;
     background-color: floralwhite;
 }
-.cards { margin: 0px;}
+.cards { margin: 0;}
 .card a { color: #444; }
 .card a:hover { text-decoration: none; cursor: pointer; color: #777;}
 
@@ -26,21 +26,21 @@
     margin-left: 10px;
 
     background-color: #666;
-    box-shadow: rgba(0, 0, 0, 0.7) 0px 1px 10px 0px;
+    box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;
 }
 
 .columnHeader {
-    margin: 10px 0px;
-    padding: 0px 3px;
+    margin: 10px 0;
+    padding: 0 3px;
     font-size: 15px;
     color: #ffffff;
 }
 
-.noMargin { margin-bottom: 0px;}
+.noMargin { margin-bottom: 0;}
 
 
 .default {
-    box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    box-shadow: inset rgba(0, 0, 0, 0.0980392) 0 1px 10px 0;
 }
 .default-color { background-color: #ffffff; }
 

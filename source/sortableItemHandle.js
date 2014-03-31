@@ -8,10 +8,9 @@
      * Controller for sortableItemHandle
      * @param $scope
      */
-    function sortableItemHandleController($scope) {
+    mainModule.controller('sortableItemHandleController', ['$scope', function($scope) {
 
-    }
-    sortableItemHandleController.$inject = ['$scope'];
+    }]);
 
     mainModule.directive('sortableItemHandle', [
             function () {

@@ -8,31 +8,32 @@
     padding: 10px;
     font-weight: 200;
 
-    border: solid 1px #ffffff;
+    border: solid 1px darkgrey;
     border-radius: 10px;
     list-style: none;
-    box-shadow: inset rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    box-shadow: inset rgba(0, 0, 0, 0.35) 0px 1px 10px 0px;
     margin: 2px;
     cursor: move;
+    background-color: floralwhite;
 }
 .cards { margin: 0px;}
 .card a { color: #444; }
 .card a:hover { text-decoration: none; cursor: pointer; color: #777;}
 
 .column {
-    border: solid 1px #ffffff;
+    border: solid 1px darkgrey;
     border-radius: 10px;
     margin-left: 10px;
 
-    background-color: #f9f9f9;
-    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 10px 0px;
+    background-color: #666;
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 1px 10px 0px;
 }
 
 .columnHeader {
     margin: 10px 0px;
     padding: 0px 3px;
     font-size: 15px;
-    color: #777;
+    color: #ffffff;
 }
 
 .noMargin { margin-bottom: 0px;}

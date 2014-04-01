@@ -10,16 +10,33 @@
      */
     mainModule.controller('sortableItemController', ['$scope', function($scope) {
 
+        $scope.sortableItemelement = null;
+
+
+        $scope.initItem = function(element) {
+
+            $scope.sortableItemelement = element;
+            element.attr('sortable-element-type', 'item');
+        };
+
+        $scope.itemData = function() {
+            return $scope.sortableModelValue[$scope.$index];
+        };
+
+        $scope.accept = function(sourceItemScope, destScope, destIndex) {
+            return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope, destIndex);
+        }
+
     }]);
 
     mainModule.directive('sortableItem', [
             function () {
                 return {
-                    require: [],
+                    require: ['^sortable'],
                     restrict: 'A',
                     controller: 'sortableItemController',
-                    link: function (scope, element, attrs) {
-
+                    link: function (scope, element, attrs, sortableController) {
+                        scope.initItem(element);
                     }
                 };
             }]);

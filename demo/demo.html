@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="demo.css">
     <!--scripts-->
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="dist/ng-drag-drop.min.js"></script>
+    <script type="text/javascript" src="dist/ng-drag-drop.js"></script>
     <script type="text/javascript" src="demo.js"></script>
 </head>
 <body ng-app="demoApp">
@@ -20,8 +20,8 @@
                 <div class="column">
                     <div class="columnHeader"><span>{{column.name}} ({{column.cards.length}})</span></div>
                     <ul class="cards list-unstyled" sortable= "sortOptions" ng-model="column.cards">
-                        <li class="card" ng-repeat="card in column.cards" sortableItem="">
-                            <span>{{card.name}}</span>
+                        <li class="card" ng-repeat="card in column.cards" sortable-item="">
+                            <span sortable-item-handle>{{card.name}}</span>
                         </li>
                     </ul>
                 </div>

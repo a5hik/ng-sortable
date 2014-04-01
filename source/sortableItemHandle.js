@@ -15,8 +15,8 @@
 
     }]);
 
-    mainModule.directive('sortableItemHandle', ['$window', '$document',
-        function ($window, $document) {
+    mainModule.directive('sortableItemHandle', ['$helper', '$window', '$document',
+        function ($helper, $window, $document) {
             return {
                 require: ['^sortableItem'],
                 restrict: 'A',

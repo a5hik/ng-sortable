@@ -88,9 +88,10 @@ module.exports = function(grunt) {
             build: {
                 src: [
                     '<%= cfg.srcDir %>/sortableMain.js',
+                    '<%= cfg.srcDir %>/sortableHelper.js',
                     '<%= cfg.srcDir %>/sortable.js',
-                    '<%= cfg.srcDir %>/sortableItem.js',
-                    '<%= cfg.srcDir %>/sortableItemHandle.js'
+                    '<%= cfg.srcDir %>/sortableItemHandle.js',
+                    '<%= cfg.srcDir %>/sortableItem.js'
                 ],
                 dest: '<%= cfg.buildDir %>/ng-drag-drop.js'
             }

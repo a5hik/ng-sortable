@@ -5,6 +5,58 @@
 #columns > div { padding-left: 5px; padding-right:5px;}
 #columns a { color: #444; }
 
+.sortable-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sortable-item, .sortable-placeholder {
+    font-weight: 200;
+    border: solid 1px darkgrey;
+    border-radius: 10px;
+    list-style: none;
+    box-shadow: inset rgba(0, 0, 0, 0.35) 0 1px 10px 0;
+    cursor: move;
+    background-color: floralwhite;
+    display: block;
+    position: relative;
+    margin: 2px;
+    padding: 10px;
+    min-height: 20px;
+    line-height: 20px;
+}
+
+.sortable-handle {
+    cursor: move;
+    display: block;
+    padding: 2px 1px;
+    color: #7c9eb2;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+.sortable-handle:hover {
+    color: #438eb9;
+    background: #f4f6f7;
+    border-color: #dce2e8;
+}
+.sortable-placeholder {
+    margin: 5px 0;
+    padding: 0;
+    min-height: 30px;
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    box-sizing: border-box;
+}
+
+.sortable-drag {
+    position: absolute;
+    z-index: 999;
+    opacity: .8;
+}
 
 .card {
     padding: 10px;
@@ -18,15 +70,11 @@
     cursor: move;
     background-color: floralwhite;
 }
-.cards { margin: 0;}
-.card a { color: #444; }
-.card a:hover { text-decoration: none; cursor: pointer; color: #777;}
 
 .column {
     border: solid 1px darkgrey;
     border-radius: 10px;
     margin-left: 5px;
-
     background-color: #666;
     box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;
 }

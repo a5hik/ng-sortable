@@ -101,15 +101,6 @@
                         scope.callbacks.start(scope, sourceItem, elements);
 
                         if (hasTouch) {
-                            angular.element($document).bind('touchend', dragEndEvent); // Mobile
-                            angular.element($document).bind('touchcancel', dragEndEvent); // Mobile
-                            angular.element($document).bind('touchmove', dragMoveEvent); // Mobile
-                        } else {
-                            angular.element($document).bind('mouseup', dragEndEvent);
-                            angular.element($document).bind('mousemove', dragMoveEvent);
-                        }
-
-                        if (hasTouch) {
                             angular.element($document).bind('touchmove', dragMoveEvent);
                             angular.element($document).bind('touchend', dragEndEvent);
                             angular.element($document).bind('touchcancel', dragEndEvent);

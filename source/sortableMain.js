@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
     angular.module('ui.sortable', [])
@@ -9,4 +8,4 @@
             dragClass: 'sortable-drag'
         });
 
-  })();
+})();

@@ -38,7 +38,7 @@
 
                     var hasTouch = 'ontouchstart' in window;
 
-                    var copyArray = function(sourceArray) {
+                    var copyArray = function (sourceArray) {
                         var arrayCopy = [];
                         for (var i = 0; i < sourceArray.length; i++) {
                             arrayCopy.push(sourceArray[i]);
@@ -53,12 +53,13 @@
 
                         event.preventDefault();
 
+                        firstMoving = true;
                         sourceIndex = scope.$index;
                         dragItem = {
                             index: scope.$index,
                             scope: scope,
 
-                            reset: function(index, scope, dragItemScope) {
+                            reset: function (index, scope, dragItemScope) {
                                 sameParent = (scope.sortableElement == dragItemScope.sortableElement);
                                 if (sameParent && sourceIndex < index) {
                                     index--;
@@ -111,7 +112,7 @@
                         dragItemElm[0].parentNode.removeChild(dragItemElm[0]);
                         dragElm.append(dragItemElm);
 
-                        // stop move when the menu item is dragged ouside the body element
+                        // stop move when the menu item is dragged outside the body element
                         angular.element($window.document.body).bind('mouseleave', dragEndEvent);
 
                         $document.find('body').append(dragElm);
@@ -193,6 +194,7 @@
 
                             // move vertical
                             if (!pos.dirAx) {
+                                sameParent = false;
                                 // check it's new position
                                 var targetOffset = $helper.offset(targetElm);
                                 if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
@@ -241,7 +243,7 @@
                             dragElm = null;
 
                             scope.callbacks.itemClicked(sourceItem, clickedElmDragged);
-                             scope.callbacks.stop(scope, sourceItem, elements);
+                            scope.callbacks.stop(scope, sourceItem, elements);
 
                             // update model data
                             if (targetScope && !(sameParent && sourceIndex == destIndex)) {

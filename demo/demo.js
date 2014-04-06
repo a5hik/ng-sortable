@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('demoApp', ['ui.sortable'])
-        .controller('demoController', function($scope, $log) {
+        .controller('demoController', ['$scope', function($scope) {
 
             $scope.board = {"name":"Stuff to do at home","numberOfColumns":4,
                 "columns":[
@@ -15,8 +15,8 @@
             $scope.sortOptions = {
 
                 itemClicked: function (sourceItem) {
-                 $log.info(sourceItem.title);
+                 //console.log(sourceItem.title);
                 }
             };
-        });
+        }]);
 })();

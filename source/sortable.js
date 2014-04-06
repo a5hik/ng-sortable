@@ -7,7 +7,7 @@
      * Controller for Sortable.
      * @param $scope
      */
-    mainModule.controller('sortableController', ['$scope', function($scope) {
+    mainModule.controller('sortableController', ['$scope', function ($scope) {
 
         $scope.sortableElement = null;
         $scope.sortableModelValue = null;
@@ -18,12 +18,12 @@
             $scope.sortableElement = element;
         };
 
-        $scope.insertSortableItem = function(index, itemModelData) {
+        $scope.insertSortableItem = function (index, itemModelData) {
             $scope.sortableModelValue.splice(index, 0, itemModelData);
             $scope.$apply();
         };
 
-        $scope.initSubItemElement = function(subElement) {
+        $scope.initSubItemElement = function (subElement) {
             subElement.parentScope = $scope;
         };
 

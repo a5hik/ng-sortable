@@ -1,4 +1,3 @@
-
 (function () {
 
     'use strict';
@@ -8,12 +7,12 @@
      * Controller for sortable item.
      * @param $scope
      */
-    mainModule.controller('sortableItemController', ['$scope', function($scope) {
+    mainModule.controller('sortableItemController', ['$scope', function ($scope) {
 
         $scope.sortableItemElement = null;
 
 
-        $scope.initItem = function(element) {
+        $scope.initItem = function (element) {
 
             $scope.sortableItemElement = element;
             $scope.initSubItemElement(element);
@@ -21,7 +20,7 @@
             element.attr('sortable-element-type', 'item');
         };
 
-        $scope.removeItem = function() {
+        $scope.removeItem = function () {
             var index = $scope.$index;
             if (index > -1) {
                 var item = $scope.sortableModelValue.splice(index, 1)[0];
@@ -34,37 +33,37 @@
             return null;
         };
 
-        $scope.itemData = function() {
+        $scope.itemData = function () {
             return $scope.sortableModelValue[$scope.$index];
         };
 
-        $scope.parentScope = function() {
+        $scope.parentScope = function () {
             return $scope.sortableItemElement.parentScope;
         };
 
-        $scope.accept = function(sourceItemScope, destScope, destIndex) {
+        $scope.accept = function (sourceItemScope, destScope, destIndex) {
             return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope, destIndex);
         }
 
     }]);
 
     mainModule.directive('sortableItem', ['sortableConfig',
-            function (sortableConfig) {
-                return {
-                    require: ['^sortable'],
-                    restrict: 'A',
-                    controller: 'sortableItemController',
-                    link: function (scope, element, attrs, sortableController) {
-                        var config = {};
-                        angular.extend(config, sortableConfig);
+        function (sortableConfig) {
+            return {
+                require: ['^sortable'],
+                restrict: 'A',
+                controller: 'sortableItemController',
+                link: function (scope, element, attrs, sortableController) {
+                    var config = {};
+                    angular.extend(config, sortableConfig);
 
-                        if (sortableConfig.itemClass) {
-                            element.addClass(config.itemClass);
-                        }
-
-                        scope.initItem(element);
+                    if (sortableConfig.itemClass) {
+                        element.addClass(config.itemClass);
                     }
-                };
-            }]);
+
+                    scope.initItem(element);
+                }
+            };
+        }]);
 
 })();

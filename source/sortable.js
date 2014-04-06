@@ -18,6 +18,15 @@
             $scope.sortableElement = element;
         };
 
+        $scope.insertSortableItem = function(index, itemModelData) {
+            $scope.sortableModelValue.splice(index, 0, itemModelData);
+            $scope.$apply();
+        };
+
+        $scope.initSubItemElement = function(subElement) {
+            subElement.parentScope = $scope;
+        };
+
     }]);
 
     mainModule.directive('sortable', [
@@ -101,7 +110,6 @@
                         });
                         scope.callbacks = callbacks;
                     }, true);
-
                 }
             };
         }]);

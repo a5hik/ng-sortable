@@ -23,7 +23,9 @@
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {
 
-                    var clickedElm, sourceItem, sourceIndex, dragItem, placeElm, hiddenPlaceElm, dragItemElm, pos, dragElm;
+                    var clickedElm, sourceItem, sourceIndex, dragItem, placeElm,
+                        hiddenPlaceElm, dragItemElm, pos, dragElm, firstMoving, clickedElmDragged, targetItem, targetBefore,
+                        destIndex, targetScope, sameParent;
                     var elements; // As a parameter for callbacks
                     var config = {};
 
@@ -36,9 +38,18 @@
 
                     var hasTouch = 'ontouchstart' in window;
 
+                    var copyArray = function(sourceArray) {
+                        var arrayCopy = [];
+                        for (var i = 0; i < sourceArray.length; i++) {
+                            arrayCopy.push(sourceArray[i]);
+                        }
+                        return arrayCopy;
+                    };
+
                     var dragStartEvent = function (event) {
                         clickedElm = angular.element(event.target);
                         sourceItem = clickedElm.scope().itemData();
+                        var moveObj = event;
 
                         event.preventDefault();
 
@@ -47,14 +58,31 @@
                             index: scope.$index,
                             scope: scope,
 
-                            prev: function() {
+                            reset: function(index, scope, dragItemScope) {
+                                sameParent = (scope.sortableElement == dragItemScope.sortableElement);
+                                if (sameParent && sourceIndex < index) {
+                                    index--;
+                                }
+                                destIndex = index;
+                                this.index = index;
+                                this.scope = scope;
+                                this.items = copyArray(scope.items);
+                                var i = this.items.indexOf(dragItemScope);
+                                if (i > -1) {
+                                    this.items.splice(i, 1);
+                                }
+
+                                this.items.splice(index, 0, dragItemScope);
+                            },
+
+                            prev: function () {
                                 if (this.index > 0) {
                                     return this.items[this.index - 1];
                                 }
                                 return null;
                             },
 
-                            next: function() {
+                            next: function () {
                                 if (this.index < this.items.length - 1) {
                                     return this.items[this.index + 1];
                                 }
@@ -66,12 +94,12 @@
                         var tagName = scope.sortableItemElement.prop('tagName');
 
                         placeElm = angular.element($window.document.createElement(tagName))
-                                .addClass(config.placeHolderClass);
+                            .addClass(config.placeHolderClass);
 
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
                         dragItemElm = scope.sortableItemElement;
-                        pos = $helper.positionStarted(event, dragItemElm);
+                        pos = $helper.positionStarted(moveObj, dragItemElm);
                         placeElm.css('height', $helper.height(dragItemElm) + 'px');
                         dragElm = angular.element($window.document.createElement(scope.sortableElement.prop('tagName')))
                             .addClass(scope.sortableElement.attr('class')).addClass(config.dragClass);
@@ -89,8 +117,8 @@
                         $document.find('body').append(dragElm);
 
                         dragElm.css({
-                            'left' : event.pageX - pos.offsetX + 'px',
-                            'top'  : event.pageY - pos.offsetY + 'px'
+                            'left': moveObj.pageX - pos.offsetX + 'px',
+                            'top': moveObj.pageY - pos.offsetY + 'px'
                         });
 
                         elements = {
@@ -112,6 +140,89 @@
 
                     var dragMoveEvent = function (event) {
 
+                        var currentAccept;
+                        var moveObj = event;
+
+                        clickedElmDragged = true;
+
+                        if (dragElm) {
+                            event.preventDefault();
+
+                            dragElm.css({
+                                'left': moveObj.pageX - pos.offsetX + 'px',
+                                'top': moveObj.pageY - pos.offsetY + 'px'
+                            });
+
+                            $helper.positionMoved(moveObj, pos, firstMoving);
+
+                            if (firstMoving) {
+                                firstMoving = false;
+                                return;
+                            }
+
+                            var targetX = moveObj.pageX - $window.document.body.scrollLeft;
+                            var targetY = moveObj.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
+
+                            // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always
+                            // pick the drag element itself as the target. To prevent this, we hide the drag element while
+                            // selecting the target.
+                            if (angular.isFunction(dragElm.hide)) {
+                                dragElm.hide();
+                            }
+
+                            // when using elementFromPoint() inside an iframe, you have to call
+                            // elementFromPoint() twice to make sure IE8 returns the correct value
+                            $window.document.elementFromPoint(targetX, targetY);
+
+                            var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
+                            if (angular.isFunction(dragElm.show)) {
+                                dragElm.show();
+                            }
+
+                            if (targetElm.attr('sortable-elment-type') != 'item' && targetElm.attr('sortable-elment-type') != 'handle') {
+                                return;
+                            }
+
+                            targetItem = targetElm.scope();
+                            targetElm = targetItem.sortableItemElement;
+
+                            var targetItemData = null;
+                            if (targetItem) {
+                                targetItemData = targetItem.itemData();
+                            }
+
+                            // move vertical
+                            if (!pos.dirAx) {
+                                // check it's new position
+                                var targetOffset = $helper.offset(targetElm);
+                                if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
+                                    targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
+                                } else {
+                                    targetBefore = moveObj.pageY < targetOffset.top;
+                                }
+                                if (targetBefore) {
+
+                                    currentAccept = targetItem.accept(scope, targetItem.parentScope(), targetItem.$index);
+                                    if (currentAccept) {
+                                        targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
+                                        destIndex = targetItem.$index;
+                                        targetScope = targetItem.parentScope();
+                                        dragItem.reset(destIndex, targetScope, scope);
+                                    }
+                                } else {
+                                    currentAccept = targetItem.accept(scope, targetItem.parentScope(), targetItem.$index + 1);
+                                    if (currentAccept) {
+                                        targetElm.after(placeElm);
+                                        destIndex = targetItem.$index + 1;
+                                        targetScope = targetItem.parentScope();
+                                        dragItem.reset(destIndex, targetScope, scope);
+                                    }
+                                }
+                            }
+
+                            scope.callbacks.move(scope, sourceItem, elements);
+                        }
+
                     };
 
                     var dragEndEvent = function (event) {
@@ -129,9 +240,22 @@
                             dragElm.remove();
                             dragElm = null;
 
-                            /*scope.callbacks.itemClicked(sourceItem, clickedElmDragged);
-                            scope.callbacks.stop(scope, sourceItem, elements);*/
+                            scope.callbacks.itemClicked(sourceItem, clickedElmDragged);
+                             scope.callbacks.stop(scope, sourceItem, elements);
 
+                            // update model data
+                            if (targetScope && !(sameParent && sourceIndex == destIndex)) {
+                                var source = scope.removeItem();
+                                targetScope.insertSortableItem(destIndex, source, scope);
+
+                                if (sameParent) {
+                                    scope.callbacks.orderChanged(scope.sortableElement.scope(), source, sourceIndex, destIndex);
+                                } else {
+                                    scope.callbacks.itemRemoved(scope.sortableElement.scope(), source, sourceIndex);
+                                    targetScope.callbacks.itemAdded(targetScope, source, destIndex);
+                                    scope.callbacks.itemMoved(scope.sortableElement.scope(), source, sourceIndex, targetScope, destIndex);
+                                }
+                            }
                         }
 
                         if (hasTouch) {

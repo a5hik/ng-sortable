@@ -63,8 +63,8 @@
                     return {
                         width: element.prop('offsetWidth'),
                         height: element.prop('offsetHeight'),
-                        top: boundingClientRect.top + ($window.pageYOffset || $document[0].body.scrollTop || $document[0].documentElement.scrollTop),
-                        left: boundingClientRect.left + ($window.pageXOffset || $document[0].body.scrollLeft || $document[0].documentElement.scrollLeft)
+                        top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+                        left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
                     };
                 },
 
@@ -139,6 +139,14 @@
                     }
 
                     pos.dirAx = newAx;
+                },
+
+                copyArray: function (sourceArray) {
+                    var arrayCopy = [];
+                    for (var i = 0; i < sourceArray.length; i++) {
+                        arrayCopy.push(sourceArray[i]);
+                    }
+                    return arrayCopy;
                 }
             };
         }

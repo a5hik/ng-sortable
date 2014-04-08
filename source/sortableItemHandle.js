@@ -21,7 +21,7 @@
                 require: ['^sortableItem'],
                 restrict: 'A',
                 controller: 'sortableItemHandleController',
-                link: function (scope, element, attrs, itemController) {
+                link: function (scope, element) {
 
                     var clickedElm, sourceItem, sourceIndex, dragItem, placeElm,
                         hiddenPlaceElm, dragItemElm, pos, dragElm, firstMoving, clickedElmDragged, targetItem, targetBefore,
@@ -38,20 +38,12 @@
 
                     var hasTouch = 'ontouchstart' in window;
 
-                    var copyArray = function (sourceArray) {
-                        var arrayCopy = [];
-                        for (var i = 0; i < sourceArray.length; i++) {
-                            arrayCopy.push(sourceArray[i]);
-                        }
-                        return arrayCopy;
-                    };
-
                     var dragStartEvent = function (event) {
                         clickedElm = angular.element(event.target);
                         sourceItem = clickedElm.scope().itemData();
-                        var moveObj = event;
-
                         event.preventDefault();
+
+                        var moveObj = event;
 
                         firstMoving = true;
                         sourceIndex = scope.$index;
@@ -67,27 +59,13 @@
                                 destIndex = index;
                                 this.index = index;
                                 this.scope = scope;
-                                this.items = copyArray(scope.items);
+                                this.items = $helper.copyArray(scope.items);
                                 var i = this.items.indexOf(dragItemScope);
                                 if (i > -1) {
                                     this.items.splice(i, 1);
                                 }
 
                                 this.items.splice(index, 0, dragItemScope);
-                            },
-
-                            prev: function () {
-                                if (this.index > 0) {
-                                    return this.items[this.index - 1];
-                                }
-                                return null;
-                            },
-
-                            next: function () {
-                                if (this.index < this.items.length - 1) {
-                                    return this.items[this.index + 1];
-                                }
-                                return null;
                             }
                         };
 
@@ -161,7 +139,7 @@
                                 return;
                             }
 
-                            var targetX = moveObj.pageX - $window.document.body.scrollLeft;
+                            var targetX = moveObj.pageX - $window.document.documentElement.scrollLeft;
                             var targetY = moveObj.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
 
                             // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always

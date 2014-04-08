@@ -14,20 +14,23 @@
 }
 
 .sortable-item, .sortable-placeholder {
+    padding: 10px;
     font-weight: 200;
-    border: solid 1px darkgrey;
     border-radius: 10px;
     list-style: none;
-    box-shadow: inset rgba(0, 0, 0, 0.35) 0 1px 10px 0;
     cursor: move;
-    background-color: floralwhite;
     display: block;
     position: relative;
     margin: 2px;
-    padding: 10px;
     min-height: 20px;
     line-height: 20px;
 }
+
+.sortable-item {
+    border: solid 1px darkgrey;
+    background-color: #f4f6f7;
+}
+
 
 .sortable-handle {
     cursor: move;
@@ -41,15 +44,14 @@
 .sortable-handle:hover {
     color: #438eb9;
     background: #f4f6f7;
-    border-color: #dce2e8;
 }
 .sortable-placeholder {
     margin: 5px 0;
     padding: 0;
     min-height: 30px;
-    background: #f0f9ff;
-    border: 2px dashed #bed2db;
+    border: 1px dashed #808080;
     box-sizing: border-box;
+    background-color: #dbdbdb;
 }
 
 .sortable-drag {
@@ -60,16 +62,7 @@
 }
 
 .card {
-    padding: 10px;
-    font-weight: 200;
-
-    border: solid 1px darkgrey;
-    border-radius: 10px;
-    list-style: none;
     box-shadow: inset rgba(0, 0, 0, 0.35) 0 1px 10px 0;
-    margin: 2px;
-    cursor: move;
-    background-color: floralwhite;
 }
 
 .column {

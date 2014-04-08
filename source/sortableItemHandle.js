@@ -165,11 +165,6 @@
                             targetItem = targetElm.scope();
                             targetElm = targetItem.sortableItemElement;
 
-                            var targetItemData = null;
-                            if (targetItem) {
-                                targetItemData = targetItem.itemData();
-                            }
-
                             // move vertical
                             if (!pos.dirAx) {
                                 sameParent = false;

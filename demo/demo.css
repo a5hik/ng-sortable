@@ -28,7 +28,7 @@
 
 .sortable-item {
     border: solid 1px darkgrey;
-    background-color: #f4f6f7;
+    background-color: #ffffff;
 }
 
 
@@ -56,8 +56,6 @@
 
 .sortable-drag {
     position: absolute;
-    pointer-events: none;
-    z-index: 999;
     opacity: .8;
 }
 

@@ -1,7 +1,7 @@
 
 
 #board { margin: 0; padding: 0 10px 0 10px;}
-#columns { margin: 55px 0 0 0;}
+#columns { margin: 20px 0 5px 0;}
 #columns > div { padding-left: 5px; padding-right:5px;}
 #columns a { color: #444; }
 
@@ -85,5 +85,18 @@
     box-shadow: inset rgba(0, 0, 0, 0.0980392) 0 1px 10px 0;
 }
 .default-color { background-color: #ffffff; }
+
+.board-header {
+    margin-left: 0;
+    margin-right: 0;
+    background-color: #fff;
+    border-width: 0;
+    border-color: #ddd;
+    border-radius: 4px 4px 0 0;
+    box-shadow: none;
+    position: relative;
+    padding: 10px 15px 0;
+    border-style: solid;
+}
 
 

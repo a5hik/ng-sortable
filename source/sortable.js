@@ -23,7 +23,7 @@
             $scope.$apply();
         };
 
-        $scope.initSubItemElement = function (subElement) {
+        $scope.initItemElement = function (subElement) {
             subElement.parentScope = $scope;
         };
 

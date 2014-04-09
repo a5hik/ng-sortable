@@ -11,23 +11,30 @@
     <script type="text/javascript" src="demo.js"></script>
 </head>
 <body ng-app="demoApp">
-
-<div class="container-fluid" id="board" ng-controller="demoController">
-    <div ng-model="board">
-        <div id="columns" class="row">
-            <div class="col-md-{{12/board.numberOfColumns}}" ng-repeat="column in board.columns"
-                 data-columnindex="{{$index}}" id="column{{$index}}">
-                <div class="column">
-                    <div class="columnHeader"><span>{{column.name}} ({{column.cards.length}})</span></div>
-                    <ul class="cards sortable-list" sortable= "sortOptions" ng-model="column.cards">
-                        <li class="card" ng-repeat="card in column.cards" sortable-item="">
-                            <span sortable-item-handle>{{card.name}}</span>
-                        </li>
-                    </ul>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="board-header">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Kanban</a></li>
+                <li><a href="#">Sprint</a></li>
+            </ul>
+        </div>
+        <div ng-model="board" id="board" ng-controller="demoController">
+            <div id="columns" class="row">
+                <div class="col-md-{{12/board.numberOfColumns}}" ng-repeat="column in board.columns"
+                     data-columnindex="{{$index}}" id="column{{$index}}">
+                    <div class="column">
+                        <div class="columnHeader"><span>{{column.name}} ({{column.cards.length}})</span></div>
+                        <ul class="cards sortable-list" sortable="sortOptions" ng-model="column.cards">
+                            <li class="card" ng-repeat="card in column.cards" sortable-item="">
+                                <span sortable-item-handle>{{card.name}}</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</nav>
 </body>
 </html>

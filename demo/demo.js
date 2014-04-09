@@ -5,7 +5,7 @@
     angular.module('demoApp', ['ui.sortable'])
         .controller('demoController', ['$scope', function($scope) {
 
-            $scope.board = {"name":"Stuff to do at home","numberOfColumns":4,
+            $scope.board = {"name":"Kanban Board","numberOfColumns":4,
                 "columns":[
                     {"name":"Ideas","cards":[{"name":"Come up with a POC for new Project"},{"name":"Design new framework for reporting module"}]},
                     {"name":"Not started","cards":[{"name":"Explore new IDE for Development"},{"name":"Get new resource for new Project"}]},
@@ -14,8 +14,8 @@
 
             $scope.sortOptions = {
 
-                itemClicked: function (sourceItem) {
-                 //console.log(sourceItem.title);
+                orderChanged: function (scope, sourceItem) {
+
                 }
             };
         }]);

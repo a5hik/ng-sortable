@@ -15,7 +15,7 @@
         $scope.initItem = function (element) {
 
             $scope.sortableItemElement = element;
-            $scope.initSubItemElement(element);
+            $scope.initItemElement(element);
             $scope.items.splice($scope.$index, 0, $scope);
             element.attr('sortable-element-type', 'item');
         };

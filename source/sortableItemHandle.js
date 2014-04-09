@@ -216,7 +216,6 @@
                             dragElm.remove();
                             dragElm = null;
 
-                            scope.callbacks.itemClicked(sourceItem, clickedElmDragged);
                             scope.callbacks.stop(scope, sourceItem, elements);
 
                             // update model data
@@ -227,8 +226,6 @@
                                 if (sameParent) {
                                     scope.callbacks.orderChanged(scope.sortableElement.scope(), source, sourceIndex, destIndex);
                                 } else {
-                                    scope.callbacks.itemRemoved(scope.sortableElement.scope(), source, sourceIndex);
-                                    targetScope.callbacks.itemAdded(targetScope, source, destIndex);
                                     scope.callbacks.itemMoved(scope.sortableElement.scope(), source, sourceIndex, targetScope, destIndex);
                                 }
                             }

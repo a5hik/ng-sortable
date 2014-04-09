@@ -70,19 +70,7 @@
 
                     };
 
-                    callbacks.itemRemoved = function (scope, sourceItem, sourceIndex) {
-
-                    };
-
-                    callbacks.itemAdded = function (scope, sourceItem, destIndex) {
-
-                    };
-
                     callbacks.itemMoved = function (sourceScope, sourceItem, sourceIndex, destScope, destIndex) {
-
-                    };
-
-                    callbacks.itemClicked = function (sourceItem) {
 
                     };
 

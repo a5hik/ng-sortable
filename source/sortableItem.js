@@ -41,8 +41,8 @@
             return $scope.sortableItemElement.parentScope;
         };
 
-        $scope.accept = function (sourceItemScope, destScope, destIndex) {
-            return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope, destIndex);
+        $scope.accept = function (sourceItemScope, destScope) {
+            return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope);
         }
 
     }]);

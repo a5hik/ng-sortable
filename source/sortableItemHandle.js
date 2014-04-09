@@ -178,7 +178,7 @@
                                 }
                                 if (targetBefore) {
 
-                                    currentAccept = targetItem.accept(scope, targetItem.parentScope(), targetItem.$index);
+                                    currentAccept = targetItem.accept(scope, targetItem.parentScope());
                                     if (currentAccept) {
                                         targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
                                         destIndex = targetItem.$index;
@@ -186,7 +186,7 @@
                                         dragItem.reset(destIndex, targetScope, scope);
                                     }
                                 } else {
-                                    currentAccept = targetItem.accept(scope, targetItem.parentScope(), targetItem.$index + 1);
+                                    currentAccept = targetItem.accept(scope, targetItem.parentScope());
                                     if (currentAccept) {
                                         targetElm.after(placeElm);
                                         destIndex = targetItem.$index + 1;
@@ -224,9 +224,9 @@
                                 targetScope.insertSortableItem(destIndex, source, scope);
 
                                 if (sameParent) {
-                                    scope.callbacks.orderChanged(scope.sortableElement.scope(), source, sourceIndex, destIndex);
+                                    scope.callbacks.orderChanged(scope.sortableElement.scope(), source);
                                 } else {
-                                    scope.callbacks.itemMoved(scope.sortableElement.scope(), source, sourceIndex, targetScope, destIndex);
+                                    scope.callbacks.itemMoved(scope.sortableElement.scope(), source, targetScope);
                                 }
                             }
                         }

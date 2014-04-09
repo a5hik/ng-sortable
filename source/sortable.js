@@ -41,10 +41,7 @@
                     var callbacks = {
                         accept: null,
                         orderChanged: null,
-                        itemRemoved: null,
-                        itemAdded: null,
                         itemMoved: null,
-                        itemClicked: null,
                         start: null,
                         move: null,
                         stop: null
@@ -62,15 +59,15 @@
                         scope.sortableModelValue = ngModel.$modelValue;
                     };
 
-                    callbacks.accept = function (modelData, sourceItemScope, targetScope, destIndex) {
+                    callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
                     };
 
-                    callbacks.orderChanged = function (scope, sourceItem, sourceIndex, destIndex) {
+                    callbacks.orderChanged = function (scope, sourceItem) {
 
                     };
 
-                    callbacks.itemMoved = function (sourceScope, sourceItem, sourceIndex, destScope, destIndex) {
+                    callbacks.itemMoved = function (sourceScope, sourceItem, destScope) {
 
                     };
 

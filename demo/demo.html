@@ -23,7 +23,7 @@
         <script type="text/ng-template" id="card.html">
             <div sortable-item-handle>
                 {{card.name}}
-                <a class="pull-right btn btn-xs"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="pull-right btn btn-xs" data-nodrag><span class="glyphicon glyphicon-remove"></span></a>
             </div>
         </script>
         <div ng-model="board" id="board" ng-controller="demoController">

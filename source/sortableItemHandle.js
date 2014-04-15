@@ -39,8 +39,24 @@
                     var hasTouch = 'ontouchstart' in window;
 
                     var dragStartEvent = function (event) {
+
                         clickedElm = angular.element(event.target);
                         sourceItem = clickedElm.scope().itemData();
+
+                        var target = clickedElm;
+                        var nodrag = function (targetElm) {
+                            return (typeof targetElm.attr('nodrag')) !== 'undefined'
+                                || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
+                        };
+
+                        while(target && target[0] && target[0] != element
+                            && !target.hasClass(config.itemClass)) {
+                            if (nodrag(target)) {
+                                return;
+                            }
+                            target = target.parent();
+                        }
+
                         event.preventDefault();
 
                         firstMoving = true;
@@ -66,7 +82,6 @@
                                 this.items.splice(index, 0, dragItemScope);
                             }
                         };
-
 
                         var tagName = scope.sortableItemElement.prop('tagName');
 
@@ -203,7 +218,6 @@
                             if (event) {
                                 event.preventDefault();
                             }
-
                             // roll back elements changed
                             dragItemElm[0].parentNode.removeChild(dragItemElm[0]);
                             hiddenPlaceElm.replaceWith(dragItemElm);
@@ -213,7 +227,6 @@
                             dragElm = null;
 
                             scope.callbacks.stop(scope, sourceItem, elements);
-
                             // update model data
                             if (targetScope && !(sameParent && sourceIndex == destIndex)) {
                                 var source = scope.removeItem();
@@ -226,7 +239,6 @@
                                 }
                             }
                         }
-
                         if (hasTouch) {
                             angular.element($document).unbind('touchend', dragEndEvent);
                             angular.element($document).unbind('touchcancel', dragEndEvent);
@@ -237,7 +249,6 @@
                             angular.element($document).unbind('mousemove', dragMoveEvent);
                             angular.element($window.document.body).unbind('mouseleave', dragEndEvent);
                         }
-
                     };
 
                     if (hasTouch) {
@@ -248,5 +259,4 @@
                 }
             };
         }]);
-
 })();

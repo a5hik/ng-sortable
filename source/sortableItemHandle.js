@@ -43,8 +43,6 @@
                         sourceItem = clickedElm.scope().itemData();
                         event.preventDefault();
 
-                        var moveObj = event;
-
                         firstMoving = true;
                         sourceIndex = scope.$index;
                         dragItem = {
@@ -78,7 +76,7 @@
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
                         dragItemElm = scope.sortableItemElement;
-                        pos = $helper.positionStarted(moveObj, dragItemElm);
+                        pos = $helper.positionStarted(event, dragItemElm);
                         placeElm.css('height', $helper.height(dragItemElm) + 'px');
                         dragElm = angular.element($window.document.createElement(scope.sortableElement.prop('tagName')))
                             .addClass(scope.sortableElement.attr('class')).addClass(config.dragClass);
@@ -97,8 +95,8 @@
                         $document.find('body').append(dragElm);
 
                         dragElm.css({
-                            'left': moveObj.pageX - pos.offsetX + 'px',
-                            'top': moveObj.pageY - pos.offsetY + 'px'
+                            'left': event.pageX - pos.offsetX + 'px',
+                            'top': event.pageY - pos.offsetY + 'px'
                         });
 
                         elements = {
@@ -121,27 +119,25 @@
                     var dragMoveEvent = function (event) {
 
                         var currentAccept;
-                        var moveObj = event;
-
                         clickedElmDragged = true;
 
                         if (dragElm) {
                             event.preventDefault();
 
                             dragElm.css({
-                                'left': moveObj.pageX - pos.offsetX + 'px',
-                                'top': moveObj.pageY - pos.offsetY + 'px'
+                                'left': event.pageX - pos.offsetX + 'px',
+                                'top': event.pageY - pos.offsetY + 'px'
                             });
 
-                            $helper.positionMoved(moveObj, pos, firstMoving);
+                            $helper.positionMoved(event, pos, firstMoving);
 
                             if (firstMoving) {
                                 firstMoving = false;
                                 return;
                             }
 
-                            var targetX = moveObj.pageX - $window.document.documentElement.scrollLeft;
-                            var targetY = moveObj.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
+                            var targetX = event.pageX - $window.document.documentElement.scrollLeft;
+                            var targetY = event.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
 
                             // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always
                             // pick the drag element itself as the target. To prevent this, we hide the drag element while
@@ -174,7 +170,7 @@
                                 if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
                                     targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
                                 } else {
-                                    targetBefore = moveObj.pageY < targetOffset.top;
+                                    targetBefore = event.pageY < targetOffset.top;
                                 }
                                 if (targetBefore) {
 

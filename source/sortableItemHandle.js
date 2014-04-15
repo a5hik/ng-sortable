@@ -43,12 +43,12 @@
                         clickedElm = angular.element(event.target);
                         sourceItem = clickedElm.scope().itemData();
 
-                        var target = clickedElm;
                         var nodrag = function (targetElm) {
                             return (typeof targetElm.attr('nodrag')) !== 'undefined'
                                 || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
                         };
 
+                        var target = clickedElm;
                         while(target && target[0] && target[0] != element
                             && !target.hasClass(config.itemClass)) {
                             if (nodrag(target)) {

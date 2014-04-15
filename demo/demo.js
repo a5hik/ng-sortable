@@ -18,5 +18,9 @@
 
                 }
             };
+
+            $scope.remove = function(scope) {
+                scope.removeItem();
+            }
         }]);
 })();

@@ -99,4 +99,10 @@
     border-style: solid;
 }
 
+.addNewCard {
+    float: right;
+    padding-right: 30px;
+    color:  lightgrey;
+}
+
 

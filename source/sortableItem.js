@@ -16,16 +16,13 @@
 
             $scope.sortableItemElement = element;
             $scope.initItemElement(element);
-            $scope.items.splice($scope.$index, 0, $scope);
             element.attr('sortable-element-type', 'item');
         };
 
         $scope.removeItem = function () {
             var index = $scope.$index;
             if (index > -1) {
-                var item = $scope.sortableModelValue.splice(index, 1)[0];
-                $scope.items.splice(index, 1)[0];
-                return item;
+                return $scope.sortableModelValue.splice(index, 1)[0];
             }
             return null;
         };

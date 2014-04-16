@@ -41,8 +41,6 @@
                     var dragStartEvent = function (event) {
 
                         clickedElm = angular.element(event.target);
-                        sourceItem = clickedElm.scope().itemData();
-
                         var nodrag = function (targetElm) {
                             return (typeof targetElm.attr('nodrag')) !== 'undefined'
                                 || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
@@ -57,6 +55,7 @@
                             target = target.parent();
                         }
 
+                        sourceItem = clickedElm.scope().itemData();
                         event.preventDefault();
 
                         firstMoving = true;

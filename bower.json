@@ -11,7 +11,8 @@
       "angular-mocks": "1.2.6",
       "jquery": ">=1.10.x",
       "jasmine-jquery": "~1.0.0",
-      "angular-scenario": "1.2.6"
+      "angular-scenario": "1.2.6",
+      "angular-ui-bootstrap-bower": "0.10.0"
   },
   "ignore": [
        "node_modules",

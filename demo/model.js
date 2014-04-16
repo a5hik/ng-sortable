@@ -1,5 +1,5 @@
 'use strict';
-function board(name, numberOfColumns) {
+function Board(name, numberOfColumns) {
 	return {
 		name: name,
 		numberOfColumns: numberOfColumns,
@@ -7,14 +7,14 @@ function board(name, numberOfColumns) {
 	};
 }
 
-function column(name){
+function Column(name){
 	return {
 		name: name,
 		cards: []
 	};
 }
 
-function card(name, details){
+function Card(name, details){
 	this.name = name;
 	this.details = details;
 	return this;

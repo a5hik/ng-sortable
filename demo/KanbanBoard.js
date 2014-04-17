@@ -52,7 +52,7 @@
                 });
                 modalInstance.result.then(function (cardDetails) {
                     if (cardDetails) {
-                        BoardManipulator.addCardToColumn(cardDetails.column, cardDetails.title, cardDetails.details);
+                        BoardManipulator.addCardToColumn($scope.board, cardDetails.column, cardDetails.title, cardDetails.details);
                     }
                 });
             };

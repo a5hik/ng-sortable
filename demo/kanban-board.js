@@ -4,7 +4,7 @@
     angular.module('demoApp', ['ui.sortable', 'ui.bootstrap'])
         .controller('demoController', ['$scope', '$modal', 'BoardManipulator', function ($scope, $modal, BoardManipulator) {
 
-            $scope.board = {"name": "Kanban Board", "numberOfColumns": 3,
+            var board = {"name": "Kanban Board", "numberOfColumns": 3,
                 "columns": [
                     // {"name":"Ideas","cards":[{"name":"Come up with a POC for new Project"},{"name":"Design new framework for reporting module"}]},
                     {"name": "Not started", "cards": [
@@ -28,6 +28,19 @@
                             "details": "Testing Card Details"}
                     ]}
                 ]};
+
+            var kanbanBoard = new Board(board.name, board.numberOfColumns);
+
+            angular.forEach(board.columns, function(column) {
+
+                BoardManipulator.addColumn(kanbanBoard,column.name);
+
+                angular.forEach(column.cards, function(card) {
+                    BoardManipulator.addCardToColumn(kanbanBoard, column, card.title, card.details);
+                })
+            });
+
+            $scope.board = kanbanBoard;
 
             $scope.sortOptions = {
                 orderChanged: function (scope, sourceItem) {
@@ -59,6 +72,10 @@
         }])
         .factory('BoardManipulator', function () {
             return {
+
+                addColumn: function (board, columnName) {
+                    board.columns.push(new Column(columnName));
+                },
 
                 addCardToColumn: function (board, column, cardTitle, details) {
                     angular.forEach(board.columns, function (col) {

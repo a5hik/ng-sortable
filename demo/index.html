@@ -25,7 +25,7 @@
         <!-- Item template -->
         <script type="text/ng-template" id="card.html">
             <div sortable-item-handle>
-                {{card.name}}
+                <span>{{card.title}}</span>
                 <a class="pull-right btn btn-xs" data-nodrag ng-click="removeCard(column, card)"><span class="glyphicon glyphicon-remove"></span></a>
             </div>
         </script>
@@ -34,7 +34,7 @@
             <form ng-submit="addNewCard()" class="noMargin" name="newCardForm">
                 <div class="modal-header">
                     <button type="button" class="close" ng-click="close()">&times;</button>
-                    <h4 class="modal-title" ng-model="column">Add New Card in '{{column.name}}'</h4>
+                    <h4 class="modal-title" ng-model="columnName">Add New Card in '{{columnName}}'</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

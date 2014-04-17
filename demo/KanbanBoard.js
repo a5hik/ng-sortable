@@ -8,17 +8,24 @@
                 "columns": [
                     // {"name":"Ideas","cards":[{"name":"Come up with a POC for new Project"},{"name":"Design new framework for reporting module"}]},
                     {"name": "Not started", "cards": [
-                        {"name": "Explore new IDE for Development"},
-                        {"name": "Get new resource for new Project"}
+                        {"title": "Explore new IDE for Development",
+                            "details": "Testing Card Details"},
+                        {"title": "Get new resource for new Project",
+                            "details": "Testing Card Details"}
                     ]},
                     {"name": "In progress", "cards": [
-                        {"name": "Develop ui for tracker module"},
-                        {"name": "Develop backend for plan module"}
+                        {"title": "Develop ui for tracker module",
+                            "details": "Testing Card Details"},
+                        {"title": "Develop backend for plan module",
+                            "details": "Testing Card Details"}
                     ]},
                     {"name": "Done", "cards": [
-                        {"name": "Test user module"},
-                        {"name": "End to End Testing for user group module"},
-                        {"name": "CI for user module"}
+                        {"title": "Test user module",
+                            "details": "Testing Card Details"},
+                        {"title": "End to End Testing for user group module",
+                            "details": "Testing Card Details"},
+                        {"title": "CI for user module",
+                            "details": "Testing Card Details"}
                     ]}
                 ]};
 
@@ -45,7 +52,7 @@
                 });
                 modalInstance.result.then(function (cardDetails) {
                     if (cardDetails) {
-                        BoardManipulator.addCardToColumn(cardDetails.column, cardDetails.name, cardDetails.details);
+                        BoardManipulator.addCardToColumn(cardDetails.column, cardDetails.title, cardDetails.details);
                     }
                 });
             };
@@ -69,9 +76,27 @@
                 }
             };
         })
-        .controller('NewCardController', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+        .controller('NewCardController', ['$scope', '$modalInstance', 'column', function ($scope, $modalInstance, column) {
 
-            //Add more stuff.
+            function initScope(scope) {
+                scope.columnName = column.name;
+                scope.column = column;
+                scope.title = '';
+                scope.details = '';
+            }
+
+            $scope.addNewCard = function () {
+                if (!this.newCardForm.$valid) {
+                    return false;
+                }
+                $modalInstance.close({title: this.title, column: column, details: this.details});
+            };
+
+            $scope.close = function () {
+                $modalInstance.close();
+            };
+
+            initScope($scope);
 
         }]);
 })();

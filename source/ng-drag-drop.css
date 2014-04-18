@@ -1,0 +1,58 @@
+
+.sortable-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sortable-item, .sortable-placeholder {
+    padding: 10px;
+    font-weight: 200;
+    border-radius: 10px;
+    list-style: none;
+    cursor: move;
+    display: block;
+    position: relative;
+    margin: 2px;
+    min-height: 20px;
+    line-height: 20px;
+}
+
+.sortable-item {
+    border: solid 1px darkgrey;
+    background-color: #ffffff;
+}
+
+
+.sortable-handle {
+    cursor: move;
+    display: block;
+    padding: 2px 1px;
+    color: #7c9eb2;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+.sortable-handle:hover {
+    color: #438eb9;
+    background: #ffffff;
+}
+.sortable-placeholder {
+    margin: 5px 0;
+    padding: 0;
+    min-height: 30px;
+    border: 1px dashed #808080;
+    box-sizing: border-box;
+    background-color: #dbdbdb;
+}
+
+.sortable-drag {
+    position: absolute;
+    pointer-events: none;
+    opacity: .8;
+    z-index: 9999;
+}
+
+

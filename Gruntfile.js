@@ -38,7 +38,13 @@ module.exports = function(grunt) {
                     '<%= cfg.srcDir %>/**/*.js',
                     '!<%= cfg.buildDir %>/*.js'
                 ],
-                tasks: ['jshint:source', 'clean:build', 'concat:build', 'uglify:build', 'copy']
+                tasks: ['jshint:source', 'clean:build', 'concat:build', 'uglify:build', 'cssmin', 'copy']
+            },
+            cssmin: {
+                files: [
+                    '<%= cfg.srcDir %>/**/*.css'
+                ],
+                tasks: ['cssmin', 'copy']
             }
         },
 
@@ -57,7 +63,7 @@ module.exports = function(grunt) {
             demo: {
                 files: [{
                     expand: true,
-                    src: ['<%= cfg.buildDir %>/*.js'],
+                    src: ['<%= cfg.buildDir %>/*.*'],
                     dest: '<%= cfg.demoDir %>/'
                 }]
             }
@@ -128,10 +134,21 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            add_banner: {
+                options: {
+                    banner: '/* ng-drag-drop css file */'
+                },
+                files: {
+                    '<%= cfg.buildDir %>/ng-drag-drop.min.css': ['<%= cfg.srcDir %>/ng-drag-drop.css']
+                }
+            }
+        },
+
         // open
         open: {
             server: {
-                path: 'http://localhost:<%= connect.options.port %>/<%= cfg.demoDir %>/demo.html'
+                path: 'http://localhost:<%= connect.options.port %>/<%= cfg.demoDir %>/'
             }
         },
 
@@ -178,7 +195,7 @@ module.exports = function(grunt) {
 
     // default
     grunt.registerTask('default', ['tasks_list:project']);
-    grunt.registerTask('build', ['jshint:source', 'karma:single', 'clean:build', 'concat:build', 'uglify:build', 'copy']);
+    grunt.registerTask('build', ['jshint:source', 'karma:single', 'clean:build', 'concat:build', 'cssmin', 'uglify:build', 'copy']);
     grunt.registerTask('webserver', ['build', 'open', 'connect:demo', 'watch']);
     grunt.registerTask('test', ['karma:single']);
     grunt.registerTask('test:continuous', ['karma:continuous']);

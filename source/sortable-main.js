@@ -5,7 +5,8 @@
             itemClass: 'sortable-item',
             handleClass: 'sortable-handle',
             placeHolderClass: 'sortable-placeholder',
-            dragClass: 'sortable-drag'
+            dragClass: 'sortable-drag',
+            emptyClass: 'sortable-empty'
         });
 
 })();

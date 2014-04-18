@@ -13,9 +13,31 @@
         $scope.sortableModelValue = null;
         $scope.callbacks = null;
         $scope.items = [];
+        $scope.type = 'sortable';
+        $scope.emptyElm = null;
 
         $scope.initSortable = function (element) {
             $scope.sortableElement = element;
+        };
+
+        // Check if it's a empty list
+        $scope.isEmpty = function() {
+            return ($scope.sortableModelValue
+                && $scope.sortableModelValue.length === 0);
+        };
+
+        // add placeholder to empty list
+        $scope.place = function(placeElm) {
+            $scope.sortableElement.append(placeElm);
+            $scope.emptyElm.remove();
+        };
+
+        $scope.resetEmptyElement = function() {
+            if ($scope.sortableModelValue.length === 0) {
+                $scope.sortableElement.append($scope.emptyElm);
+            } else {
+                $scope.emptyElm.remove();
+            }
         };
 
         $scope.insertSortableItem = function (index, itemModelData) {
@@ -29,8 +51,8 @@
 
     }]);
 
-    mainModule.directive('sortable', [
-        function () {
+    mainModule.directive('sortable', ['sortableConfig', '$window',
+        function (sortableConfig, $window) {
             return {
                 require: ['ngModel'], // get a hold of NgModelController
                 restrict: 'A',
@@ -58,6 +80,17 @@
                         //set the model value in scope.
                         scope.sortableModelValue = ngModel.$modelValue;
                     };
+
+                    scope.emptyElm = angular.element($window.document.createElement('div'));
+                    if (sortableConfig.emptyClass) {
+                        scope.emptyElm.addClass(sortableConfig.emptyClass);
+                    }
+
+                    scope.$watch('sortableModelValue', function() {
+                        if (scope.sortableModelValue) {
+                            scope.resetEmptyElement();
+                        }
+                    }, true);
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;

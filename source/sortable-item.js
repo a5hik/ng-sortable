@@ -10,13 +10,12 @@
     mainModule.controller('sortableItemController', ['$scope', function ($scope) {
 
         $scope.sortableItemElement = null;
-
+        $scope.type = 'item';
 
         $scope.initItem = function (element) {
 
             $scope.sortableItemElement = element;
             $scope.initItemElement(element);
-            element.attr('sortable-element-type', 'item');
         };
 
         $scope.removeItem = function () {

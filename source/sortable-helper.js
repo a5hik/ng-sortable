@@ -139,14 +139,6 @@
                     }
 
                     pos.dirAx = newAx;
-                },
-
-                copyArray: function (sourceArray) {
-                    var arrayCopy = [];
-                    for (var i = 0; i < sourceArray.length; i++) {
-                        arrayCopy.push(sourceArray[i]);
-                    }
-                    return arrayCopy;
                 }
             };
         }

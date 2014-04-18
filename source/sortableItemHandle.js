@@ -154,18 +154,11 @@
                             // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always
                             // pick the drag element itself as the target. To prevent this, we hide the drag element while
                             // selecting the target.
-                            if (angular.isFunction(dragElm.hide)) {
-                                dragElm.hide();
-                            }
-
                             // when using elementFromPoint() inside an iframe, you have to call
                             // elementFromPoint() twice to make sure IE8 returns the correct value
                             $window.document.elementFromPoint(targetX, targetY);
 
                             var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
-                            if (angular.isFunction(dragElm.show)) {
-                                dragElm.show();
-                            }
 
                             if (targetElm.attr('sortable-elment-type') != 'item' && targetElm.attr('sortable-elment-type') != 'handle') {
                                 return;

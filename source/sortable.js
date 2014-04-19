@@ -32,9 +32,22 @@
             $scope.sortableElement.css('height', 'auto');
         };
 
+        $scope.safeApply = function(fn) {
+            var phase = this.$root.$$phase;
+            if(phase == '$apply' || phase == '$digest') {
+                if(fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                this.$apply(fn);
+            }
+        };
+
         $scope.insertSortableItem = function (index, itemModelData) {
-            $scope.sortableModelValue.splice(index, 0, itemModelData);
-            $scope.$apply();
+
+            $scope.safeApply(function() {
+                $scope.sortableModelValue.splice(index, 0, itemModelData);
+            });
         };
 
         $scope.initItemElement = function (subElement) {

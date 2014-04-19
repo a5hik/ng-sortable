@@ -32,12 +32,6 @@
             $scope.sortableElement.css('height', 'auto');
         };
 
-        $scope.resetEmptyElement = function() {
-            if ($scope.sortableModelValue.length === 0) {
-                $scope.sortableElement.css('height', '100px');
-            }
-        };
-
         $scope.insertSortableItem = function (index, itemModelData) {
             $scope.sortableModelValue.splice(index, 0, itemModelData);
             $scope.$apply();
@@ -78,12 +72,6 @@
                         //set the model value in scope.
                         scope.sortableModelValue = ngModel.$modelValue;
                     };
-
-                    scope.$watch('sortableModelValue.length', function() {
-                        if (scope.sortableModelValue.length == 0) {
-                            scope.sortableElement.css('height', '100px');
-                        }
-                    }, true);
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;

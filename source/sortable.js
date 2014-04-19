@@ -49,8 +49,8 @@
 
     }]);
 
-    mainModule.directive('sortable', ['sortableConfig', '$window',
-        function (sortableConfig, $window) {
+    mainModule.directive('sortable', ['sortableConfig',
+        function (sortableConfig) {
             return {
                 require: ['ngModel'], // get a hold of NgModelController
                 restrict: 'A',

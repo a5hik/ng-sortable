@@ -13,7 +13,6 @@
         $scope.sortableModelValue = null;
         $scope.callbacks = null;
         $scope.type = 'sortable';
-        $scope.emptyElm = null;
         $scope.sortableScope = null;
 
         $scope.initSortable = function (element, scope) {
@@ -30,14 +29,12 @@
         // add placeholder to empty list
         $scope.place = function(placeElm) {
             $scope.sortableElement.append(placeElm);
-            $scope.emptyElm.remove();
+            $scope.sortableElement.css('height', 'auto');
         };
 
         $scope.resetEmptyElement = function() {
             if ($scope.sortableModelValue.length === 0) {
-                $scope.sortableElement.append($scope.emptyElm);
-            } else {
-                $scope.emptyElm.remove();
+                $scope.sortableElement.css('height', '100px');
             }
         };
 
@@ -82,14 +79,9 @@
                         scope.sortableModelValue = ngModel.$modelValue;
                     };
 
-                    scope.emptyElm = angular.element($window.document.createElement('div'));
-                    if (sortableConfig.emptyClass) {
-                        scope.emptyElm.addClass(sortableConfig.emptyClass);
-                    }
-
-                    scope.$watch('sortableModelValue', function() {
-                        if (scope.sortableModelValue) {
-                            scope.resetEmptyElement();
+                    scope.$watch('sortableModelValue.length', function() {
+                        if (scope.sortableModelValue.length == 0) {
+                            scope.sortableElement.css('height', '100px');
                         }
                     }, true);
 

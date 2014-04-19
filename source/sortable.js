@@ -12,12 +12,13 @@
         $scope.sortableElement = null;
         $scope.sortableModelValue = null;
         $scope.callbacks = null;
-        $scope.items = [];
         $scope.type = 'sortable';
         $scope.emptyElm = null;
+        $scope.sortableScope = null;
 
-        $scope.initSortable = function (element) {
+        $scope.initSortable = function (element, scope) {
             $scope.sortableElement = element;
+            $scope.sortableScope = scope;
         };
 
         // Check if it's a empty list
@@ -71,7 +72,7 @@
 
                     var ngModel = controllersArr[0];
 
-                    scope.initSortable(element);
+                    scope.initSortable(element, scope);
 
                     if (!ngModel) return; // do nothing if no ng-model
 

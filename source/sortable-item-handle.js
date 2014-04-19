@@ -166,7 +166,8 @@
                                 if (isEmpty) {
                                     targetItem.place(placeElm);
                                     destIndex = 0;
-                                    dragItem.reset(destIndex, scope, scope);
+                                    targetScope = targetItem.sortableScope;
+                                    dragItem.reset(destIndex, targetScope, scope);
                                 } else {
                                     targetElm = targetItem.sortableItemElement;
                                     // check it's new position

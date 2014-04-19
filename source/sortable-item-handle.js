@@ -86,7 +86,6 @@
 
                         dragItemElm.after(placeElm);
                         dragItemElm.after(hiddenPlaceElm);
-                        dragItemElm[0].parentNode.removeChild(dragItemElm[0]);
                         dragElm.append(dragItemElm);
 
                         // stop move when the menu item is dragged outside the body element
@@ -210,7 +209,6 @@
                                 event.preventDefault();
                             }
                             // roll back elements changed
-                            dragItemElm[0].parentNode.removeChild(dragItemElm[0]);
                             hiddenPlaceElm.replaceWith(dragItemElm);
                             placeElm.remove();
 

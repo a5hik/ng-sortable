@@ -7,18 +7,12 @@
      * Controller for Sortable.
      * @param $scope
      */
-    mainModule.controller('sortableController', ['$scope', function ($scope) {
+    mainModule.controller('sortableController', ['$scope', '$element', function ($scope, $element) {
 
-        $scope.sortableElement = null;
+        $scope.sortableElement = $element;
         $scope.sortableModelValue = null;
         $scope.callbacks = null;
         $scope.type = 'sortable';
-        $scope.sortableScope = null;
-
-        $scope.initSortable = function (element, scope) {
-            $scope.sortableElement = element;
-            $scope.sortableScope = scope;
-        };
 
         // Check if it's a empty list
         $scope.isEmpty = function() {
@@ -29,7 +23,6 @@
         // add placeholder to empty list
         $scope.place = function(placeElm) {
             $scope.sortableElement.append(placeElm);
-            $scope.sortableElement.css('height', 'auto');
         };
 
         $scope.safeApply = function(fn) {
@@ -75,8 +68,6 @@
                     };
 
                     var ngModel = controllersArr[0];
-
-                    scope.initSortable(element, scope);
 
                     if (!ngModel) return; // do nothing if no ng-model
 

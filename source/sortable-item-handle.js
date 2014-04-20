@@ -9,9 +9,19 @@
      */
     mainModule.controller('sortableItemHandleController', ['$scope', '$element', function($scope, $element) {
         this.scope = $scope;
-        $scope.element = $element;
+        $scope.modelValue = null;
         $scope.itemScope = null;
         $scope.type = 'handle';
+
+        $scope.init = function(itemController) {
+            $scope.itemScope = itemController.scope;
+            itemController.scope.handleScope = $scope;
+            $scope.modelValue = itemController.scope.sortableModelValue[$scope.$index];
+        };
+
+        $scope.index = function() {
+            return $scope.itemScope.sortableModelValue.indexOf($scope.modelValue);
+        };
 
     }]);
 
@@ -25,7 +35,7 @@
 
                     var clickedElm, sourceItem, sourceIndex, dragItem, placeElm,
                         hiddenPlaceElm, dragItemElm, pos, dragElm, firstMoving, clickedElmDragged, targetItem, targetBefore,
-                        destIndex, targetScope, sameParent;
+                        destIndex, targetScope, sameParent, dragInfo;
                     var elements; // As a parameter for callbacks
                     var config = {};
 
@@ -34,15 +44,23 @@
                     if (config.handleClass) {
                         element.addClass(config.handleClass);
                     }
-
-                    scope.itemScope = itemController.scope;
-                    itemController.scope.handleScope = scope;
+                    scope.init(itemController);
 
                     var hasTouch = 'ontouchstart' in window;
 
-                    var dragStartEvent = function (event) {
+                    var dragStart = function (event) {
 
                         clickedElm = angular.element(event.target);
+
+                        var eventScope = clickedElm.scope();
+                        if (!eventScope || !eventScope.type) {
+                            return;
+                        }
+                        if (eventScope.type != 'item'
+                            && eventScope.type != 'handle') { // Check if it is a item or a handle
+                            return;
+                        }
+
                         var nodrag = function (targetElm) {
                             return (typeof targetElm.attr('nodrag')) !== 'undefined'
                                 || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
@@ -59,6 +77,8 @@
 
                         sourceItem = clickedElm.scope().itemData();
                         event.preventDefault();
+
+                        dragInfo = $helper.dragItem(scope);
 
                         firstMoving = true;
                         sourceIndex = scope.$index;
@@ -96,7 +116,7 @@
                         dragElm.append(dragItemElm);
 
                         // stop move when the menu item is dragged outside the body element
-                        angular.element($window.document.body).bind('mouseleave', dragEndEvent);
+                        angular.element($window.document.body).bind('mouseleave', dragEnd);
 
                         $document.find('body').append(dragElm);
 
@@ -113,16 +133,16 @@
                         scope.callbacks.start(scope, sourceItem, elements);
 
                         if (hasTouch) {
-                            angular.element($document).bind('touchmove', dragMoveEvent);
-                            angular.element($document).bind('touchend', dragEndEvent);
-                            angular.element($document).bind('touchcancel', dragEndEvent);
+                            angular.element($document).bind('touchmove', dragMove);
+                            angular.element($document).bind('touchend', dragEnd);
+                            angular.element($document).bind('touchcancel', dragEnd);
                         } else {
-                            angular.element($document).bind('mousemove', dragMoveEvent);
-                            angular.element($document).bind('mouseup', dragEndEvent);
+                            angular.element($document).bind('mousemove', dragMove);
+                            angular.element($document).bind('mouseup', dragEnd);
                         }
                     };
 
-                    var dragMoveEvent = function (event) {
+                    var dragMove = function (event) {
 
                         var currentAccept;
                         clickedElmDragged = true;
@@ -172,7 +192,7 @@
                                 if (isEmpty) {
                                     targetItem.place(placeElm);
                                     destIndex = 0;
-                                    targetScope = targetItem.scope();
+                                    targetScope = targetItem;
                                     dragItem.reset(destIndex, targetScope, scope);
                                 } else {
                                     targetElm = targetItem.sortableItemElement;
@@ -209,7 +229,7 @@
 
                     };
 
-                    var dragEndEvent = function (event) {
+                    var dragEnd = function (event) {
 
                         if (dragElm) {
                             if (event) {
@@ -236,21 +256,21 @@
                             }
                         }
                         if (hasTouch) {
-                            angular.element($document).unbind('touchend', dragEndEvent);
-                            angular.element($document).unbind('touchcancel', dragEndEvent);
-                            angular.element($document).unbind('touchmove', dragMoveEvent);
+                            angular.element($document).unbind('touchend', dragEnd);
+                            angular.element($document).unbind('touchcancel', dragEnd);
+                            angular.element($document).unbind('touchmove', dragMove);
                         }
                         else {
-                            angular.element($document).unbind('mouseup', dragEndEvent);
-                            angular.element($document).unbind('mousemove', dragMoveEvent);
-                            angular.element($window.document.body).unbind('mouseleave', dragEndEvent);
+                            angular.element($document).unbind('mouseup', dragEnd);
+                            angular.element($document).unbind('mousemove', dragMove);
+                            angular.element($window.document.body).unbind('mouseleave', dragEnd);
                         }
                     };
 
                     if (hasTouch) {
-                        element.bind('touchstart', dragStartEvent);
+                        element.bind('touchstart', dragStart);
                     } else {
-                        element.bind('mousedown', dragStartEvent);
+                        element.bind('mousedown', dragStart);
                     }
                 }
             };

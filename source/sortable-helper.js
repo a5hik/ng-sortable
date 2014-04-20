@@ -139,6 +139,40 @@
                     }
 
                     pos.dirAx = newAx;
+                },
+
+                dragItem: function(item) {
+                    return {
+                        source: item,
+                        sourceInfo: {
+                            itemScope: item,
+                            index: item.index(),
+                            sortableScope: item.sortableScope
+                        },
+                        index: item.index(),
+                        parent: item.sortableScope,
+
+                        moveTo: function(parent, index) { // Move the item to a new position
+                            this.parent = parent;
+                            this.index = index;
+                        },
+
+                        eventArgs: function() {
+                            return {
+                                source: this.sourceInfo,
+                                dest: {
+                                    index: this.index,
+                                    sortableScope: this.parent
+                                }
+                            };
+                        },
+
+                        apply: function() {
+                            var itemData = this.source.sortableItemElement;
+                            this.source.removeItem();
+                            this.parent.insertSortableItem(this.index, itemData);
+                        }
+                    };
                 }
             };
         }

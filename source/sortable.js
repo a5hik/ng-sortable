@@ -8,7 +8,7 @@
      * @param $scope
      */
     mainModule.controller('sortableController', ['$scope', '$element', function ($scope, $element) {
-
+        this.scope = $scope;
         $scope.sortableElement = $element;
         $scope.sortableModelValue = null;
         $scope.callbacks = null;
@@ -43,20 +43,16 @@
             });
         };
 
-        $scope.initItemElement = function (subElement) {
-            subElement.parentScope = $scope;
-        };
-
     }]);
 
     mainModule.directive('sortable', ['sortableConfig',
         function (sortableConfig) {
             return {
-                require: ['ngModel'], // get a hold of NgModelController
+                require: 'ngModel', // get a hold of NgModelController
                 restrict: 'A',
                 scope: true,
                 controller: 'sortableController',
-                link: function (scope, element, attrs, controllersArr) {
+                link: function (scope, element, attrs, ngModelController) {
 
                     var callbacks = {
                         accept: null,
@@ -67,7 +63,7 @@
                         stop: null
                     };
 
-                    var ngModel = controllersArr[0];
+                    var ngModel = ngModelController;
 
                     if (!ngModel) return; // do nothing if no ng-model
 

@@ -7,17 +7,21 @@
      * Controller for sortableItemHandle
      * @param $scope
      */
-    mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
+    mainModule.controller('sortableItemHandleController', ['$scope', '$element', function($scope, $element) {
+        this.scope = $scope;
+        $scope.element = $element;
+        $scope.itemScope = null;
         $scope.type = 'handle';
+
     }]);
 
     mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
         function (sortableConfig, $helper, $window, $document) {
             return {
-                require: ['^sortableItem'],
+                require: '^sortableItem',
                 restrict: 'A',
                 controller: 'sortableItemHandleController',
-                link: function (scope, element) {
+                link: function (scope, element, attrs, itemController) {
 
                     var clickedElm, sourceItem, sourceIndex, dragItem, placeElm,
                         hiddenPlaceElm, dragItemElm, pos, dragElm, firstMoving, clickedElmDragged, targetItem, targetBefore,
@@ -30,6 +34,9 @@
                     if (config.handleClass) {
                         element.addClass(config.handleClass);
                     }
+
+                    scope.itemScope = itemController.scope;
+                    itemController.scope.handleScope = scope;
 
                     var hasTouch = 'ontouchstart' in window;
 
@@ -178,19 +185,19 @@
                                     }
                                     if (targetBefore) {
 
-                                        currentAccept = targetItem.accept(scope, targetItem.parentScope());
+                                        currentAccept = targetItem.accept(scope, targetItem.sortableScope);
                                         if (currentAccept) {
                                             targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
                                             destIndex = targetItem.$index;
-                                            targetScope = targetItem.parentScope();
+                                            targetScope = targetItem.sortableScope;
                                             dragItem.reset(destIndex, targetScope, scope);
                                         }
                                     } else {
-                                        currentAccept = targetItem.accept(scope, targetItem.parentScope());
+                                        currentAccept = targetItem.accept(scope, targetItem.sortableScope);
                                         if (currentAccept) {
                                             targetElm.after(placeElm);
                                             destIndex = targetItem.$index + 1;
-                                            targetScope = targetItem.parentScope();
+                                            targetScope = targetItem.sortableScope;
                                             dragItem.reset(destIndex, targetScope, scope);
                                         }
                                     }

@@ -7,16 +7,13 @@
      * Controller for sortable item.
      * @param $scope
      */
-    mainModule.controller('sortableItemController', ['$scope', function ($scope) {
-
-        $scope.sortableItemElement = null;
+    mainModule.controller('sortableItemController', ['$scope', '$element', function ($scope, $element) {
+        this.scope = $scope;
+        $scope.sortableItemElement = $element;
+        $scope.handleScope = null;
+        $scope.sortableScope = null;
         $scope.type = 'item';
 
-        $scope.initItem = function (element) {
-
-            $scope.sortableItemElement = element;
-            $scope.initItemElement(element);
-        };
 
         $scope.removeItem = function () {
             var index = $scope.$index;
@@ -30,9 +27,6 @@
             return $scope.sortableModelValue[$scope.$index];
         };
 
-        $scope.parentScope = function () {
-            return $scope.sortableItemElement.parentScope;
-        };
 
         $scope.accept = function (sourceItemScope, destScope) {
             return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope);
@@ -43,7 +37,7 @@
     mainModule.directive('sortableItem', ['sortableConfig',
         function (sortableConfig) {
             return {
-                require: ['^sortable'],
+                require: '^sortable',
                 restrict: 'A',
                 controller: 'sortableItemController',
                 link: function (scope, element, attrs, sortableController) {
@@ -53,8 +47,7 @@
                     if (sortableConfig.itemClass) {
                         element.addClass(config.itemClass);
                     }
-
-                    scope.initItem(element);
+                    scope.sortableScope = sortableController.scope;
                 }
             };
         }]);

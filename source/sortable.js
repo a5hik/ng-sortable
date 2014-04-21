@@ -10,7 +10,7 @@
     mainModule.controller('sortableController', ['$scope', '$element', function ($scope, $element) {
         this.scope = $scope;
         $scope.sortableElement = $element;
-        $scope.modelValue = null;
+        $scope.modelValue = null; // sortable list.
         $scope.callbacks = null;
         $scope.type = 'sortable';
 
@@ -56,11 +56,10 @@
 
                     var callbacks = {
                         accept: null,
-                        orderChanged: null,
                         itemMoved: null,
-                        start: null,
-                        move: null,
-                        stop: null
+                        dragStart: null,
+                        dragMove: null,
+                        dragStop: null
                     };
 
                     var ngModel = ngModelController;
@@ -81,15 +80,15 @@
 
                     };
 
-                    callbacks.start = function (event) {
+                    callbacks.dragStart = function (event) {
 
                     };
 
-                    callbacks.move = function (event) {
+                    callbacks.dragMove = function (event) {
 
                     };
 
-                    callbacks.stop = function (event) {
+                    callbacks.dragStop = function (event) {
 
                     };
 

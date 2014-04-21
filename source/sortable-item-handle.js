@@ -36,17 +36,13 @@
 
                         var clickedElm = angular.element(event.target);
 
-                        var eventScope = clickedElm.scope();
-                        if (!eventScope || !eventScope.type) {
-                            return;
-                        }
-                        if (eventScope.type != 'item'
-                            && eventScope.type != 'handle') { // Check if it is a item or a handle
+                        var source = clickedElm.scope();
+
+                        if (!source || !source.type || source.type != 'handle') {
                             return;
                         }
 
-                        while (clickedElm && clickedElm[0] && clickedElm[0] != element
-                            && !clickedElm.hasClass(sortableConfig.itemClass)) {
+                        while (clickedElm && clickedElm[0] && clickedElm[0] !== element) {
                             if ($helper.noDrag(clickedElm)) {
                                 return;
                             }
@@ -87,7 +83,7 @@
                         });
 
                         scope.$apply(function () {
-                            scope.callbacks.start(dragInfo.eventArgs());
+                            scope.callbacks.dragStart(dragInfo.eventArgs());
                         });
 
                         if (hasTouch) {
@@ -175,7 +171,7 @@
                             }
 
                             scope.$apply(function () {
-                                scope.callbacks.move(dragInfo.eventArgs());
+                                scope.callbacks.dragMove(dragInfo.eventArgs());
                             });
                         }
 
@@ -193,7 +189,6 @@
                             dragElm.remove();
                             dragElm = null;
 
-                            scope.callbacks.stop(dragInfo.eventArgs());
                             // update model data
                             if (scope.$$apply) {
                                 dragInfo.apply();
@@ -203,7 +198,7 @@
                             }
 
                             scope.sortableScope.$apply(function () {
-                                scope.callbacks.stop(dragInfo.eventArgs());
+                                scope.callbacks.dragStop(dragInfo.eventArgs());
                             });
 
                             scope.$$apply = false;

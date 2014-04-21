@@ -11,7 +11,7 @@
         this.scope = $scope;
         $scope.itemElement = $element;
         $scope.sortableScope = null;
-        $scope.modelValue = null;
+        $scope.modelValue = null; // sortable item.
         $scope.type = 'item';
 
         $scope.index = function () {

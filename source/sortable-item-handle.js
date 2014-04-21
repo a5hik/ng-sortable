@@ -9,19 +9,8 @@
      */
     mainModule.controller('sortableItemHandleController', ['$scope', '$element', function ($scope) {
         this.scope = $scope;
-        $scope.modelValue = null;
         $scope.itemScope = null;
         $scope.type = 'handle';
-
-        $scope.init = function (itemController) {
-            $scope.itemScope = itemController.scope;
-            itemController.scope.handleScope = $scope;
-            $scope.modelValue = itemController.scope.sortableModelValue[$scope.$index];
-        };
-
-        $scope.index = function () {
-            return $scope.itemScope.sortableModelValue.indexOf($scope.modelValue);
-        };
 
     }]);
 
@@ -39,7 +28,7 @@
                     if (sortableConfig.handleClass) {
                         element.addClass(sortableConfig.handleClass);
                     }
-                    scope.init(itemController);
+                    scope.itemScope = itemController.scope;
 
                     var hasTouch = 'ontouchstart' in window;
 
@@ -70,22 +59,22 @@
 
                         firstMoving = true;
 
-                        var tagName = scope.sortableItemElement.prop('tagName');
+                        var tagName = scope.itemElement.prop('tagName');
 
                         placeElm = angular.element($window.document.createElement(tagName))
                             .addClass(sortableConfig.placeHolderClass);
 
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
-                        pos = $helper.positionStarted(event, scope.sortableItemElement);
-                        placeElm.css('height', $helper.height(scope.sortableItemElement) + 'px');
+                        pos = $helper.positionStarted(event, scope.itemElement);
+                        placeElm.css('height', $helper.height(scope.itemElement) + 'px');
                         dragElm = angular.element($window.document.createElement(scope.sortableElement.prop('tagName')))
                             .addClass(scope.sortableElement.attr('class')).addClass(sortableConfig.dragClass);
-                        dragElm.css('width', $helper.width(scope.sortableItemElement) + 'px');
+                        dragElm.css('width', $helper.width(scope.itemElement) + 'px');
 
-                        scope.sortableItemElement.after(placeElm);
-                        scope.sortableItemElement.after(hiddenPlaceElm);
-                        dragElm.append(scope.sortableItemElement);
+                        scope.itemElement.after(placeElm);
+                        scope.itemElement.after(hiddenPlaceElm);
+                        dragElm.append(scope.itemElement);
 
                         // stop move when the menu item is dragged outside the body element
                         angular.element($window.document.body).bind('mouseleave', dragEnd);
@@ -159,7 +148,7 @@
                                     targetItem.place(placeElm);
                                     dragInfo.moveTo(targetItem, 0);
                                 } else {
-                                    targetElm = targetItem.sortableItemElement;
+                                    targetElm = targetItem.itemElement;
                                     // check it's new position
                                     var targetOffset = $helper.offset(targetElm);
                                     if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
@@ -196,7 +185,7 @@
                                 event.preventDefault();
                             }
                             // roll back elements changed
-                            hiddenPlaceElm.replaceWith(scope.sortableItemElement);
+                            hiddenPlaceElm.replaceWith(scope.itemElement);
                             placeElm.remove();
 
                             dragElm.remove();

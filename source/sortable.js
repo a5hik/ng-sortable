@@ -10,14 +10,14 @@
     mainModule.controller('sortableController', ['$scope', '$element', function ($scope, $element) {
         this.scope = $scope;
         $scope.sortableElement = $element;
-        $scope.sortableModelValue = null;
+        $scope.modelValue = null;
         $scope.callbacks = null;
         $scope.type = 'sortable';
 
         // Check if it's a empty list
         $scope.isEmpty = function() {
-            return ($scope.sortableModelValue
-                && $scope.sortableModelValue.length === 0);
+            return ($scope.modelValue
+                && $scope.modelValue.length === 0);
         };
 
         // add placeholder to empty list
@@ -39,7 +39,7 @@
         $scope.insertSortableItem = function (index, itemModelData) {
 
             $scope.safeApply(function() {
-                $scope.sortableModelValue.splice(index, 0, itemModelData);
+                $scope.modelValue.splice(index, 0, itemModelData);
             });
         };
 
@@ -70,7 +70,7 @@
                     // Specify how UI should be updated
                     ngModel.$render = function () {
                         //set the model value in scope.
-                        scope.sortableModelValue = ngModel.$modelValue;
+                        scope.modelValue = ngModel.$modelValue;
                     };
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {

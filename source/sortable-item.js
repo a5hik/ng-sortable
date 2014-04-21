@@ -9,22 +9,25 @@
      */
     mainModule.controller('sortableItemController', ['$scope', '$element', function ($scope, $element) {
         this.scope = $scope;
-        $scope.sortableItemElement = $element;
-        $scope.handleScope = null;
+        $scope.itemElement = $element;
         $scope.sortableScope = null;
+        $scope.modelValue = null;
         $scope.type = 'item';
 
+        $scope.index = function () {
+            return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
+        };
 
         $scope.removeItem = function () {
             var index = $scope.$index;
             if (index > -1) {
-                return $scope.sortableModelValue.splice(index, 1)[0];
+                return $scope.sortableScope.modelValue.splice(index, 1)[0];
             }
             return null;
         };
 
         $scope.itemData = function () {
-            return $scope.sortableModelValue[$scope.$index];
+            return $scope.sortableScope.modelValue[$scope.$index];
         };
 
 
@@ -46,6 +49,7 @@
                         element.addClass(sortableConfig.itemClass);
                     }
                     scope.sortableScope = sortableController.scope;
+                    scope.modelValue = sortableController.scope.modelValue[scope.$index];
                 }
             };
         }]);

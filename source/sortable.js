@@ -77,23 +77,19 @@
                         return true;
                     };
 
-                    callbacks.orderChanged = function (scope, sourceItem) {
+                    callbacks.itemMoved = function (event) {
 
                     };
 
-                    callbacks.itemMoved = function (sourceScope, sourceItem, destScope) {
+                    callbacks.start = function (event) {
 
                     };
 
-                    callbacks.start = function (scope, sourceItem, elements) {
+                    callbacks.move = function (event) {
 
                     };
 
-                    callbacks.move = function (scope, sourceItem, elements) {
-
-                    };
-
-                    callbacks.stop = function (scope, sourceItem, elements) {
+                    callbacks.stop = function (event) {
 
                     };
 

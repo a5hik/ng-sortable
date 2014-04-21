@@ -7,19 +7,19 @@
      * Controller for sortableItemHandle
      * @param $scope
      */
-    mainModule.controller('sortableItemHandleController', ['$scope', '$element', function($scope, $element) {
+    mainModule.controller('sortableItemHandleController', ['$scope', '$element', function ($scope) {
         this.scope = $scope;
         $scope.modelValue = null;
         $scope.itemScope = null;
         $scope.type = 'handle';
 
-        $scope.init = function(itemController) {
+        $scope.init = function (itemController) {
             $scope.itemScope = itemController.scope;
             itemController.scope.handleScope = $scope;
             $scope.modelValue = itemController.scope.sortableModelValue[$scope.$index];
         };
 
-        $scope.index = function() {
+        $scope.index = function () {
             return $scope.itemScope.sortableModelValue.indexOf($scope.modelValue);
         };
 
@@ -33,9 +33,8 @@
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {
 
-                    var clickedElm, sourceItem, sourceIndex, placeElm,
-                        hiddenPlaceElm, pos, dragElm, firstMoving, clickedElmDragged, targetItem, targetBefore,
-                        destIndex, targetScope, sameParent, dragInfo;
+                    var placeElm, hiddenPlaceElm, dragElm;
+                    var pos, firstMoving, dragInfo;
 
                     if (sortableConfig.handleClass) {
                         element.addClass(sortableConfig.handleClass);
@@ -46,7 +45,7 @@
 
                     var dragStart = function (event) {
 
-                        clickedElm = angular.element(event.target);
+                        var clickedElm = angular.element(event.target);
 
                         var eventScope = clickedElm.scope();
                         if (!eventScope || !eventScope.type) {
@@ -57,21 +56,14 @@
                             return;
                         }
 
-                        var nodrag = function (targetElm) {
-                            return (typeof targetElm.attr('nodrag')) !== 'undefined'
-                                || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
-                        };
-
-                        var target = clickedElm;
-                        while (target && target[0] && target[0] != element
-                            && !target.hasClass(sortableConfig.itemClass)) {
-                            if (nodrag(target)) {
+                        while (clickedElm && clickedElm[0] && clickedElm[0] != element
+                            && !clickedElm.hasClass(sortableConfig.itemClass)) {
+                            if ($helper.noDrag(clickedElm)) {
                                 return;
                             }
-                            target = target.parent();
+                            clickedElm = clickedElm.parent();
                         }
 
-                        sourceItem = clickedElm.scope().itemData();
                         event.preventDefault();
 
                         dragInfo = $helper.dragItem(scope);
@@ -120,7 +112,6 @@
                     var dragMove = function (event) {
 
                         var currentAccept;
-                        clickedElmDragged = true;
 
                         if (dragElm) {
                             event.preventDefault();
@@ -152,9 +143,9 @@
                             // move vertical
                             if (!pos.dirAx) {
 
-                                targetItem = targetElm.scope();
-                                sameParent = false;
+                                var targetItem = targetElm.scope();
                                 var isEmpty = false;
+                                var targetBefore = false;
 
                                 if (targetItem.type == 'sortable') {
                                     isEmpty = targetItem.isEmpty();
@@ -166,9 +157,7 @@
 
                                 if (isEmpty) {
                                     targetItem.place(placeElm);
-                                    destIndex = 0;
-                                    targetScope = targetItem;
-                                    dragInfo.moveTo(targetScope, destIndex);
+                                    dragInfo.moveTo(targetItem, 0);
                                 } else {
                                     targetElm = targetItem.sortableItemElement;
                                     // check it's new position
@@ -183,17 +172,13 @@
                                         currentAccept = targetItem.accept(scope, targetItem.sortableScope);
                                         if (currentAccept) {
                                             targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                            destIndex = targetItem.$index;
-                                            targetScope = targetItem.sortableScope;
-                                            dragInfo.moveTo(targetScope, destIndex);
+                                            dragInfo.moveTo(targetItem.sortableScope, targetItem.$index);
                                         }
                                     } else {
                                         currentAccept = targetItem.accept(scope, targetItem.sortableScope);
                                         if (currentAccept) {
                                             targetElm.after(placeElm);
-                                            destIndex = targetItem.$index + 1;
-                                            targetScope = targetItem.sortableScope;
-                                            dragInfo.moveTo(targetScope, destIndex);
+                                            dragInfo.moveTo(targetItem.sortableScope, targetItem.$index + 1);
                                         }
                                     }
                                 }
@@ -219,23 +204,14 @@
 
                             scope.callbacks.stop(dragInfo.eventArgs());
                             // update model data
-                            if (targetScope && !(sameParent && sourceIndex == destIndex)) {
-                               // var source = scope.removeItem();
-                                //targetScope.insertSortableItem(destIndex, source, scope);
-
-                                if (scope.$$apply) {
-                                    dragInfo.apply();
-                                    scope.sortableScope.$apply(function() {
-                                        if (sameParent) {
-                                            scope.callbacks.orderChanged(dragInfo.eventArgs());
-                                        } else {
-                                            scope.callbacks.itemMoved(dragInfo.eventArgs());
-                                        }
-                                    });
-                                }
+                            if (scope.$$apply) {
+                                dragInfo.apply();
+                                scope.sortableScope.$apply(function () {
+                                    scope.callbacks.itemMoved(dragInfo.eventArgs());
+                                });
                             }
                             scope.$$apply = false;
-
+                            dragInfo = null;
                         }
                         if (hasTouch) {
                             angular.element($document).unbind('touchend', dragEnd);

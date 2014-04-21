@@ -173,6 +173,11 @@
                             this.parent.insertSortableItem(this.index, itemData);
                         }
                     };
+                },
+
+                noDrag: function (targetElm) {
+                    return (typeof targetElm.attr('nodrag')) !== 'undefined'
+                        || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
                 }
             };
         }

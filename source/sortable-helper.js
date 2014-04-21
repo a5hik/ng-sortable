@@ -168,7 +168,7 @@
                         },
 
                         apply: function() {
-                            var itemData = this.source.sortableItemElement;
+                            var itemData = this.source.modelValue;
                             this.source.removeItem();
                             this.parent.insertSortableItem(this.index, itemData);
                         }

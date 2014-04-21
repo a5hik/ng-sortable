@@ -41,11 +41,9 @@
                 restrict: 'A',
                 controller: 'sortableItemController',
                 link: function (scope, element, attrs, sortableController) {
-                    var config = {};
-                    angular.extend(config, sortableConfig);
 
                     if (sortableConfig.itemClass) {
-                        element.addClass(config.itemClass);
+                        element.addClass(sortableConfig.itemClass);
                     }
                     scope.sortableScope = sortableController.scope;
                 }

@@ -24,13 +24,13 @@
 
                     var placeElm, hiddenPlaceElm, dragElm;
                     var pos, firstMoving, dragInfo;
+                    var hasTouch = 'ontouchstart' in window;
 
                     if (sortableConfig.handleClass) {
                         element.addClass(sortableConfig.handleClass);
                     }
                     scope.itemScope = itemController.scope;
 
-                    var hasTouch = 'ontouchstart' in window;
 
                     var dragStart = function (event) {
 
@@ -86,7 +86,9 @@
                             'top': event.pageY - pos.offsetY + 'px'
                         });
 
-                        scope.callbacks.start(dragInfo.eventArgs());
+                        scope.$apply(function () {
+                            scope.callbacks.start(dragInfo.eventArgs());
+                        });
 
                         if (hasTouch) {
                             angular.element($document).bind('touchmove', dragMove);
@@ -132,23 +134,22 @@
                             // move vertical
                             if (!pos.dirAx) {
 
-                                var targetItem = targetElm.scope();
+                                var target = targetElm.scope();
                                 var isEmpty = false;
                                 var targetBefore = false;
 
-                                if (targetItem.type == 'sortable') {
-                                    isEmpty = targetItem.isEmpty();
+                                if (target.type == 'sortable') {
+                                    isEmpty = target.isEmpty();
                                 }
-                                if (targetItem.type != 'handle' && targetItem.type != 'item'
-                                    && !isEmpty) {
+                                if (target.type != 'handle' && target.type != 'item' && !isEmpty) {
                                     return;
                                 }
 
                                 if (isEmpty) {
-                                    targetItem.place(placeElm);
-                                    dragInfo.moveTo(targetItem, 0);
+                                    target.place(placeElm);
+                                    dragInfo.moveTo(target, 0);
                                 } else {
-                                    targetElm = targetItem.itemElement;
+                                    targetElm = target.itemElement;
                                     // check it's new position
                                     var targetOffset = $helper.offset(targetElm);
                                     if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
@@ -158,22 +159,24 @@
                                     }
                                     if (targetBefore) {
 
-                                        currentAccept = targetItem.accept(scope, targetItem.sortableScope);
+                                        currentAccept = target.accept(scope, target.sortableScope);
                                         if (currentAccept) {
                                             targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                            dragInfo.moveTo(targetItem.sortableScope, targetItem.$index);
+                                            dragInfo.moveTo(target.sortableScope, target.$index);
                                         }
                                     } else {
-                                        currentAccept = targetItem.accept(scope, targetItem.sortableScope);
+                                        currentAccept = target.accept(scope, target.sortableScope);
                                         if (currentAccept) {
                                             targetElm.after(placeElm);
-                                            dragInfo.moveTo(targetItem.sortableScope, targetItem.$index + 1);
+                                            dragInfo.moveTo(target.sortableScope, target.$index + 1);
                                         }
                                     }
                                 }
                             }
 
-                            scope.callbacks.move(dragInfo.eventArgs());
+                            scope.$apply(function () {
+                                scope.callbacks.move(dragInfo.eventArgs());
+                            });
                         }
 
                     };
@@ -187,7 +190,6 @@
                             // roll back elements changed
                             hiddenPlaceElm.replaceWith(scope.itemElement);
                             placeElm.remove();
-
                             dragElm.remove();
                             dragElm = null;
 
@@ -199,6 +201,11 @@
                                     scope.callbacks.itemMoved(dragInfo.eventArgs());
                                 });
                             }
+
+                            scope.sortableScope.$apply(function () {
+                                scope.callbacks.stop(dragInfo.eventArgs());
+                            });
+
                             scope.$$apply = false;
                             dragInfo = null;
                         }

@@ -69,6 +69,9 @@
                     // Specify how UI should be updated
                     ngModel.$render = function () {
                         //set the model value in scope.
+                        if (!ngModel.$modelValue || !angular.isArray(ngModel.$modelValue)) {
+                            ngModel.$setViewValue([]);
+                        }
                         scope.modelValue = ngModel.$modelValue;
                     };
 

@@ -45,8 +45,8 @@
 
     }]);
 
-    mainModule.directive('sortable', ['sortableConfig',
-        function (sortableConfig) {
+    mainModule.directive('sortable', [,
+        function () {
             return {
                 require: 'ngModel', // get a hold of NgModelController
                 restrict: 'A',
@@ -97,7 +97,7 @@
 
                     // When we add or remove elements, we need the sortable to 'refresh'
                     //Compare by value not by reference, by the last set to true.
-                    scope.$watch(attrs.sortable, function (newVal, oldVal) {
+                    scope.$watch(attrs.sortable, function (newVal /*, oldVal*/) {
                         angular.forEach(newVal, function (value, key) {
                             if (callbacks[key]) {
                                 if (typeof value === 'function') {

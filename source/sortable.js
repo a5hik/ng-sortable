@@ -8,15 +8,31 @@
      * @param $scope
      */
     mainModule.controller('sortableController', ['$scope', function ($scope) {
+
         this.scope = $scope;
+
         $scope.modelValue = null; // sortable list.
         $scope.callbacks = null;
         $scope.type = 'sortable';
 
-        // Check if it's a empty list
+        $scope.insertItem = function (index, itemData) {
+            $scope.safeApply(function() {
+                $scope.modelValue.splice(index, 0, itemData);
+            });
+        };
+
+        $scope.removeItem = function (index) {
+            var removedItem = null;
+            if (index > -1) {
+                $scope.safeApply(function() {
+                    removedItem = $scope.modelValue.splice(index, 1)[0];
+                });
+            }
+            return removedItem;
+        };
+
         $scope.isEmpty = function() {
-            return ($scope.modelValue
-                && $scope.modelValue.length === 0);
+            return ($scope.modelValue && $scope.modelValue.length === 0);
         };
 
         $scope.safeApply = function(fn) {
@@ -28,13 +44,6 @@
             } else {
                 this.$apply(fn);
             }
-        };
-
-        $scope.insertSortableItem = function (index, itemModelData) {
-
-            $scope.safeApply(function() {
-                $scope.modelValue.splice(index, 0, itemModelData);
-            });
         };
 
     }]);

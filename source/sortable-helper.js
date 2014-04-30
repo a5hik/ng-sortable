@@ -169,8 +169,8 @@
 
                         apply: function() {
                             var itemData = this.source.modelValue;
-                            this.source.removeItem();
-                            this.parent.insertSortableItem(this.index, itemData);
+                            this.parent.removeItem(this.source.index());
+                            this.parent.insertItem(this.index, itemData);
                         }
                     };
                 },

@@ -7,22 +7,16 @@
      * Controller for sortable item.
      * @param $scope
      */
-    mainModule.controller('sortableItemController', ['$scope', '$element', function ($scope) {
+    mainModule.controller('sortableItemController', ['$scope', function ($scope) {
+
         this.scope = $scope;
+
         $scope.sortableScope = null;
         $scope.modelValue = null; // sortable item.
         $scope.type = 'item';
 
         $scope.index = function () {
             return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
-        };
-
-        $scope.removeItem = function () {
-            var index = $scope.$index;
-            if (index > -1) {
-                return $scope.sortableScope.modelValue.splice(index, 1)[0];
-            }
-            return null;
         };
 
         $scope.itemData = function () {

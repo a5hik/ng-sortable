@@ -7,9 +7,8 @@
      * Controller for Sortable.
      * @param $scope
      */
-    mainModule.controller('sortableController', ['$scope', '$element', function ($scope, $element) {
+    mainModule.controller('sortableController', ['$scope', function ($scope) {
         this.scope = $scope;
-        $scope.sortableElement = $element;
         $scope.modelValue = null; // sortable list.
         $scope.callbacks = null;
         $scope.type = 'sortable';
@@ -18,11 +17,6 @@
         $scope.isEmpty = function() {
             return ($scope.modelValue
                 && $scope.modelValue.length === 0);
-        };
-
-        // add placeholder to empty list
-        $scope.place = function(placeElm) {
-            $scope.sortableElement.append(placeElm);
         };
 
         $scope.safeApply = function(fn) {
@@ -45,7 +39,7 @@
 
     }]);
 
-    mainModule.directive('sortable', [,
+    mainModule.directive('sortable',
         function () {
             return {
                 require: 'ngModel', // get a hold of NgModelController
@@ -74,6 +68,8 @@
                         }
                         scope.modelValue = ngModel.$modelValue;
                     };
+
+                    scope.sortableElement = element;
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
@@ -109,6 +105,6 @@
                     }, true);
                 }
             };
-        }]);
+        });
 
 })();

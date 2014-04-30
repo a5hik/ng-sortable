@@ -7,7 +7,7 @@
      * Controller for sortableItemHandle
      * @param $scope
      */
-    mainModule.controller('sortableItemHandleController', ['$scope', '$element', function ($scope) {
+    mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
         this.scope = $scope;
         $scope.itemScope = null;
         $scope.type = 'handle';
@@ -142,7 +142,7 @@
                                 }
 
                                 if (isEmpty) {
-                                    target.place(placeElm);
+                                    target.sortableElement.append(placeElm);
                                     dragInfo.moveTo(target, 0);
                                 } else {
                                     targetElm = target.itemElement;

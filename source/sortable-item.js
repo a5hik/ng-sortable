@@ -7,9 +7,8 @@
      * Controller for sortable item.
      * @param $scope
      */
-    mainModule.controller('sortableItemController', ['$scope', '$element', function ($scope, $element) {
+    mainModule.controller('sortableItemController', ['$scope', '$element', function ($scope) {
         this.scope = $scope;
-        $scope.itemElement = $element;
         $scope.sortableScope = null;
         $scope.modelValue = null; // sortable item.
         $scope.type = 'item';
@@ -50,6 +49,7 @@
                     }
                     scope.sortableScope = sortableController.scope;
                     scope.modelValue = sortableController.scope.modelValue[scope.$index];
+                    scope.itemElement = element;
                 }
             };
         }]);

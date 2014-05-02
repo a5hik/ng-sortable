@@ -8,16 +8,18 @@
      * @param $scope
      */
     mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
+
         this.scope = $scope;
+
         $scope.itemScope = null;
         $scope.type = 'handle';
-
     }]);
 
     mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
         function (sortableConfig, $helper, $window, $document) {
             return {
                 require: '^sortableItem',
+                scope: true,
                 restrict: 'A',
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {

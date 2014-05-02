@@ -5,3 +5,4 @@ demo/bower_components
 *.log
 .idea
 *.iml
+.*

@@ -169,7 +169,7 @@
 
                         apply: function() {
                             var itemData = this.source.modelValue;
-                            this.parent.removeItem(this.source.index());
+                            this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);
                             this.parent.insertItem(this.index, itemData);
                         }
                     };

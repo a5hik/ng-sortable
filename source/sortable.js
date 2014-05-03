@@ -59,6 +59,7 @@
 
                     var callbacks = {
                         accept: null,
+                        orderChanged: null,
                         itemMoved: null,
                         dragStart: null,
                         dragMove: null,
@@ -82,6 +83,10 @@
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
+                    };
+
+                    callbacks.orderChanged = function (event) {
+
                     };
 
                     callbacks.itemMoved = function (event) {

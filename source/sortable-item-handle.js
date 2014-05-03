@@ -193,7 +193,13 @@
                             if (scope.$$apply) {
                                 dragInfo.apply();
                                 scope.sortableScope.$apply(function () {
-                                    scope.callbacks.itemMoved(dragInfo.eventArgs());
+                                    if(dragInfo.isSameParent()) {
+                                        if(dragInfo.isOrderChanged()) {
+                                            scope.callbacks.orderChanged(dragInfo.eventArgs());
+                                        }
+                                    } else {
+                                        scope.callbacks.itemMoved(dragInfo.eventArgs());
+                                    }
                                 });
                             }
 

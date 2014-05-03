@@ -155,11 +155,19 @@
 
                         moveTo: function(parent, index) { // Move the item to a new position
                             this.parent = parent;
-                            var i = this.parent.modelValue.indexOf(this.source.modelValue); //If source Item is in the same Parent.
-                            if(i > -1 && this.source.index() < index) { // and target after
+                            //If source Item is in the same Parent.
+                            if(this.isSameParent() && this.source.index() < index) { // and target after
                                 index--;
                             }
                             this.index = index;
+                        },
+
+                        isSameParent: function() {
+                            return this.parent.element == this.sourceInfo.sortableScope.element;
+                        },
+
+                        isOrderChanged: function() {
+                            return this.index != this.sourceInfo.index;
                         },
 
                         eventArgs: function() {

@@ -44,8 +44,14 @@
 
             $scope.sortOptions = {
                 itemMoved: function (event) {
-                    console.log(event.source);
-                    console.log(event.dest);
+                    console.log('item moved');
+                    console.log(event.source.itemScope.element);
+                    console.log(event.dest.sortableScope.element);
+                },
+                orderChanged: function(event) {
+                    console.log('order changed');
+                    console.log(event.source.itemScope.element);
+                    console.log(event.dest.sortableScope.element);
                 }
             };
 

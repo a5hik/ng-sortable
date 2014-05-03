@@ -43,7 +43,9 @@
             $scope.board = kanbanBoard;
 
             $scope.sortOptions = {
-                orderChanged: function (scope, sourceItem) {
+                itemMoved: function (event) {
+                    console.log(event.source);
+                    console.log(event.dest);
                 }
             };
 

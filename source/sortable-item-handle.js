@@ -139,15 +139,18 @@
                                 if (target.type == 'sortable') {
                                     isEmpty = target.isEmpty();
                                 }
-                                if (target.type != 'handle' && target.type != 'item' && !isEmpty) {
+                                if(target.type == 'handle') {
+                                    target = target.itemScope;
+                                }
+                                if (target.type != 'item' && !isEmpty) {
                                     return;
                                 }
 
                                 if (isEmpty) {
-                                    target.sortableScope.element.append(placeElm);
+                                    target.element.append(placeElm);
                                     dragInfo.moveTo(target, 0);
                                 } else {
-                                    targetElm = target.itemScope.element;
+                                    targetElm = target.element;
                                     // check it's new position
                                     var targetOffset = $helper.offset(targetElm);
                                     if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?

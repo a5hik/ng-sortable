@@ -57,22 +57,22 @@
 
                         firstMoving = true;
 
-                        var tagName = scope.itemElement.prop('tagName');
+                        var tagName = scope.itemScope.element.prop('tagName');
 
                         placeElm = angular.element($window.document.createElement(tagName))
                             .addClass(sortableConfig.placeHolderClass);
 
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
-                        pos = $helper.positionStarted(event, scope.itemElement);
-                        placeElm.css('height', $helper.height(scope.itemElement) + 'px');
-                        dragElm = angular.element($window.document.createElement(scope.sortableElement.prop('tagName')))
-                            .addClass(scope.sortableElement.attr('class')).addClass(sortableConfig.dragClass);
-                        dragElm.css('width', $helper.width(scope.itemElement) + 'px');
+                        pos = $helper.positionStarted(event, scope.itemScope.element);
+                        placeElm.css('height', $helper.height(scope.itemScope.element) + 'px');
+                        dragElm = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
+                            .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
+                        dragElm.css('width', $helper.width(scope.itemScope.element) + 'px');
 
-                        scope.itemElement.after(placeElm);
-                        scope.itemElement.after(hiddenPlaceElm);
-                        dragElm.append(scope.itemElement);
+                        scope.itemScope.element.after(placeElm);
+                        scope.itemScope.element.after(hiddenPlaceElm);
+                        dragElm.append(scope.itemScope.element);
 
                         // stop move when the menu item is dragged outside the body element
                         angular.element($window.document.body).bind('mouseleave', dragEnd);
@@ -144,10 +144,10 @@
                                 }
 
                                 if (isEmpty) {
-                                    target.sortableElement.append(placeElm);
+                                    target.sortableScope.element.append(placeElm);
                                     dragInfo.moveTo(target, 0);
                                 } else {
-                                    targetElm = target.itemElement;
+                                    targetElm = target.itemScope.element;
                                     // check it's new position
                                     var targetOffset = $helper.offset(targetElm);
                                     if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
@@ -181,7 +181,7 @@
                                 event.preventDefault();
                             }
                             // roll back elements changed
-                            hiddenPlaceElm.replaceWith(scope.itemElement);
+                            hiddenPlaceElm.replaceWith(scope.itemScope.element);
                             placeElm.remove();
                             dragElm.remove();
                             dragElm = null;

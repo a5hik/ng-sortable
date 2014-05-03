@@ -142,15 +142,16 @@
                 },
 
                 dragItem: function(item) {
+
                     return {
-                        source: item,
-                        sourceInfo: {
-                            itemScope: item,
-                            index: item.index(),
-                            sortableScope: item.sortableScope
-                        },
                         index: item.index(),
                         parent: item.sortableScope,
+                        source: item,
+                        sourceInfo: {
+                            index: item.index(),
+                            itemScope: item.itemScope,
+                            sortableScope: item.sortableScope
+                        },
 
                         moveTo: function(parent, index) { // Move the item to a new position
                             this.parent = parent;
@@ -172,9 +173,8 @@
                         },
 
                         apply: function() {
-                            var itemData = this.source.modelValue;
-                            this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);
-                            this.parent.insertItem(this.index, itemData);
+                            this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
+                            this.parent.insertItem(this.index, this.source.modelValue); // Insert in to destination.
                         }
                     };
                 },

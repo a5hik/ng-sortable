@@ -43,7 +43,7 @@
                     }
                     scope.sortableScope = sortableController.scope;
                     scope.modelValue = sortableController.scope.modelValue[scope.$index];
-                    scope.itemElement = element;
+                    scope.element = element;
                 }
             };
         }]);

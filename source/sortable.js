@@ -78,7 +78,7 @@
                         scope.modelValue = ngModel.$modelValue;
                     };
 
-                    scope.sortableElement = element;
+                    scope.element = element;
 
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;

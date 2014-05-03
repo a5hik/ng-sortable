@@ -35,7 +35,6 @@
             return {
                 require: '^sortable',
                 restrict: 'A',
-                scope: true,
                 controller: 'sortableItemController',
                 link: function (scope, element, attrs, sortableController) {
 

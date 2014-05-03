@@ -154,6 +154,10 @@
 
                         moveTo: function(parent, index) { // Move the item to a new position
                             this.parent = parent;
+                            var i = this.parent.modelValue.indexOf(this.source.modelValue); //If source Item is in the same Parent.
+                            if(i > -1 && this.source.index() < index) { // and target after
+                                index--;
+                            }
                             this.index = index;
                         },
 

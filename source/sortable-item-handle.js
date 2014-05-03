@@ -155,18 +155,13 @@
                                     } else {
                                         targetBefore = event.pageY < targetOffset.top;
                                     }
-                                    if (targetBefore) {
-
-                                        currentAccept = target.accept(scope, target.sortableScope);
-                                        if (currentAccept) {
+                                    if (target.accept(scope, target.sortableScope)) {
+                                        if (targetBefore) {
                                             targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                            dragInfo.moveTo(target.sortableScope, target.$index);
-                                        }
-                                    } else {
-                                        currentAccept = target.accept(scope, target.sortableScope);
-                                        if (currentAccept) {
+                                            dragInfo.moveTo(target.sortableScope, target.index());
+                                        } else {
                                             targetElm.after(placeElm);
-                                            dragInfo.moveTo(target.sortableScope, target.$index + 1);
+                                            dragInfo.moveTo(target.sortableScope, target.index() + 1);
                                         }
                                     }
                                 }

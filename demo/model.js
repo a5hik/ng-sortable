@@ -14,8 +14,9 @@ function Column(name) {
     };
 }
 
-function Card(title, details) {
+function Card(title, status, details) {
     this.title = title;
+    this.status = status;
     this.details = details;
     return this;
 }

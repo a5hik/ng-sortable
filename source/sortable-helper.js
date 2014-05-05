@@ -69,6 +69,21 @@
                 },
 
                 /**
+                 * get the event object for touchs
+                 * @param  {[type]} e [description]
+                 * @return {[type]}   [description]
+                 */
+                eventObj: function(e) {
+                    var obj = e;
+                    if (e.targetTouches !== undefined) {
+                        obj = e.targetTouches.item(0);
+                    } else if (e.originalEvent !== undefined && e.originalEvent.targetTouches !== undefined) {
+                        obj = e.originalEvent.targetTouches.item(0);
+                    }
+                    return obj;
+                },
+
+                /**
                  * @ngdoc method
                  * @name hippo.theme#positionStarted
                  * @methodOf ui.sortable.service:$helper
@@ -96,19 +111,6 @@
                         'left': e.pageX - pos.offsetX + 'px',
                         'top': e.pageY - pos.offsetY + 'px'
                     });
-                },
-
-                isMovingUpwards: function(targetElm, placeElm) {
-
-                    var movingUpwards = false;
-                    // check it's new position
-                    var targetOffset = this.offset(targetElm);
-                    if (this.offset(placeElm).top > targetOffset.top) { // the move direction is up?
-                        movingUpwards = this.offset(dragElm).top < targetOffset.top + this.height(targetElm) / 2;
-                    } else {
-                        movingUpwards = event.pageY < targetOffset.top;
-                    }
-                    return movingUpwards;
                 },
 
                 dragItem: function(item) {

@@ -53,6 +53,8 @@
                         }
                         event.preventDefault();
 
+                        var eventObj = $helper.eventObj(event);
+
                         dragInfo = $helper.dragItem(scope);
 
                         var tagName = scope.itemScope.element.prop('tagName');
@@ -66,16 +68,16 @@
 
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
-                        position = $helper.positionStarted(event, scope.itemScope.element);
+                        position = $helper.positionStarted(eventObj, scope.itemScope.element);
 
                         scope.itemScope.element.after(placeElm);
                         scope.itemScope.element.after(hiddenPlaceElm);
                         dragElm.append(scope.itemScope.element);
 
                         $document.find('body').append(dragElm);
-                        $helper.movePosition(event, dragElm, position);
+                        $helper.movePosition(eventObj, dragElm, position);
 
-                        scope.$apply(function () {
+                        scope.sortableScope.$apply(function () {
                             scope.callbacks.dragStart(dragInfo.eventArgs());
                         });
 
@@ -95,10 +97,11 @@
 
                         if (dragElm) {
                             event.preventDefault();
-                            $helper.movePosition(event, dragElm, position);
+                            var eventObj = $helper.eventObj(event);
+                            $helper.movePosition(eventObj, dragElm, position);
 
-                            var targetX = event.pageX - $window.document.documentElement.scrollLeft;
-                            var targetY = event.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
+                            var targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
+                            var targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
                             //call elementFromPoint() twice to make sure IE8 returns the correct value.
                             $window.document.elementFromPoint(targetX, targetY);
@@ -124,7 +127,7 @@
                             } else {//item element
                                 targetElm = target.element;
                                 if (target.accept(scope, target.sortableScope)) {
-                                    if ($helper.isMovingUpwards(targetElm, placeElm)) {
+                                    if (isMovingUpwards(eventObj, targetElm)) {
                                         targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
                                         dragInfo.moveTo(target.sortableScope, target.index());
                                     } else {
@@ -136,8 +139,21 @@
                         }
                     };
 
+
+                    var isMovingUpwards = function(eventObj, targetElm) {
+                        var movingUpwards = false;
+                        // check it's new position
+                        var targetOffset = $helper.offset(targetElm);
+                        if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
+                            movingUpwards = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
+                        } else {
+                            movingUpwards = eventObj.pageY < targetOffset.top;
+                        }
+                        return movingUpwards;
+                    };
+
                     var dragEnd = function (event) {
-                        scope.$$apply = true;
+
                         if (dragElm) {
                             if (event) {
                                 event.preventDefault();
@@ -149,24 +165,21 @@
                             dragElm = null;
 
                             // update model data
-                            if (scope.$$apply) {
-                                dragInfo.apply();
-                                scope.sortableScope.$apply(function () {
-                                    if(dragInfo.isSameParent()) {
-                                        if(dragInfo.isOrderChanged()) {
-                                            scope.callbacks.orderChanged(dragInfo.eventArgs());
-                                        }
-                                    } else {
-                                        scope.callbacks.itemMoved(dragInfo.eventArgs());
+                            dragInfo.apply();
+                            scope.sortableScope.$apply(function () {
+                                if(dragInfo.isSameParent()) {
+                                    if(dragInfo.isOrderChanged()) {
+                                        scope.callbacks.orderChanged(dragInfo.eventArgs());
                                     }
-                                });
-                            }
+                                } else {
+                                    scope.callbacks.itemMoved(dragInfo.eventArgs());
+                                }
+                            });
 
                             scope.sortableScope.$apply(function () {
                                 scope.callbacks.dragStop(dragInfo.eventArgs());
                             });
 
-                            scope.$$apply = false;
                             dragInfo = null;
                         }
                         if (hasTouch) {
@@ -186,6 +199,12 @@
                     } else {
                         element.bind('mousedown', dragStart);
                     }
+                    //Cancel drag on escape press.
+                    angular.element($window.document.body).bind("keydown", function(event) {
+                        if (event.keyCode == 27) {
+                            dragEnd(event);
+                        }
+                    });
                 }
             };
         }]);

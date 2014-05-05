@@ -176,9 +176,9 @@
                     };
 
                     if (hasTouch) {
-                        angular.element.bind('touchstart', dragStart);
+                        element.bind('touchstart', dragStart);
                     } else {
-                        angular.element.bind('mousedown', dragStart);
+                        element.bind('mousedown', dragStart);
                     }
                     //Cancel drag on escape press.
                     angular.element($window.document.body).bind("keydown", function(event) {

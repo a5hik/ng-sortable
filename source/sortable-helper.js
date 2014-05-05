@@ -91,11 +91,24 @@
                     return pos;
                 },
 
-                applyStyleElement: function(e, target, pos) {
+                movePosition: function(e, target, pos) {
                     target.css({
-                        'left': event.pageX - pos.offsetX + 'px',
-                        'top': event.pageY - pos.offsetY + 'px'
+                        'left': e.pageX - pos.offsetX + 'px',
+                        'top': e.pageY - pos.offsetY + 'px'
                     });
+                },
+
+                isMovingUpwards: function(targetElm, placeElm) {
+
+                    var movingUpwards = false;
+                    // check it's new position
+                    var targetOffset = this.offset(targetElm);
+                    if (this.offset(placeElm).top > targetOffset.top) { // the move direction is up?
+                        movingUpwards = this.offset(dragElm).top < targetOffset.top + this.height(targetElm) / 2;
+                    } else {
+                        movingUpwards = event.pageY < targetOffset.top;
+                    }
+                    return movingUpwards;
                 },
 
                 dragItem: function(item) {

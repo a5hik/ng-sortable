@@ -24,8 +24,12 @@
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {
 
-                    var placeElm, hiddenPlaceElm, dragElm;
-                    var pos, dragInfo;
+                    var dragElm, //drag item element.
+                        placeElm, //place holder class element.
+                        hiddenPlaceElm, //empty element.
+                        position, //drag item element position.
+                        dragInfo; //drag item data.
+
                     var hasTouch = 'ontouchstart' in window;
 
                     if (sortableConfig.handleClass) {
@@ -35,18 +39,21 @@
 
                     var dragStart = function (event) {
                         var clickedElm = angular.element(event.target);
+
                         var source = clickedElm.scope();
                         if (!source || !source.type || source.type != 'handle') {
                             return;
                         }
-                        //Stop dragging 'no-drag' elements elements inside item-handle if any.
-                        while (clickedElm && clickedElm[0] && clickedElm[0] !== element[0]) {
+                        //Stop dragging 'no-drag' elements inside item-handle if any.
+                        while (clickedElm && clickedElm[0] && clickedElm[0] != element) {
                             if ($helper.noDrag(clickedElm)) {
                                 return;
                             }
                             clickedElm = clickedElm.parent();
                         }
                         event.preventDefault();
+
+                        dragInfo = $helper.dragItem(scope);
 
                         var tagName = scope.itemScope.element.prop('tagName');
 
@@ -59,15 +66,14 @@
 
                         hiddenPlaceElm = angular.element($window.document.createElement(tagName));
 
-                        dragInfo = $helper.dragItem(scope);
-                        pos = $helper.positionStarted(event, scope.itemScope.element);
+                        position = $helper.positionStarted(event, scope.itemScope.element);
 
                         scope.itemScope.element.after(placeElm);
                         scope.itemScope.element.after(hiddenPlaceElm);
                         dragElm.append(scope.itemScope.element);
 
                         $document.find('body').append(dragElm);
-                        $helper.applyStyleElement(event, dragElm, pos);
+                        $helper.movePosition(event, dragElm, position);
 
                         scope.$apply(function () {
                             scope.callbacks.dragStart(dragInfo.eventArgs());
@@ -89,29 +95,18 @@
 
                         if (dragElm) {
                             event.preventDefault();
-
-                            $helper.applyStyleElement(event, dragElm, pos);
+                            $helper.movePosition(event, dragElm, position);
 
                             var targetX = event.pageX - $window.document.documentElement.scrollLeft;
-                            var targetY = event.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
+                            var targetY = event.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
-                            // Select the drag target. IE picks the drag element itself as the target.
-                            // To prevent this, we hide the drag element while selecting the target.
-                            if (angular.isFunction(dragElm.hide)) {
-                                dragElm.hide();
-                            }
                             //call elementFromPoint() twice to make sure IE8 returns the correct value.
                             $window.document.elementFromPoint(targetX, targetY);
 
                             var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
 
-                            if (angular.isFunction(dragElm.show)) {
-                                dragElm.show();
-                            }
-
                             var target = targetElm.scope();
                             var isEmpty = false;
-                            var targetBefore = false;
 
                             if (target.type == 'sortable') {
                                 isEmpty = target.isEmpty();
@@ -123,20 +118,13 @@
                                 return;
                             }
 
-                            if (isEmpty) {
+                            if (isEmpty) {//sortable element.
                                 target.element.append(placeElm);
                                 dragInfo.moveTo(target, 0);
-                            } else {
+                            } else {//item element
                                 targetElm = target.element;
-                                // check it's new position
-                                var targetOffset = $helper.offset(targetElm);
-                                if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
-                                    targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
-                                } else {
-                                    targetBefore = event.pageY < targetOffset.top;
-                                }
                                 if (target.accept(scope, target.sortableScope)) {
-                                    if (targetBefore) {
+                                    if ($helper.isMovingUpwards(targetElm, placeElm)) {
                                         targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
                                         dragInfo.moveTo(target.sortableScope, target.index());
                                     } else {
@@ -145,7 +133,6 @@
                                     }
                                 }
                             }
-
                         }
                     };
 

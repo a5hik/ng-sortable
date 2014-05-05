@@ -30,7 +30,7 @@
                         position, //drag item element position.
                         dragInfo; //drag item data.
 
-                    var hasTouch = 'ontouchstart' in window;
+                    var hasTouch = 'ontouchstart' in $window;
 
                     if (sortableConfig.handleClass) {
                         element.addClass(sortableConfig.handleClass);
@@ -80,17 +80,7 @@
                         scope.sortableScope.$apply(function () {
                             scope.callbacks.dragStart(dragInfo.eventArgs());
                         });
-
-                        if (hasTouch) {
-                            angular.element($document).bind('touchmove', dragMove);
-                            angular.element($document).bind('touchend', dragEnd);
-                            angular.element($document).bind('touchcancel', dragEnd);
-                        } else {
-                            angular.element($document).bind('mousemove', dragMove);
-                            angular.element($document).bind('mouseup', dragEnd);
-                            // stop move when the menu item is dragged outside the body element
-                            angular.element($window.document.body).bind('mouseleave', dragEnd);
-                        }
+                        bindEvents();
                     };
 
                     var dragMove = function (event) {
@@ -182,6 +172,35 @@
 
                             dragInfo = null;
                         }
+                        unBindEvents();
+                    };
+
+                    if (hasTouch) {
+                        angular.element.bind('touchstart', dragStart);
+                    } else {
+                        angular.element.bind('mousedown', dragStart);
+                    }
+                    //Cancel drag on escape press.
+                    angular.element($window.document.body).bind("keydown", function(event) {
+                        if (event.keyCode == 27) {
+                            dragEnd(event);
+                        }
+                    });
+
+                    var bindEvents = function() {
+                        if (hasTouch) {
+                            angular.element($document).bind('touchmove', dragMove);
+                            angular.element($document).bind('touchend', dragEnd);
+                            angular.element($document).bind('touchcancel', dragEnd);
+                        } else {
+                            angular.element($document).bind('mousemove', dragMove);
+                            angular.element($document).bind('mouseup', dragEnd);
+                            // stop move when the menu item is dragged outside the body element
+                            angular.element($window.document.body).bind('mouseleave', dragEnd);
+                        }
+                    };
+
+                    var unBindEvents = function() {
                         if (hasTouch) {
                             angular.element($document).unbind('touchend', dragEnd);
                             angular.element($document).unbind('touchcancel', dragEnd);
@@ -193,18 +212,6 @@
                             angular.element($window.document.body).unbind('mouseleave', dragEnd);
                         }
                     };
-
-                    if (hasTouch) {
-                        element.bind('touchstart', dragStart);
-                    } else {
-                        element.bind('mousedown', dragStart);
-                    }
-                    //Cancel drag on escape press.
-                    angular.element($window.document.body).bind("keydown", function(event) {
-                        if (event.keyCode == 27) {
-                            dragEnd(event);
-                        }
-                    });
                 }
             };
         }]);

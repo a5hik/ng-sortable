@@ -33,54 +33,41 @@
                     }
                     scope.itemScope = itemController.scope;
 
-
                     var dragStart = function (event) {
-
                         var clickedElm = angular.element(event.target);
-
                         var source = clickedElm.scope();
-
                         if (!source || !source.type || source.type != 'handle') {
                             return;
                         }
-
-                        while (clickedElm && clickedElm[0] && clickedElm[0] !== element) {
+                        //Stop dragging 'no-drag' elements elements inside item-handle if any.
+                        while (clickedElm && clickedElm[0] && clickedElm[0] !== element[0]) {
                             if ($helper.noDrag(clickedElm)) {
                                 return;
                             }
                             clickedElm = clickedElm.parent();
                         }
-
                         event.preventDefault();
-
-                        dragInfo = $helper.dragItem(scope);
 
                         var tagName = scope.itemScope.element.prop('tagName');
 
-                        placeElm = angular.element($window.document.createElement(tagName))
-                            .addClass(sortableConfig.placeHolderClass);
-
-                        hiddenPlaceElm = angular.element($window.document.createElement(tagName));
-
-                        pos = $helper.positionStarted(event, scope.itemScope.element);
-                        placeElm.css('height', $helper.height(scope.itemScope.element) + 'px');
                         dragElm = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
                             .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
                         dragElm.css('width', $helper.width(scope.itemScope.element) + 'px');
+
+                        placeElm = angular.element($window.document.createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+                        placeElm.css('height', $helper.height(scope.itemScope.element) + 'px');
+
+                        hiddenPlaceElm = angular.element($window.document.createElement(tagName));
+
+                        dragInfo = $helper.dragItem(scope);
+                        pos = $helper.positionStarted(event, scope.itemScope.element);
 
                         scope.itemScope.element.after(placeElm);
                         scope.itemScope.element.after(hiddenPlaceElm);
                         dragElm.append(scope.itemScope.element);
 
-                        // stop move when the menu item is dragged outside the body element
-                        angular.element($window.document.body).bind('mouseleave', dragEnd);
-
                         $document.find('body').append(dragElm);
-
-                        dragElm.css({
-                            'left': event.pageX - pos.offsetX + 'px',
-                            'top': event.pageY - pos.offsetY + 'px'
-                        });
+                        $helper.applyStyleElement(event, dragElm, pos);
 
                         scope.$apply(function () {
                             scope.callbacks.dragStart(dragInfo.eventArgs());
@@ -93,6 +80,8 @@
                         } else {
                             angular.element($document).bind('mousemove', dragMove);
                             angular.element($document).bind('mouseup', dragEnd);
+                            // stop move when the menu item is dragged outside the body element
+                            angular.element($window.document.body).bind('mouseleave', dragEnd);
                         }
                     };
 
@@ -101,22 +90,24 @@
                         if (dragElm) {
                             event.preventDefault();
 
-                            dragElm.css({
-                                'left': event.pageX - pos.offsetX + 'px',
-                                'top': event.pageY - pos.offsetY + 'px'
-                            });
+                            $helper.applyStyleElement(event, dragElm, pos);
 
                             var targetX = event.pageX - $window.document.documentElement.scrollLeft;
                             var targetY = event.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
 
-                            // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always
-                            // pick the drag element itself as the target. To prevent this, we hide the drag element while
-                            // selecting the target.
-                            // when using elementFromPoint() inside an iframe, you have to call
-                            // elementFromPoint() twice to make sure IE8 returns the correct value
+                            // Select the drag target. IE picks the drag element itself as the target.
+                            // To prevent this, we hide the drag element while selecting the target.
+                            if (angular.isFunction(dragElm.hide)) {
+                                dragElm.hide();
+                            }
+                            //call elementFromPoint() twice to make sure IE8 returns the correct value.
                             $window.document.elementFromPoint(targetX, targetY);
 
                             var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
+
+                            if (angular.isFunction(dragElm.show)) {
+                                dragElm.show();
+                            }
 
                             var target = targetElm.scope();
                             var isEmpty = false;

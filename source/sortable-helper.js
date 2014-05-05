@@ -91,6 +91,13 @@
                     return pos;
                 },
 
+                applyStyleElement: function(e, target, pos) {
+                    target.css({
+                        'left': event.pageX - pos.offsetX + 'px',
+                        'top': event.pageY - pos.offsetY + 'px'
+                    });
+                },
+
                 dragItem: function(item) {
 
                     return {

@@ -25,7 +25,7 @@
                 link: function (scope, element, attrs, itemController) {
 
                     var placeElm, hiddenPlaceElm, dragElm;
-                    var pos, firstMoving, dragInfo;
+                    var pos, dragInfo;
                     var hasTouch = 'ontouchstart' in window;
 
                     if (sortableConfig.handleClass) {
@@ -54,8 +54,6 @@
                         event.preventDefault();
 
                         dragInfo = $helper.dragItem(scope);
-
-                        firstMoving = true;
 
                         var tagName = scope.itemScope.element.prop('tagName');
 
@@ -100,8 +98,6 @@
 
                     var dragMove = function (event) {
 
-                        var currentAccept;
-
                         if (dragElm) {
                             event.preventDefault();
 
@@ -109,13 +105,6 @@
                                 'left': event.pageX - pos.offsetX + 'px',
                                 'top': event.pageY - pos.offsetY + 'px'
                             });
-
-                            $helper.positionMoved(event, pos, firstMoving);
-
-                            if (firstMoving) {
-                                firstMoving = false;
-                                return;
-                            }
 
                             var targetX = event.pageX - $window.document.documentElement.scrollLeft;
                             var targetY = event.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
@@ -129,52 +118,44 @@
 
                             var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
 
-                            // move vertical
-                            if (!pos.dirAx) {
+                            var target = targetElm.scope();
+                            var isEmpty = false;
+                            var targetBefore = false;
 
-                                var target = targetElm.scope();
-                                var isEmpty = false;
-                                var targetBefore = false;
+                            if (target.type == 'sortable') {
+                                isEmpty = target.isEmpty();
+                            }
+                            if(target.type == 'handle') {
+                                target = target.itemScope;
+                            }
+                            if (target.type != 'item' && !isEmpty) {
+                                return;
+                            }
 
-                                if (target.type == 'sortable') {
-                                    isEmpty = target.isEmpty();
-                                }
-                                if(target.type == 'handle') {
-                                    target = target.itemScope;
-                                }
-                                if (target.type != 'item' && !isEmpty) {
-                                    return;
-                                }
-
-                                if (isEmpty) {
-                                    target.element.append(placeElm);
-                                    dragInfo.moveTo(target, 0);
+                            if (isEmpty) {
+                                target.element.append(placeElm);
+                                dragInfo.moveTo(target, 0);
+                            } else {
+                                targetElm = target.element;
+                                // check it's new position
+                                var targetOffset = $helper.offset(targetElm);
+                                if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
+                                    targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
                                 } else {
-                                    targetElm = target.element;
-                                    // check it's new position
-                                    var targetOffset = $helper.offset(targetElm);
-                                    if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
-                                        targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
+                                    targetBefore = event.pageY < targetOffset.top;
+                                }
+                                if (target.accept(scope, target.sortableScope)) {
+                                    if (targetBefore) {
+                                        targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
+                                        dragInfo.moveTo(target.sortableScope, target.index());
                                     } else {
-                                        targetBefore = event.pageY < targetOffset.top;
-                                    }
-                                    if (target.accept(scope, target.sortableScope)) {
-                                        if (targetBefore) {
-                                            targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                            dragInfo.moveTo(target.sortableScope, target.index());
-                                        } else {
-                                            targetElm.after(placeElm);
-                                            dragInfo.moveTo(target.sortableScope, target.index() + 1);
-                                        }
+                                        targetElm.after(placeElm);
+                                        dragInfo.moveTo(target.sortableScope, target.index() + 1);
                                     }
                                 }
                             }
 
-                            scope.$apply(function () {
-                                scope.callbacks.dragMove(dragInfo.eventArgs());
-                            });
                         }
-
                     };
 
                     var dragEnd = function (event) {

@@ -23,7 +23,6 @@
             return $scope.sortableScope.modelValue[$scope.$index];
         };
 
-
         $scope.accept = function (sourceItemScope, destScope) {
             return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope);
         }

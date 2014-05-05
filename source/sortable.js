@@ -57,15 +57,6 @@
                 controller: 'sortableController',
                 link: function (scope, element, attrs, ngModelController) {
 
-                    var callbacks = {
-                        accept: null,
-                        orderChanged: null,
-                        itemMoved: null,
-                        dragStart: null,
-                        dragMove: null,
-                        dragStop: null
-                    };
-
                     var ngModel = ngModelController;
 
                     if (!ngModel) return; // do nothing if no ng-model
@@ -81,33 +72,28 @@
 
                     scope.element = element;
 
+                    var callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragStop: null};
+
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
                     };
 
                     callbacks.orderChanged = function (event) {
-
                     };
 
                     callbacks.itemMoved = function (event) {
-
                     };
 
                     callbacks.dragStart = function (event) {
-
-                    };
-
-                    callbacks.dragMove = function (event) {
-
+                        console.log('drag started..')
                     };
 
                     callbacks.dragStop = function (event) {
-
+                        console.log('drag ended..')
                     };
 
-                    // When we add or remove elements, we need the sortable to 'refresh'
-                    //Compare by value not by reference, by the last set to true.
-                    scope.$watch(attrs.sortable, function (newVal /*, oldVal*/) {
+                    //Set the sortOptions passed else to default.
+                    scope.$watch(attrs.sortable, function (newVal, oldVal) {
                         angular.forEach(newVal, function (value, key) {
                             if (callbacks[key]) {
                                 if (typeof value === 'function') {

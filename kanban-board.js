@@ -45,13 +45,10 @@
             $scope.sortOptions = {
                 itemMoved: function (event) {
                     console.log('item moved');
-                    console.log(event.source.itemScope.element);
-                    console.log(event.dest.sortableScope.element);
+                    event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
                 },
                 orderChanged: function(event) {
                     console.log('order changed');
-                    console.log(event.source.itemScope.element);
-                    console.log(event.dest.sortableScope.element);
                 }
             };
 
@@ -88,7 +85,7 @@
                 addCardToColumn: function (board, column, cardTitle, details) {
                     angular.forEach(board.columns, function (col) {
                         if (col.name === column.name) {
-                            col.cards.push(new Card(cardTitle, details));
+                            col.cards.push(new Card(cardTitle, column.name, details));
                         }
                     });
                 },

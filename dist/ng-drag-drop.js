@@ -81,6 +81,21 @@
                 },
 
                 /**
+                 * get the event object for touchs
+                 * @param  {[type]} e [description]
+                 * @return {[type]}   [description]
+                 */
+                eventObj: function(e) {
+                    var obj = e;
+                    if (e.targetTouches !== undefined) {
+                        obj = e.targetTouches.item(0);
+                    } else if (e.originalEvent !== undefined && e.originalEvent.targetTouches !== undefined) {
+                        obj = e.originalEvent.targetTouches.item(0);
+                    }
+                    return obj;
+                },
+
+                /**
                  * @ngdoc method
                  * @name hippo.theme#positionStarted
                  * @methodOf ui.sortable.service:$helper
@@ -103,54 +118,11 @@
                     return pos;
                 },
 
-                positionMoved: function (e, pos, firstMoving) {
-                    // mouse position last events
-                    pos.lastX = pos.nowX;
-                    pos.lastY = pos.nowY;
-
-                    // mouse position this events
-                    pos.nowX = e.pageX;
-                    pos.nowY = e.pageY;
-
-                    // distance mouse moved between events
-                    pos.distX = pos.nowX - pos.lastX;
-                    pos.distY = pos.nowY - pos.lastY;
-
-                    // direction mouse was moving
-                    pos.lastDirX = pos.dirX;
-                    pos.lastDirY = pos.dirY;
-
-                    // direction mouse is now moving (on both axis)
-                    pos.dirX = pos.distX === 0 ? 0 : pos.distX > 0 ? 1 : -1;
-                    pos.dirY = pos.distY === 0 ? 0 : pos.distY > 0 ? 1 : -1;
-
-                    // axis mouse is now moving on
-                    var newAx = Math.abs(pos.distX) > Math.abs(pos.distY) ? 1 : 0;
-
-                    // do nothing on first move
-                    if (firstMoving) {
-                        pos.dirAx = newAx;
-                        pos.moving = true;
-                        return;
-                    }
-
-                    // calc distance moved on this axis (and direction)
-                    if (pos.dirAx !== newAx) {
-                        pos.distAxX = 0;
-                        pos.distAxY = 0;
-                    } else {
-                        pos.distAxX += Math.abs(pos.distX);
-                        if (pos.dirX !== 0 && pos.dirX !== pos.lastDirX) {
-                            pos.distAxX = 0;
-                        }
-
-                        pos.distAxY += Math.abs(pos.distY);
-                        if (pos.dirY !== 0 && pos.dirY !== pos.lastDirY) {
-                            pos.distAxY = 0;
-                        }
-                    }
-
-                    pos.dirAx = newAx;
+                movePosition: function(e, target, pos) {
+                    target.css({
+                        'left': e.pageX - pos.offsetX + 'px',
+                        'top': e.pageY - pos.offsetY + 'px'
+                    });
                 },
 
                 dragItem: function(item) {
@@ -267,15 +239,6 @@
                 controller: 'sortableController',
                 link: function (scope, element, attrs, ngModelController) {
 
-                    var callbacks = {
-                        accept: null,
-                        orderChanged: null,
-                        itemMoved: null,
-                        dragStart: null,
-                        dragMove: null,
-                        dragStop: null
-                    };
-
                     var ngModel = ngModelController;
 
                     if (!ngModel) return; // do nothing if no ng-model
@@ -291,33 +254,28 @@
 
                     scope.element = element;
 
+                    var callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragStop: null};
+
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
                     };
 
                     callbacks.orderChanged = function (event) {
-
                     };
 
                     callbacks.itemMoved = function (event) {
-
                     };
 
                     callbacks.dragStart = function (event) {
-
-                    };
-
-                    callbacks.dragMove = function (event) {
-
+                        console.log('drag started..')
                     };
 
                     callbacks.dragStop = function (event) {
-
+                        console.log('drag ended..')
                     };
 
-                    // When we add or remove elements, we need the sortable to 'refresh'
-                    //Compare by value not by reference, by the last set to true.
-                    scope.$watch(attrs.sortable, function (newVal /*, oldVal*/) {
+                    //Set the sortOptions passed else to default.
+                    scope.$watch(attrs.sortable, function (newVal, oldVal) {
                         angular.forEach(newVal, function (value, key) {
                             if (callbacks[key]) {
                                 if (typeof value === 'function') {
@@ -358,202 +316,155 @@
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {
 
-                    var placeElm, hiddenPlaceElm, dragElm;
-                    var pos, firstMoving, dragInfo;
-                    var hasTouch = 'ontouchstart' in window;
+                    var dragElement, //drag item element.
+                        placeHolder, //place holder class element.
+                        placeElement, //empty place element.
+                        position, //drag item element position.
+                        dragItemInfo; //drag item data.
+
+                    var hasTouch = 'ontouchstart' in $window;
 
                     if (sortableConfig.handleClass) {
                         element.addClass(sortableConfig.handleClass);
                     }
                     scope.itemScope = itemController.scope;
 
-
                     var dragStart = function (event) {
-
                         var clickedElm = angular.element(event.target);
 
                         var source = clickedElm.scope();
-
                         if (!source || !source.type || source.type != 'handle') {
                             return;
                         }
-
-                        while (clickedElm && clickedElm[0] && clickedElm[0] !== element) {
+                        //Stop dragging 'no-drag' elements inside item-handle if any.
+                        while (clickedElm && clickedElm[0] && clickedElm[0] != element) {
                             if ($helper.noDrag(clickedElm)) {
                                 return;
                             }
                             clickedElm = clickedElm.parent();
                         }
-
                         event.preventDefault();
 
-                        dragInfo = $helper.dragItem(scope);
+                        var eventObj = $helper.eventObj(event);
 
-                        firstMoving = true;
+                        dragItemInfo = $helper.dragItem(scope);
 
                         var tagName = scope.itemScope.element.prop('tagName');
 
-                        placeElm = angular.element($window.document.createElement(tagName))
-                            .addClass(sortableConfig.placeHolderClass);
-
-                        hiddenPlaceElm = angular.element($window.document.createElement(tagName));
-
-                        pos = $helper.positionStarted(event, scope.itemScope.element);
-                        placeElm.css('height', $helper.height(scope.itemScope.element) + 'px');
-                        dragElm = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
+                        dragElement = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
                             .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
-                        dragElm.css('width', $helper.width(scope.itemScope.element) + 'px');
+                        dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
 
-                        scope.itemScope.element.after(placeElm);
-                        scope.itemScope.element.after(hiddenPlaceElm);
-                        dragElm.append(scope.itemScope.element);
+                        placeHolder = angular.element($window.document.createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+                        placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-                        // stop move when the menu item is dragged outside the body element
-                        angular.element($window.document.body).bind('mouseleave', dragEnd);
+                        placeElement = angular.element($window.document.createElement(tagName));
 
-                        $document.find('body').append(dragElm);
+                        position = $helper.positionStarted(eventObj, scope.itemScope.element);
 
-                        dragElm.css({
-                            'left': event.pageX - pos.offsetX + 'px',
-                            'top': event.pageY - pos.offsetY + 'px'
+                        scope.itemScope.element.after(placeHolder);
+                        scope.itemScope.element.after(placeElement);
+                        dragElement.append(scope.itemScope.element);
+
+                        $document.find('body').append(dragElement);
+                        $helper.movePosition(eventObj, dragElement, position);
+
+                        scope.sortableScope.$apply(function () {
+                            scope.callbacks.dragStart(dragItemInfo.eventArgs());
                         });
-
-                        scope.$apply(function () {
-                            scope.callbacks.dragStart(dragInfo.eventArgs());
-                        });
-
-                        if (hasTouch) {
-                            angular.element($document).bind('touchmove', dragMove);
-                            angular.element($document).bind('touchend', dragEnd);
-                            angular.element($document).bind('touchcancel', dragEnd);
-                        } else {
-                            angular.element($document).bind('mousemove', dragMove);
-                            angular.element($document).bind('mouseup', dragEnd);
-                        }
+                        bindEvents();
                     };
 
                     var dragMove = function (event) {
 
-                        var currentAccept;
-
-                        if (dragElm) {
+                        if (dragElement) {
                             event.preventDefault();
+                            var eventObj = $helper.eventObj(event);
+                            $helper.movePosition(eventObj, dragElement, position);
 
-                            dragElm.css({
-                                'left': event.pageX - pos.offsetX + 'px',
-                                'top': event.pageY - pos.offsetY + 'px'
-                            });
+                            var targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
+                            var targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
-                            $helper.positionMoved(event, pos, firstMoving);
-
-                            if (firstMoving) {
-                                firstMoving = false;
-                                return;
-                            }
-
-                            var targetX = event.pageX - $window.document.documentElement.scrollLeft;
-                            var targetY = event.pageY - (window.pageYOffset || $window.document.documentElement.scrollTop);
-
-                            // Select the drag target. Because IE does not support CSS 'pointer-events: none', it will always
-                            // pick the drag element itself as the target. To prevent this, we hide the drag element while
-                            // selecting the target.
-                            // when using elementFromPoint() inside an iframe, you have to call
-                            // elementFromPoint() twice to make sure IE8 returns the correct value
+                            //call elementFromPoint() twice to make sure IE8 returns the correct value.
                             $window.document.elementFromPoint(targetX, targetY);
 
                             var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
 
-                            // move vertical
-                            if (!pos.dirAx) {
+                            var target = targetElm.scope();
+                            var isEmpty = false;
 
-                                var target = targetElm.scope();
-                                var isEmpty = false;
-                                var targetBefore = false;
+                            if (target.type == 'sortable') {
+                                isEmpty = target.isEmpty();
+                            }
+                            if(target.type == 'handle') {
+                                target = target.itemScope;
+                            }
+                            if (target.type != 'item' && !isEmpty) {
+                                return;
+                            }
 
-                                if (target.type == 'sortable') {
-                                    isEmpty = target.isEmpty();
-                                }
-                                if(target.type == 'handle') {
-                                    target = target.itemScope;
-                                }
-                                if (target.type != 'item' && !isEmpty) {
-                                    return;
-                                }
-
-                                if (isEmpty) {
-                                    target.element.append(placeElm);
-                                    dragInfo.moveTo(target, 0);
-                                } else {
-                                    targetElm = target.element;
-                                    // check it's new position
-                                    var targetOffset = $helper.offset(targetElm);
-                                    if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
-                                        targetBefore = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
+                            if (isEmpty) {//sortable element.
+                                target.element.append(placeHolder);
+                                dragItemInfo.moveTo(target, 0);
+                            } else {//item element
+                                targetElm = target.element;
+                                if (target.accept(scope, target.sortableScope)) {
+                                    if (isMovingUpwards(eventObj, targetElm)) {
+                                        targetElm[0].parentNode.insertBefore(placeHolder[0], targetElm[0]);
+                                        dragItemInfo.moveTo(target.sortableScope, target.index());
                                     } else {
-                                        targetBefore = event.pageY < targetOffset.top;
-                                    }
-                                    if (target.accept(scope, target.sortableScope)) {
-                                        if (targetBefore) {
-                                            targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                            dragInfo.moveTo(target.sortableScope, target.index());
-                                        } else {
-                                            targetElm.after(placeElm);
-                                            dragInfo.moveTo(target.sortableScope, target.index() + 1);
-                                        }
+                                        targetElm.after(placeHolder);
+                                        dragItemInfo.moveTo(target.sortableScope, target.index() + 1);
                                     }
                                 }
                             }
-
-                            scope.$apply(function () {
-                                scope.callbacks.dragMove(dragInfo.eventArgs());
-                            });
                         }
+                    };
 
+
+                    var isMovingUpwards = function(eventObj, targetElm) {
+                        var movingUpwards = false;
+                        // check it's new position
+                        var targetOffset = $helper.offset(targetElm);
+                        if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
+                            movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElm) / 2;
+                        } else {
+                            movingUpwards = eventObj.pageY < targetOffset.top;
+                        }
+                        return movingUpwards;
                     };
 
                     var dragEnd = function (event) {
-                        scope.$$apply = true;
-                        if (dragElm) {
+
+                        if (dragElement) {
                             if (event) {
                                 event.preventDefault();
                             }
                             // roll back elements changed
-                            hiddenPlaceElm.replaceWith(scope.itemScope.element);
-                            placeElm.remove();
-                            dragElm.remove();
-                            dragElm = null;
+                            placeElement.replaceWith(scope.itemScope.element);
+                            placeHolder.remove();
+                            dragElement.remove();
+                            dragElement = null;
 
                             // update model data
-                            if (scope.$$apply) {
-                                dragInfo.apply();
-                                scope.sortableScope.$apply(function () {
-                                    if(dragInfo.isSameParent()) {
-                                        if(dragInfo.isOrderChanged()) {
-                                            scope.callbacks.orderChanged(dragInfo.eventArgs());
-                                        }
-                                    } else {
-                                        scope.callbacks.itemMoved(dragInfo.eventArgs());
-                                    }
-                                });
-                            }
-
+                            dragItemInfo.apply();
                             scope.sortableScope.$apply(function () {
-                                scope.callbacks.dragStop(dragInfo.eventArgs());
+                                if(dragItemInfo.isSameParent()) {
+                                    if(dragItemInfo.isOrderChanged()) {
+                                        scope.callbacks.orderChanged(dragItemInfo.eventArgs());
+                                    }
+                                } else {
+                                    scope.callbacks.itemMoved(dragItemInfo.eventArgs());
+                                }
                             });
 
-                            scope.$$apply = false;
-                            dragInfo = null;
+                            scope.sortableScope.$apply(function () {
+                                scope.callbacks.dragStop(dragItemInfo.eventArgs());
+                            });
+
+                            dragItemInfo = null;
                         }
-                        if (hasTouch) {
-                            angular.element($document).unbind('touchend', dragEnd);
-                            angular.element($document).unbind('touchcancel', dragEnd);
-                            angular.element($document).unbind('touchmove', dragMove);
-                        }
-                        else {
-                            angular.element($document).unbind('mouseup', dragEnd);
-                            angular.element($document).unbind('mousemove', dragMove);
-                            angular.element($window.document.body).unbind('mouseleave', dragEnd);
-                        }
+                        unBindEvents();
                     };
 
                     if (hasTouch) {
@@ -561,6 +472,37 @@
                     } else {
                         element.bind('mousedown', dragStart);
                     }
+                    //Cancel drag on escape press.
+                    angular.element($window.document.body).bind("keydown", function(event) {
+                        if (event.keyCode == 27) {
+                            dragEnd(event);
+                        }
+                    });
+
+                    var bindEvents = function() {
+                        if (hasTouch) {
+                            angular.element($document).bind('touchmove', dragMove);
+                            angular.element($document).bind('touchend', dragEnd);
+                            angular.element($document).bind('touchcancel', dragEnd);
+                        } else {
+                            angular.element($document).bind('mousemove', dragMove);
+                            angular.element($document).bind('mouseup', dragEnd);
+                            // stop move when the menu item is dragged outside the body element
+                            angular.element($window.document.body).bind('mouseleave', dragEnd);
+                        }
+                    };
+
+                    var unBindEvents = function() {
+                        if (hasTouch) {
+                            angular.element($document).unbind('touchend', dragEnd);
+                            angular.element($document).unbind('touchcancel', dragEnd);
+                            angular.element($document).unbind('touchmove', dragMove);
+                        } else {
+                            angular.element($document).unbind('mouseup', dragEnd);
+                            angular.element($document).unbind('mousemove', dragMove);
+                            angular.element($window.document.body).unbind('mouseleave', dragEnd);
+                        }
+                    };
                 }
             };
         }]);
@@ -589,7 +531,6 @@
         $scope.itemData = function () {
             return $scope.sortableScope.modelValue[$scope.$index];
         };
-
 
         $scope.accept = function (sourceItemScope, destScope) {
             return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope);

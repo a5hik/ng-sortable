@@ -78,19 +78,13 @@
                         return true;
                     };
 
-                    callbacks.orderChanged = function (event) {
-                    };
+                    callbacks.orderChanged = function (event) {};
 
-                    callbacks.itemMoved = function (event) {
-                    };
+                    callbacks.itemMoved = function (event) {};
 
-                    callbacks.dragStart = function (event) {
-                        console.log('drag started..')
-                    };
+                    callbacks.dragStart = function (event) {};
 
-                    callbacks.dragStop = function (event) {
-                        console.log('drag ended..')
-                    };
+                    callbacks.dragStop = function (event) {};
 
                     //Set the sortOptions passed else to default.
                     scope.$watch(attrs.sortable, function (newVal, oldVal) {

@@ -44,11 +44,9 @@
 
             $scope.sortOptions = {
                 itemMoved: function (event) {
-                    console.log('item moved');
                     event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
                 },
                 orderChanged: function(event) {
-                    console.log('order changed');
                 }
             };
 

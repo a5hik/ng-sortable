@@ -21,7 +21,7 @@
          * @param itemData - the item model data.
          */
         $scope.insertItem = function (index, itemData) {
-            $scope.safeApply(function() {
+            $scope.safeApply(function () {
                 $scope.modelValue.splice(index, 0, itemData);
             });
         };
@@ -34,7 +34,7 @@
         $scope.removeItem = function (index) {
             var removedItem = null;
             if (index > -1) {
-                $scope.safeApply(function() {
+                $scope.safeApply(function () {
                     removedItem = $scope.modelValue.splice(index, 1)[0];
                 });
             }
@@ -45,7 +45,7 @@
          * Checks whether the sortable list is empty.
          * @returns {null|*|$scope.modelValue|boolean}
          */
-        $scope.isEmpty = function() {
+        $scope.isEmpty = function () {
             return ($scope.modelValue && $scope.modelValue.length === 0);
         };
 
@@ -63,10 +63,10 @@
          * Checks the current phase before executing the function.
          * @param fn the function to execute.
          */
-        $scope.safeApply = function(fn) {
+        $scope.safeApply = function (fn) {
             var phase = this.$root.$$phase;
-            if(phase == '$apply' || phase == '$digest') {
-                if(fn && (typeof(fn) === 'function')) {
+            if (phase == '$apply' || phase == '$digest') {
+                if (fn && (typeof(fn) === 'function')) {
                     fn();
                 }
             } else {
@@ -121,25 +121,29 @@
                      * Invoked when order of a drag item is changed.
                      * @param event - the event object.
                      */
-                    callbacks.orderChanged = function (event) {};
+                    callbacks.orderChanged = function (event) {
+                    };
 
                     /**
                      * Invoked when the item is moved to other sortable.
                      * @param event - the event object.
                      */
-                    callbacks.itemMoved = function (event) {};
+                    callbacks.itemMoved = function (event) {
+                    };
 
                     /**
                      * Invoked when the drag started successfully.
                      * @param event - the event object.
                      */
-                    callbacks.dragStart = function (event) {};
+                    callbacks.dragStart = function (event) {
+                    };
 
                     /**
                      * Invoked when the drag stopped.
                      * @param event - the event object.
                      */
-                    callbacks.dragStop = function (event) {};
+                    callbacks.dragStop = function (event) {
+                    };
 
                     //Set the sortOptions callbacks else set it to default.
                     scope.$watch(attrs.sortable, function (newVal, oldVal) {

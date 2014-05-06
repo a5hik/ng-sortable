@@ -5,7 +5,7 @@
 
     /**
      * Controller for Sortable.
-     * @param $scope
+     * @param $scope - the sortable scope.
      */
     mainModule.controller('sortableController', ['$scope', function ($scope) {
 
@@ -15,12 +15,22 @@
         $scope.callbacks = null;
         $scope.type = 'sortable';
 
+        /**
+         * Inserts the item in to the sortable list.
+         * @param index - the item index.
+         * @param itemData - the item model data.
+         */
         $scope.insertItem = function (index, itemData) {
             $scope.safeApply(function() {
                 $scope.modelValue.splice(index, 0, itemData);
             });
         };
 
+        /**
+         * Removes the item from the sortable list.
+         * @param index - index to be removed.
+         * @returns {*} - removed item.
+         */
         $scope.removeItem = function (index) {
             var removedItem = null;
             if (index > -1) {
@@ -31,10 +41,18 @@
             return removedItem;
         };
 
+        /**
+         * Checks whether the sortable list is empty.
+         * @returns {null|*|$scope.modelValue|boolean}
+         */
         $scope.isEmpty = function() {
             return ($scope.modelValue && $scope.modelValue.length === 0);
         };
 
+        /**
+         * Checks the current phase before executing the function.
+         * @param fn the function to execute.
+         */
         $scope.safeApply = function(fn) {
             var phase = this.$root.$$phase;
             if(phase == '$apply' || phase == '$digest') {
@@ -48,6 +66,11 @@
 
     }]);
 
+    /**
+     * Sortable directive - defines callbacks.
+     * Parent directive for draggable and sortable items.
+     * Sets modelValue, callbacks, element in scope.
+     */
     mainModule.directive('sortable',
         function () {
             return {
@@ -61,32 +84,55 @@
 
                     if (!ngModel) return; // do nothing if no ng-model
 
-                    // Specify how UI should be updated
+                    // Set the model value in to scope.
                     ngModel.$render = function () {
-                        //set the model value in scope.
+                        //set an empty array, in case if none is provided.
                         if (!ngModel.$modelValue || !angular.isArray(ngModel.$modelValue)) {
                             ngModel.$setViewValue([]);
                         }
                         scope.modelValue = ngModel.$modelValue;
                     };
-
+                    //set the element in scope to be accessed by its sub scope.
                     scope.element = element;
 
                     var callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragStop: null};
 
+                    /**
+                     * Invoked to decide whether to allow drop.
+                     * @param modelData - the item data.
+                     * @param sourceItemScope - the drag item scope.
+                     * @param targetScope - the drop target sortable scope.
+                     * @returns {boolean} - true if allowed for drop.
+                     */
                     callbacks.accept = function (modelData, sourceItemScope, targetScope) {
                         return true;
                     };
 
+                    /**
+                     * Invoked when order of a drag item is changed.
+                     * @param event - the event object.
+                     */
                     callbacks.orderChanged = function (event) {};
 
+                    /**
+                     * Invoked when the item is moved to other sortable.
+                     * @param event - the event object.
+                     */
                     callbacks.itemMoved = function (event) {};
 
+                    /**
+                     * Invoked when the drag started successfully.
+                     * @param event - the event object.
+                     */
                     callbacks.dragStart = function (event) {};
 
+                    /**
+                     * Invoked when the drag stopped.
+                     * @param event - the event object.
+                     */
                     callbacks.dragStop = function (event) {};
 
-                    //Set the sortOptions passed else to default.
+                    //Set the sortOptions callbacks else set it to default.
                     scope.$watch(attrs.sortable, function (newVal, oldVal) {
                         angular.forEach(newVal, function (value, key) {
                             if (callbacks[key]) {

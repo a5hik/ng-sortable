@@ -5,7 +5,7 @@
 
     /**
      * Controller for sortable item.
-     * @param $scope
+     * @param $scope - drag item scope
      */
     mainModule.controller('sortableItemController', ['$scope', function ($scope) {
 
@@ -15,20 +15,27 @@
         $scope.modelValue = null; // sortable item.
         $scope.type = 'item';
 
+        /**
+         * returns the index of the drag item from the sortable list.
+         * @returns {*} - index value.
+         */
         $scope.index = function () {
             return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
         };
 
+        /**
+         * Returns the item model data.
+         * @returns {*} - item model value.
+         */
         $scope.itemData = function () {
             return $scope.sortableScope.modelValue[$scope.$index];
         };
 
-        $scope.accept = function (sourceItemScope, destScope) {
-            return $scope.callbacks.accept(sourceItemScope.itemData(), sourceItemScope, destScope);
-        }
-
     }]);
 
+    /**
+     * sortableItem directive.
+     */
     mainModule.directive('sortableItem', ['sortableConfig',
         function (sortableConfig) {
             return {

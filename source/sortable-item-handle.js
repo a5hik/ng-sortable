@@ -5,7 +5,7 @@
 
     /**
      * Controller for sortableItemHandle
-     * @param $scope
+     * @param $scope - item handle scope.
      */
     mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
 
@@ -15,6 +15,9 @@
         $scope.type = 'handle';
     }]);
 
+    /**
+     * Directive for sortable item handle.
+     */
     mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
         function (sortableConfig, $helper, $window, $document) {
             return {
@@ -37,20 +40,14 @@
                     }
                     scope.itemScope = itemController.scope;
 
+                    /**
+                     * Triggered when drag event starts.
+                     * @param event the event object.
+                     */
                     var dragStart = function (event) {
-                        var clickedElm = angular.element(event.target);
 
-                        var source = clickedElm.scope();
-                        if (!source || !source.type || source.type != 'handle') {
-                            return;
-                        }
-                        //Stop dragging 'no-drag' elements inside item-handle if any.
-                        while (clickedElm && clickedElm[0] && clickedElm[0] != element) {
-                            if ($helper.noDrag(clickedElm)) {
-                                return;
-                            }
-                            clickedElm = clickedElm.parent();
-                        }
+                        isDragAllowed(event);
+
                         event.preventDefault();
 
                         var eventObj = $helper.eventObj(event);
@@ -83,6 +80,31 @@
                         bindEvents();
                     };
 
+                    /**
+                     * Allow Drag if it is a proper item-handle element.
+                     * @param event - the event object.
+                     */
+                    var isDragAllowed = function(event) {
+
+                        var elementClicked = angular.element(event.target);
+                        var source = elementClicked.scope();
+                        if (!source || !source.type || source.type != 'handle') {
+                            return;
+                        }
+                        //If a 'no-drag' element inside item-handle if any.
+                        while (elementClicked && elementClicked[0]
+                                       && elementClicked[0] != element) {
+                            if ($helper.noDrag(elementClicked)) {
+                                return;
+                            }
+                            elementClicked = elementClicked.parent();
+                        }
+                    };
+
+                    /**
+                     * Triggered when drag is moving.
+                     * @param event - the event object.
+                     */
                     var dragMove = function (event) {
 
                         if (dragElement) {
@@ -112,11 +134,13 @@
                             }
 
                             if (isEmpty) {//sortable element.
-                                target.element.append(placeHolder);
-                                dragItemInfo.moveTo(target, 0);
+                                if(target.accept(scope, target.scope)) {
+                                    target.element.append(placeHolder);
+                                    dragItemInfo.moveTo(target, 0);
+                                }
                             } else {//item element
                                 targetElm = target.element;
-                                if (target.accept(scope, target.sortableScope)) {
+                                if (target.sortableScope.accept(scope, target.sortableScope)) {
                                     if (isMovingUpwards(eventObj, targetElm)) {
                                         targetElm[0].parentNode.insertBefore(placeHolder[0], targetElm[0]);
                                         dragItemInfo.moveTo(target.sortableScope, target.index());
@@ -130,6 +154,12 @@
                     };
 
 
+                    /**
+                     * Determines whether the item is dragged upwards.
+                     * @param eventObj - the event object.
+                     * @param targetElm - the target element.
+                     * @returns {boolean} - true if moving upwards.
+                     */
                     var isMovingUpwards = function(eventObj, targetElm) {
                         var movingUpwards = false;
                         // check it's new position
@@ -142,6 +172,10 @@
                         return movingUpwards;
                     };
 
+                    /**
+                     * triggered while drag ends.
+                     * @param event - the event object.
+                     */
                     var dragEnd = function (event) {
 
                         if (dragElement) {
@@ -187,6 +221,9 @@
                         }
                     });
 
+                    /**
+                     * Binds the events based on the actions.
+                     */
                     var bindEvents = function() {
                         if (hasTouch) {
                             angular.element($document).bind('touchmove', dragMove);
@@ -200,6 +237,9 @@
                         }
                     };
 
+                    /**
+                     * Un binds the events for drag support.
+                     */
                     var unBindEvents = function() {
                         if (hasTouch) {
                             angular.element($document).unbind('touchend', dragEnd);

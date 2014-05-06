@@ -50,6 +50,16 @@
         };
 
         /**
+         * Wrapper for the accept callback delegates to callback.
+         * @param sourceItemScope - drag item scope
+         * @param destScope - sortable target scope.
+         * @returns {*|boolean} - true if drop is allowed for the drag item in drop target.
+         */
+        $scope.accept = function (sourceItemScope, destScope) {
+            return $scope.callbacks.accept(sourceItemScope, destScope);
+        };
+
+        /**
          * Checks the current phase before executing the function.
          * @param fn the function to execute.
          */
@@ -99,12 +109,11 @@
 
                     /**
                      * Invoked to decide whether to allow drop.
-                     * @param modelData - the item data.
                      * @param sourceItemScope - the drag item scope.
-                     * @param targetScope - the drop target sortable scope.
+                     * @param destScope - the drop target sortable scope.
                      * @returns {boolean} - true if allowed for drop.
                      */
-                    callbacks.accept = function (modelData, sourceItemScope, targetScope) {
+                    callbacks.accept = function (sourceItemScope, destScope) {
                         return true;
                     };
 

@@ -1,60 +1,64 @@
+/*jslint indent: 2 */
+/*jslint unparam: false*/
+/*global angular: false */
+
 (function () {
 
-    'use strict';
-    var mainModule = angular.module('ui.sortable');
+  'use strict';
+  var mainModule = angular.module('ui.sortable');
+
+  /**
+   * Controller for sortable item.
+   *
+   * @param $scope - drag item scope
+   */
+  mainModule.controller('sortableItemController', ['$scope', function ($scope) {
+
+    this.scope = $scope;
+
+    $scope.sortableScope = null;
+    $scope.modelValue = null; // sortable item.
+    $scope.type = 'item';
 
     /**
-     * Controller for sortable item.
+     * returns the index of the drag item from the sortable list.
      *
-     * @param $scope - drag item scope
+     * @returns {*} - index value.
      */
-    mainModule.controller('sortableItemController', ['$scope', function ($scope) {
+    $scope.index = function () {
+      return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
+    };
 
-        this.scope = $scope;
+    /**
+     * Returns the item model data.
+     *
+     * @returns {*} - item model value.
+     */
+    $scope.itemData = function () {
+      return $scope.sortableScope.modelValue[$scope.$index];
+    };
 
-        $scope.sortableScope = null;
-        $scope.modelValue = null; // sortable item.
-        $scope.type = 'item';
+  }]);
 
-        /**
-         * returns the index of the drag item from the sortable list.
-         *
-         * @returns {*} - index value.
-         */
-        $scope.index = function () {
-            return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
-        };
+  /**
+   * sortableItem directive.
+   */
+  mainModule.directive('sortableItem', ['sortableConfig',
+    function (sortableConfig) {
+      return {
+        require: '^sortable',
+        restrict: 'A',
+        controller: 'sortableItemController',
+        link: function (scope, element, attrs, sortableController) {
 
-        /**
-         * Returns the item model data.
-         *
-         * @returns {*} - item model value.
-         */
-        $scope.itemData = function () {
-            return $scope.sortableScope.modelValue[$scope.$index];
-        };
-
+          if (sortableConfig.itemClass) {
+            element.addClass(sortableConfig.itemClass);
+          }
+          scope.sortableScope = sortableController.scope;
+          scope.modelValue = sortableController.scope.modelValue[scope.$index];
+          scope.element = element;
+        }
+      };
     }]);
 
-    /**
-     * sortableItem directive.
-     */
-    mainModule.directive('sortableItem', ['sortableConfig',
-        function (sortableConfig) {
-            return {
-                require: '^sortable',
-                restrict: 'A',
-                controller: 'sortableItemController',
-                link: function (scope, element, attrs, sortableController) {
-
-                    if (sortableConfig.itemClass) {
-                        element.addClass(sortableConfig.itemClass);
-                    }
-                    scope.sortableScope = sortableController.scope;
-                    scope.modelValue = sortableController.scope.modelValue[scope.$index];
-                    scope.element = element;
-                }
-            };
-        }]);
-
-})();
+}());

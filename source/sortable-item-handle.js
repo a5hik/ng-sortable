@@ -30,7 +30,7 @@
                     var dragElement, //drag item element.
                         placeHolder, //place holder class element.
                         placeElement, //empty place element.
-                        position, //drag item element position.
+                        itemPosition, //drag item element position.
                         dragItemInfo; //drag item data.
 
                     var hasTouch = 'ontouchstart' in $window;
@@ -46,7 +46,7 @@
                      */
                     var dragStart = function (event) {
 
-                        isDragAllowed(event);
+                        isDraggable(event);
 
                         event.preventDefault();
 
@@ -65,14 +65,14 @@
 
                         placeElement = angular.element($window.document.createElement(tagName));
 
-                        position = $helper.positionStarted(eventObj, scope.itemScope.element);
+                        itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
 
                         scope.itemScope.element.after(placeHolder);
                         scope.itemScope.element.after(placeElement);
                         dragElement.append(scope.itemScope.element);
 
                         $document.find('body').append(dragElement);
-                        $helper.movePosition(eventObj, dragElement, position);
+                        $helper.movePosition(eventObj, dragElement, itemPosition);
 
                         scope.sortableScope.$apply(function () {
                             scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -84,7 +84,7 @@
                      * Allow Drag if it is a proper item-handle element.
                      * @param event - the event object.
                      */
-                    var isDragAllowed = function(event) {
+                    var isDraggable = function(event) {
 
                         var elementClicked = angular.element(event.target);
                         var source = elementClicked.scope();
@@ -93,7 +93,7 @@
                         }
                         //If a 'no-drag' element inside item-handle if any.
                         while (elementClicked && elementClicked[0]
-                                       && elementClicked[0] != element) {
+                            && elementClicked[0] != element) {
                             if ($helper.noDrag(elementClicked)) {
                                 return;
                             }
@@ -110,62 +110,60 @@
                         if (dragElement) {
                             event.preventDefault();
                             var eventObj = $helper.eventObj(event);
-                            $helper.movePosition(eventObj, dragElement, position);
+                            $helper.movePosition(eventObj, dragElement, itemPosition);
 
                             var targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
                             var targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
                             //call elementFromPoint() twice to make sure IE8 returns the correct value.
                             $window.document.elementFromPoint(targetX, targetY);
+                            var targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
 
-                            var targetElm = angular.element($window.document.elementFromPoint(targetX, targetY));
-
-                            var target = targetElm.scope();
+                            var targetScope = targetElement.scope();
                             var isEmpty = false;
 
-                            if (target.type == 'sortable') {
-                                isEmpty = target.isEmpty();
+                            if (targetScope.type == 'sortable') {
+                                isEmpty = targetScope.isEmpty();
                             }
-                            if(target.type == 'handle') {
-                                target = target.itemScope;
+                            if(targetScope.type == 'handle') {
+                                targetScope = targetScope.itemScope;
                             }
-                            if (target.type != 'item' && !isEmpty) {
+                            if (targetScope.type != 'item' && !isEmpty) {
                                 return;
                             }
 
-                            if (isEmpty) {//sortable element.
-                                if(target.accept(scope, target.scope)) {
-                                    target.element.append(placeHolder);
-                                    dragItemInfo.moveTo(target, 0);
+                            if (isEmpty) {//sortable scope.
+                                if(targetScope.accept(scope, targetScope.scope)) {
+                                    targetScope.element.append(placeHolder);
+                                    dragItemInfo.moveTo(targetScope, 0);
                                 }
-                            } else {//item element
-                                targetElm = target.element;
-                                if (target.sortableScope.accept(scope, target.sortableScope)) {
-                                    if (isMovingUpwards(eventObj, targetElm)) {
-                                        targetElm[0].parentNode.insertBefore(placeHolder[0], targetElm[0]);
-                                        dragItemInfo.moveTo(target.sortableScope, target.index());
+                            } else {//item scope.
+                                targetElement = targetScope.element;
+                                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
+                                    if (isMovingUpwards(eventObj, targetElement)) {
+                                        targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
+                                        dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
                                     } else {
-                                        targetElm.after(placeHolder);
-                                        dragItemInfo.moveTo(target.sortableScope, target.index() + 1);
+                                        targetElement.after(placeHolder);
+                                        dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
                                     }
                                 }
                             }
                         }
                     };
 
-
                     /**
                      * Determines whether the item is dragged upwards.
                      * @param eventObj - the event object.
-                     * @param targetElm - the target element.
+                     * @param targetElement - the target element.
                      * @returns {boolean} - true if moving upwards.
                      */
-                    var isMovingUpwards = function(eventObj, targetElm) {
+                    var isMovingUpwards = function(eventObj, targetElement) {
                         var movingUpwards = false;
                         // check it's new position
-                        var targetOffset = $helper.offset(targetElm);
+                        var targetOffset = $helper.offset(targetElement);
                         if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
-                            movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElm) / 2;
+                            movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
                         } else {
                             movingUpwards = eventObj.pageY < targetOffset.top;
                         }

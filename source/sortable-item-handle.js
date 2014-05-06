@@ -24,11 +24,11 @@
                 controller: 'sortableItemHandleController',
                 link: function (scope, element, attrs, itemController) {
 
-                    var dragElm, //drag item element.
-                        placeElm, //place holder class element.
-                        hiddenPlaceElm, //empty element.
+                    var dragElement, //drag item element.
+                        placeHolder, //place holder class element.
+                        placeElement, //empty place element.
                         position, //drag item element position.
-                        dragInfo; //drag item data.
+                        dragItemInfo; //drag item data.
 
                     var hasTouch = 'ontouchstart' in $window;
 
@@ -55,40 +55,40 @@
 
                         var eventObj = $helper.eventObj(event);
 
-                        dragInfo = $helper.dragItem(scope);
+                        dragItemInfo = $helper.dragItem(scope);
 
                         var tagName = scope.itemScope.element.prop('tagName');
 
-                        dragElm = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
+                        dragElement = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
                             .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
-                        dragElm.css('width', $helper.width(scope.itemScope.element) + 'px');
+                        dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
 
-                        placeElm = angular.element($window.document.createElement(tagName)).addClass(sortableConfig.placeHolderClass);
-                        placeElm.css('height', $helper.height(scope.itemScope.element) + 'px');
+                        placeHolder = angular.element($window.document.createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+                        placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-                        hiddenPlaceElm = angular.element($window.document.createElement(tagName));
+                        placeElement = angular.element($window.document.createElement(tagName));
 
                         position = $helper.positionStarted(eventObj, scope.itemScope.element);
 
-                        scope.itemScope.element.after(placeElm);
-                        scope.itemScope.element.after(hiddenPlaceElm);
-                        dragElm.append(scope.itemScope.element);
+                        scope.itemScope.element.after(placeHolder);
+                        scope.itemScope.element.after(placeElement);
+                        dragElement.append(scope.itemScope.element);
 
-                        $document.find('body').append(dragElm);
-                        $helper.movePosition(eventObj, dragElm, position);
+                        $document.find('body').append(dragElement);
+                        $helper.movePosition(eventObj, dragElement, position);
 
                         scope.sortableScope.$apply(function () {
-                            scope.callbacks.dragStart(dragInfo.eventArgs());
+                            scope.callbacks.dragStart(dragItemInfo.eventArgs());
                         });
                         bindEvents();
                     };
 
                     var dragMove = function (event) {
 
-                        if (dragElm) {
+                        if (dragElement) {
                             event.preventDefault();
                             var eventObj = $helper.eventObj(event);
-                            $helper.movePosition(eventObj, dragElm, position);
+                            $helper.movePosition(eventObj, dragElement, position);
 
                             var targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
                             var targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
@@ -112,17 +112,17 @@
                             }
 
                             if (isEmpty) {//sortable element.
-                                target.element.append(placeElm);
-                                dragInfo.moveTo(target, 0);
+                                target.element.append(placeHolder);
+                                dragItemInfo.moveTo(target, 0);
                             } else {//item element
                                 targetElm = target.element;
                                 if (target.accept(scope, target.sortableScope)) {
                                     if (isMovingUpwards(eventObj, targetElm)) {
-                                        targetElm[0].parentNode.insertBefore(placeElm[0], targetElm[0]);
-                                        dragInfo.moveTo(target.sortableScope, target.index());
+                                        targetElm[0].parentNode.insertBefore(placeHolder[0], targetElm[0]);
+                                        dragItemInfo.moveTo(target.sortableScope, target.index());
                                     } else {
-                                        targetElm.after(placeElm);
-                                        dragInfo.moveTo(target.sortableScope, target.index() + 1);
+                                        targetElm.after(placeHolder);
+                                        dragItemInfo.moveTo(target.sortableScope, target.index() + 1);
                                     }
                                 }
                             }
@@ -134,8 +134,8 @@
                         var movingUpwards = false;
                         // check it's new position
                         var targetOffset = $helper.offset(targetElm);
-                        if ($helper.offset(placeElm).top > targetOffset.top) { // the move direction is up?
-                            movingUpwards = $helper.offset(dragElm).top < targetOffset.top + $helper.height(targetElm) / 2;
+                        if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
+                            movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElm) / 2;
                         } else {
                             movingUpwards = eventObj.pageY < targetOffset.top;
                         }
@@ -144,33 +144,33 @@
 
                     var dragEnd = function (event) {
 
-                        if (dragElm) {
+                        if (dragElement) {
                             if (event) {
                                 event.preventDefault();
                             }
                             // roll back elements changed
-                            hiddenPlaceElm.replaceWith(scope.itemScope.element);
-                            placeElm.remove();
-                            dragElm.remove();
-                            dragElm = null;
+                            placeElement.replaceWith(scope.itemScope.element);
+                            placeHolder.remove();
+                            dragElement.remove();
+                            dragElement = null;
 
                             // update model data
-                            dragInfo.apply();
+                            dragItemInfo.apply();
                             scope.sortableScope.$apply(function () {
-                                if(dragInfo.isSameParent()) {
-                                    if(dragInfo.isOrderChanged()) {
-                                        scope.callbacks.orderChanged(dragInfo.eventArgs());
+                                if(dragItemInfo.isSameParent()) {
+                                    if(dragItemInfo.isOrderChanged()) {
+                                        scope.callbacks.orderChanged(dragItemInfo.eventArgs());
                                     }
                                 } else {
-                                    scope.callbacks.itemMoved(dragInfo.eventArgs());
+                                    scope.callbacks.itemMoved(dragItemInfo.eventArgs());
                                 }
                             });
 
                             scope.sortableScope.$apply(function () {
-                                scope.callbacks.dragStop(dragInfo.eventArgs());
+                                scope.callbacks.dragStop(dragItemInfo.eventArgs());
                             });
 
-                            dragInfo = null;
+                            dragItemInfo = null;
                         }
                         unBindEvents();
                     };
@@ -205,8 +205,7 @@
                             angular.element($document).unbind('touchend', dragEnd);
                             angular.element($document).unbind('touchcancel', dragEnd);
                             angular.element($document).unbind('touchmove', dragMove);
-                        }
-                        else {
+                        } else {
                             angular.element($document).unbind('mouseup', dragEnd);
                             angular.element($document).unbind('mousemove', dragMove);
                             angular.element($window.document.body).unbind('mouseleave', dragEnd);

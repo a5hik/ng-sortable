@@ -5,6 +5,7 @@
 
     /**
      * Controller for sortable item.
+     *
      * @param $scope - drag item scope
      */
     mainModule.controller('sortableItemController', ['$scope', function ($scope) {
@@ -17,6 +18,7 @@
 
         /**
          * returns the index of the drag item from the sortable list.
+         *
          * @returns {*} - index value.
          */
         $scope.index = function () {
@@ -25,6 +27,7 @@
 
         /**
          * Returns the item model data.
+         *
          * @returns {*} - item model value.
          */
         $scope.itemData = function () {

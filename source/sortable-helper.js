@@ -4,24 +4,13 @@
     var mainModule = angular.module('ui.sortable');
 
     /**
-     * @ngdoc service
-     * @name ui.sortable.service:$helper
-     * @requires ng.$document
-     * @requires ng.$window
-     *
-     * @description
-     * Angular Sortable + Draggable
+     * Helper factory for sortable.
      */
     mainModule.factory('$helper', ['$document', '$window',
         function ($document, $window) {
             return {
 
                 /**
-                 * @ngdoc method
-                 * @name hippo.theme#height
-                 * @methodOf ui.sortable.service:$helper
-                 *
-                 * @description
                  * Get the height of an element.
                  *
                  * @param {Object} element Angular element.
@@ -32,11 +21,6 @@
                 },
 
                 /**
-                 * @ngdoc method
-                 * @name hippo.theme#width
-                 * @methodOf ui.sortable.service:$helper
-                 *
-                 * @description
                  * Get the width of an element.
                  *
                  * @param {Object} element Angular element.
@@ -47,11 +31,6 @@
                 },
 
                 /**
-                 * @ngdoc method
-                 * @name hippo.theme#offset
-                 * @methodOf ui.sortable.service:$helper
-                 *
-                 * @description
                  * Get the offset values of an element.
                  *
                  * @param {Object} element Angular element.
@@ -69,50 +48,63 @@
                 },
 
                 /**
-                 * get the event object for touchs
-                 * @param  {[type]} e [description]
-                 * @return {[type]}   [description]
+                 * get the event object for touch.
+                 *
+                 * @param  {Object} event the touch event
+                 * @return {Object} the touch event object.
                  */
-                eventObj: function (e) {
-                    var obj = e;
-                    if (e.targetTouches !== undefined) {
-                        obj = e.targetTouches.item(0);
-                    } else if (e.originalEvent !== undefined && e.originalEvent.targetTouches !== undefined) {
-                        obj = e.originalEvent.targetTouches.item(0);
+                eventObj: function (event) {
+                    var obj = event;
+                    if (event.targetTouches !== undefined) {
+                        obj = event.targetTouches.item(0);
+                    } else if (event.originalEvent !== undefined && event.originalEvent.targetTouches !== undefined) {
+                        obj = event.originalEvent.targetTouches.item(0);
                     }
                     return obj;
                 },
 
                 /**
-                 * @ngdoc method
-                 * @name hippo.theme#positionStarted
-                 * @methodOf ui.sortable.service:$helper
-                 *
-                 * @description
                  * Get the start position of the target element according to the provided event properties.
                  *
-                 * @param {Object} e Event
+                 * @param {Object} event Event
                  * @param {Object} target Target element
                  * @returns {Object} Object with properties offsetX, offsetY, startX, startY, nowX and dirX.
                  */
-                positionStarted: function (e, target) {
+                positionStarted: function (event, target) {
                     var pos = {};
-                    pos.offsetX = e.pageX - this.offset(target).left;
-                    pos.offsetY = e.pageY - this.offset(target).top;
-                    pos.startX = pos.lastX = e.pageX;
-                    pos.startY = pos.lastY = e.pageY;
+                    pos.offsetX = event.pageX - this.offset(target).left;
+                    pos.offsetY = event.pageY - this.offset(target).top;
+                    pos.startX = pos.lastX = event.pageX;
+                    pos.startY = pos.lastY = event.pageY;
                     pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
                     pos.dirX = pos.dirY = pos.lastDirX = pos.lastDirY = pos.distAxX = pos.distAxY = 0;
                     return pos;
                 },
 
-                movePosition: function (e, target, pos) {
-                    target.css({
-                        'left': e.pageX - pos.offsetX + 'px',
-                        'top': e.pageY - pos.offsetY + 'px'
+                /**
+                 * Move the position by applying style.
+                 *
+                 * @param event the event object
+                 * @param element - the dom element
+                 * @param pos - current position
+                 */
+                movePosition: function (event, element, pos) {
+                    element.css({
+                        'left': event.pageX - pos.offsetX + 'px',
+                        'top': event.pageY - pos.offsetY + 'px'
                     });
                 },
 
+                /**
+                 * The drag item info and functions.
+                 * retains the item info before and after move.
+                 * holds source item and target scope.
+                 *
+                 * @param item - the drag item
+                 * @returns {{index: *, parent: *, source: *,
+                 *          sourceInfo: {index: *, itemScope: (*|.dragItem.sourceInfo.itemScope|$scope.itemScope|itemScope), sortableScope: *},
+                 *         moveTo: moveTo, isSameParent: isSameParent, isOrderChanged: isOrderChanged, eventArgs: eventArgs, apply: apply}}
+                 */
                 dragItem: function (item) {
 
                     return {
@@ -159,9 +151,15 @@
                     };
                 },
 
-                noDrag: function (targetElm) {
-                    return (typeof targetElm.attr('nodrag')) !== 'undefined'
-                        || (typeof targetElm.attr('data-nodrag')) !== 'undefined';
+                /**
+                 * Check the drag is not allowed for the element.
+                 *
+                 * @param element - the element to check
+                 * @returns {boolean} - true if drag is not allowed.
+                 */
+                noDrag: function (element) {
+                    return (typeof element.attr('nodrag')) !== 'undefined'
+                        || (typeof element.attr('data-nodrag')) !== 'undefined';
                 }
             };
         }

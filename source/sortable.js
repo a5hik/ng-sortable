@@ -17,6 +17,7 @@
 
         /**
          * Inserts the item in to the sortable list.
+         *
          * @param index - the item index.
          * @param itemData - the item model data.
          */
@@ -28,6 +29,7 @@
 
         /**
          * Removes the item from the sortable list.
+         *
          * @param index - index to be removed.
          * @returns {*} - removed item.
          */
@@ -43,6 +45,7 @@
 
         /**
          * Checks whether the sortable list is empty.
+         *
          * @returns {null|*|$scope.modelValue|boolean}
          */
         $scope.isEmpty = function () {
@@ -51,6 +54,7 @@
 
         /**
          * Wrapper for the accept callback delegates to callback.
+         *
          * @param sourceItemScope - drag item scope
          * @param destScope - sortable target scope.
          * @returns {*|boolean} - true if drop is allowed for the drag item in drop target.
@@ -61,6 +65,7 @@
 
         /**
          * Checks the current phase before executing the function.
+         *
          * @param fn the function to execute.
          */
         $scope.safeApply = function (fn) {
@@ -109,6 +114,7 @@
 
                     /**
                      * Invoked to decide whether to allow drop.
+                     *
                      * @param sourceItemScope - the drag item scope.
                      * @param destScope - the drop target sortable scope.
                      * @returns {boolean} - true if allowed for drop.
@@ -119,6 +125,7 @@
 
                     /**
                      * Invoked when order of a drag item is changed.
+                     *
                      * @param event - the event object.
                      */
                     callbacks.orderChanged = function (event) {
@@ -126,6 +133,7 @@
 
                     /**
                      * Invoked when the item is moved to other sortable.
+                     *
                      * @param event - the event object.
                      */
                     callbacks.itemMoved = function (event) {
@@ -133,6 +141,7 @@
 
                     /**
                      * Invoked when the drag started successfully.
+                     *
                      * @param event - the event object.
                      */
                     callbacks.dragStart = function (event) {
@@ -140,6 +149,7 @@
 
                     /**
                      * Invoked when the drag stopped.
+                     *
                      * @param event - the event object.
                      */
                     callbacks.dragStop = function (event) {

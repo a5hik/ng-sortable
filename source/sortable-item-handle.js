@@ -5,6 +5,7 @@
 
     /**
      * Controller for sortableItemHandle
+     *
      * @param $scope - item handle scope.
      */
     mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
@@ -42,6 +43,7 @@
 
                     /**
                      * Triggered when drag event starts.
+                     *
                      * @param event the event object.
                      */
                     var dragStart = function (event) {
@@ -82,6 +84,7 @@
 
                     /**
                      * Allow Drag if it is a proper item-handle element.
+                     *
                      * @param event - the event object.
                      */
                     var isDraggable = function (event) {
@@ -103,6 +106,7 @@
 
                     /**
                      * Triggered when drag is moving.
+                     *
                      * @param event - the event object.
                      */
                     var dragMove = function (event) {
@@ -154,6 +158,7 @@
 
                     /**
                      * Determines whether the item is dragged upwards.
+                     *
                      * @param eventObj - the event object.
                      * @param targetElement - the target element.
                      * @returns {boolean} - true if moving upwards.
@@ -172,6 +177,7 @@
 
                     /**
                      * triggered while drag ends.
+                     *
                      * @param event - the event object.
                      */
                     var dragEnd = function (event) {

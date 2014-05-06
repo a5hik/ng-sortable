@@ -127,11 +127,11 @@
                         },
 
                         isSameParent: function () {
-                            return this.parent.element == this.sourceInfo.sortableScope.element;
+                            return this.parent.element === this.sourceInfo.sortableScope.element;
                         },
 
                         isOrderChanged: function () {
-                            return this.index != this.sourceInfo.index;
+                            return this.index !== this.sourceInfo.index;
                         },
 
                         eventArgs: function () {
@@ -158,8 +158,7 @@
                  * @returns {boolean} - true if drag is not allowed.
                  */
                 noDrag: function (element) {
-                    return (typeof element.attr('nodrag')) !== 'undefined'
-                        || (typeof element.attr('data-nodrag')) !== 'undefined';
+                    return (typeof element.attr('nodrag')) !== 'undefined' || (typeof element.attr('data-nodrag')) !== 'undefined';
                 }
             };
         }

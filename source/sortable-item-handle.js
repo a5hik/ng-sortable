@@ -91,12 +91,11 @@
 
                         var elementClicked = angular.element(event.target);
                         var source = elementClicked.scope();
-                        if (!source || !source.type || source.type != 'handle') {
+                        if (!source || !source.type || source.type !== 'handle') {
                             return;
                         }
                         //If a 'no-drag' element inside item-handle if any.
-                        while (elementClicked && elementClicked[0]
-                            && elementClicked[0] != element) {
+                        while (elementClicked && elementClicked[0] && elementClicked[0] !== element) {
                             if ($helper.noDrag(elementClicked)) {
                                 return;
                             }
@@ -126,13 +125,13 @@
                             var targetScope = targetElement.scope();
                             var isEmpty = false;
 
-                            if (targetScope.type == 'sortable') {
+                            if (targetScope.type === 'sortable') {
                                 isEmpty = targetScope.isEmpty();
                             }
-                            if (targetScope.type == 'handle') {
+                            if (targetScope.type === 'handle') {
                                 targetScope = targetScope.itemScope;
                             }
-                            if (targetScope.type != 'item' && !isEmpty) {
+                            if (targetScope.type !== 'item' && !isEmpty) {
                                 return;
                             }
 

@@ -97,15 +97,15 @@
            */
           isDraggable = function (event) {
 
-            var elementClicked, source;
+            var elementClicked, sourceScope;
 
             elementClicked = angular.element(event.target);
-            source = elementClicked.scope();
-            if (!source || !source.type || source.type !== 'handle') {
+            sourceScope = elementClicked.scope();
+            if (!sourceScope || !sourceScope.type || sourceScope.type !== 'handle') {
               return;
             }
             //If a 'no-drag' element inside item-handle if any.
-            while (elementClicked && elementClicked[0] && elementClicked[0] !== element[0]) {
+            while (elementClicked[0] !== element[0]) {
               if ($helper.noDrag(elementClicked)) {
                 return;
               }

@@ -36,7 +36,14 @@
             placeHolder, //place holder class element.
             placeElement, //empty place element.
             itemPosition, //drag item element position.
-            dragItemInfo; //drag item data.
+            dragItemInfo, //drag item data.
+            dragStart,// drag start event.
+            dragMove,//drag move event.
+            dragEnd,//drag end event.
+            isDraggable,//is element draggable.
+            isMovingUpwards,//is element moved up direction.
+            bindEvents,//bind the drag events.
+            unBindEvents;//unbind the drag events.
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -48,17 +55,16 @@
            *
            * @param event the event object.
            */
-          var dragStart = function (event) {
+          dragStart = function (event) {
+
+            var eventObj, tagName;
 
             isDraggable(event);
-
             event.preventDefault();
-
-            var eventObj = $helper.eventObj(event);
+            eventObj = $helper.eventObj(event);
 
             dragItemInfo = $helper.dragItem(scope);
-
-            var tagName = scope.itemScope.element.prop('tagName');
+            tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
               .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
@@ -89,10 +95,12 @@
            *
            * @param event - the event object.
            */
-          var isDraggable = function (event) {
+          isDraggable = function (event) {
 
-            var elementClicked = angular.element(event.target);
-            var source = elementClicked.scope();
+            var elementClicked, source;
+
+            elementClicked = angular.element(event.target);
+            source = elementClicked.scope();
             if (!source || !source.type || source.type !== 'handle') {
               return;
             }
@@ -110,22 +118,25 @@
            *
            * @param event - the event object.
            */
-          var dragMove = function (event) {
+          dragMove = function (event) {
+
+            var eventObj, isEmpty,
+              targetX, targetY, targetScope, targetElement;
 
             if (dragElement) {
               event.preventDefault();
-              var eventObj = $helper.eventObj(event);
+              eventObj = $helper.eventObj(event);
               $helper.movePosition(eventObj, dragElement, itemPosition);
 
-              var targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
-              var targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
+              targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
+              targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
               //call elementFromPoint() twice to make sure IE8 returns the correct value.
               $window.document.elementFromPoint(targetX, targetY);
-              var targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
+              targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
 
-              var targetScope = targetElement.scope();
-              var isEmpty = false;
+              targetScope = targetElement.scope();
+              isEmpty = false;
 
               if (targetScope.type === 'sortable') {
                 isEmpty = targetScope.isEmpty();
@@ -164,10 +175,12 @@
            * @param targetElement - the target element.
            * @returns {boolean} - true if moving upwards.
            */
-          var isMovingUpwards = function (eventObj, targetElement) {
-            var movingUpwards = false;
+          isMovingUpwards = function (eventObj, targetElement) {
+            var movingUpwards, targetOffset;
+
+            movingUpwards = false;
             // check it's new position
-            var targetOffset = $helper.offset(targetElement);
+            targetOffset = $helper.offset(targetElement);
             if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
               movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
             } else {
@@ -181,7 +194,7 @@
            *
            * @param event - the event object.
            */
-          var dragEnd = function (event) {
+          dragEnd = function (event) {
 
             if (dragElement) {
               event.preventDefault();
@@ -217,7 +230,7 @@
           element.bind('mousedown', dragStart);
 
           //Cancel drag on escape press.
-          angular.element($window.document.body).bind("keydown", function (event) {
+          angular.element($window.document.body).bind('keydown', function (event) {
             if (event.keyCode === 27) {
               dragEnd(event);
             }
@@ -226,27 +239,27 @@
           /**
            * Binds the events based on the actions.
            */
-          var bindEvents = function () {
-              angular.element($document).bind('touchmove', dragMove);
-              angular.element($document).bind('touchend', dragEnd);
-              angular.element($document).bind('touchcancel', dragEnd);
-              angular.element($document).bind('mousemove', dragMove);
-              angular.element($document).bind('mouseup', dragEnd);
-              // stop move when the menu item is dragged outside the body element
-              angular.element($window.document.body).bind('mouseleave', dragEnd);
-            };
+          bindEvents = function () {
+            angular.element($document).bind('touchmove', dragMove);
+            angular.element($document).bind('touchend', dragEnd);
+            angular.element($document).bind('touchcancel', dragEnd);
+            angular.element($document).bind('mousemove', dragMove);
+            angular.element($document).bind('mouseup', dragEnd);
+            // stop move when the menu item is dragged outside the body element
+            angular.element($window.document.body).bind('mouseleave', dragEnd);
+          };
 
           /**
            * Un binds the events for drag support.
            */
-          var unBindEvents = function () {
-              angular.element($document).unbind('touchend', dragEnd);
-              angular.element($document).unbind('touchcancel', dragEnd);
-              angular.element($document).unbind('touchmove', dragMove);
-              angular.element($document).unbind('mouseup', dragEnd);
-              angular.element($document).unbind('mousemove', dragMove);
-              angular.element($window.document.body).unbind('mouseleave', dragEnd);
-            };
+          unBindEvents = function () {
+            angular.element($document).unbind('touchend', dragEnd);
+            angular.element($document).unbind('touchcancel', dragEnd);
+            angular.element($document).unbind('touchmove', dragMove);
+            angular.element($document).unbind('mouseup', dragEnd);
+            angular.element($document).unbind('mousemove', dragMove);
+            angular.element($window.document.body).unbind('mouseleave', dragEnd);
+          };
         }
       };
     }]);

@@ -120,7 +120,6 @@
               itemScope: item.itemScope,
               sortableScope: item.sortableScope
             },
-
             moveTo: function (parent, index) { // Move the item to a new position
               this.parent = parent;
               //If source Item is in the same Parent.
@@ -129,15 +128,12 @@
               }
               this.index = index;
             },
-
             isSameParent: function () {
               return this.parent.element === this.sourceInfo.sortableScope.element;
             },
-
             isOrderChanged: function () {
               return this.index !== this.sourceInfo.index;
             },
-
             eventArgs: function () {
               return {
                 source: this.sourceInfo,
@@ -147,7 +143,6 @@
                 }
               };
             },
-
             apply: function () {
               this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
               this.parent.insertItem(this.index, this.source.modelValue); // Insert in to destination.

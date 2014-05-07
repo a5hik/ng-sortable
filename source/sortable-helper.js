@@ -157,7 +157,7 @@
          * @returns {boolean} - true if drag is not allowed.
          */
         noDrag: function (element) {
-          return element.attr('nodrag') !== 'undefined' || element.attr('data-nodrag') !== 'undefined';
+          return element.attr('nodrag') !== undefined || element.attr('data-nodrag') !== undefined;
         }
       };
     }

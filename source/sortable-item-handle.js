@@ -105,7 +105,7 @@
               return;
             }
             //If a 'no-drag' element inside item-handle if any.
-            while (elementClicked && elementClicked[0] && elementClicked[0] !== element) {
+            while (elementClicked && elementClicked[0] && elementClicked[0] !== element[0]) {
               if ($helper.noDrag(elementClicked)) {
                 return;
               }

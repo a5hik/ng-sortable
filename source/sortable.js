@@ -8,16 +8,6 @@
   var mainModule = angular.module('ui.sortable');
 
   /**
-   * Sortable config constants.
-   */
-  mainModule.constant('sortableConfig', {
-    itemClass: 'sortable-item',
-    handleClass: 'sortable-handle',
-    placeHolderClass: 'sortable-placeholder',
-    dragClass: 'sortable-drag'
-  });
-
-  /**
    * Controller for Sortable.
    * @param $scope - the sortable scope.
    */

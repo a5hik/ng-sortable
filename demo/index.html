@@ -76,7 +76,7 @@
                             <span>{{column.name}} ({{column.cards.length}})</span>
                         </div>
                         <ul class="cards sortable-list" sortable="sortOptions" ng-model="column.cards">
-                            <li class="card" ng-repeat="card in column.cards" sortable-item="" ng-include="'card.html'">
+                            <li class="card" ng-repeat="card in column.cards" sortable-item ng-include="'card.html'">
                             </li>
                         </ul>
                     </div>

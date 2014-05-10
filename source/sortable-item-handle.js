@@ -149,7 +149,7 @@
               }
 
               if (isEmpty) {//sortable scope.
-                if (targetScope.accept(scope, targetScope.scope)) {
+                if (targetScope.accept(scope, targetScope)) {
                   targetScope.element.append(placeHolder);
                   dragItemInfo.moveTo(targetScope, 0);
                 }

@@ -59,7 +59,9 @@
 
             var eventObj, tagName;
 
-            isDraggable(event);
+            if (!isDraggable(event)) {
+              return;
+            }
             event.preventDefault();
             eventObj = $helper.eventObj(event);
 
@@ -94,23 +96,26 @@
            * Allow Drag if it is a proper item-handle element.
            *
            * @param event - the event object.
+           * @return boolean - true if element is draggable.
            */
           isDraggable = function (event) {
 
-            var elementClicked, sourceScope;
+            var elementClicked, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
             sourceScope = elementClicked.scope();
+            isDraggable = true;
             if (!sourceScope || !sourceScope.type || sourceScope.type !== 'handle') {
-              return;
+              return false;
             }
-            //If a 'no-drag' element inside item-handle if any.
-            while (elementClicked[0] !== element[0]) {
+              //If a 'no-drag' element inside item-handle if any.
+            while (isDraggable && elementClicked[0] !== element[0]) {
               if ($helper.noDrag(elementClicked)) {
-                return;
+                isDraggable = false;
               }
               elementClicked = elementClicked.parent();
             }
+            return isDraggable;
           };
 
           /**
@@ -136,24 +141,29 @@
               targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
 
               targetScope = targetElement.scope();
-              isEmpty = false;
 
-              if (targetScope.type === 'sortable') {
-                isEmpty = targetScope.isEmpty();
-              }
               if (targetScope.type === 'handle') {
                 targetScope = targetScope.itemScope;
               }
-              if (targetScope.type !== 'item' && !isEmpty) {
+              if (targetScope.type !== 'item' && targetScope.type !== 'sortable') {
                 return;
               }
 
-              if (isEmpty) {//sortable scope.
-                if (targetScope.accept(scope, targetScope)) {
-                  targetScope.element.append(placeHolder);
-                  dragItemInfo.moveTo(targetScope, 0);
+              if (targetScope.type === 'sortable') {//sortable scope.
+                if (targetScope.accept(scope, targetScope)/* &&
+                    targetScope.modelValue.indexOf(scope.itemScope.modelValue) === -1*/) {//moving to other column.
+
+                  if (targetScope.isEmpty() || targetScope.modelValue.length === 1) {//no item or drag back one item column, where
+                                                                                     //the length will be one as there a place element.
+                    targetScope.element.append(placeHolder);
+                    dragItemInfo.moveTo(targetScope, 0);
+                  } else {
+                    /*//append to bottom.
+                    targetScope.element.append(placeHolder);
+                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);*/
+                  }
                 }
-              } else {//item scope.
+              } else if (targetScope.type === 'item') {//item scope.
                 targetElement = targetScope.element;
                 if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
                   if (isMovingUpwards(eventObj, targetElement)) {

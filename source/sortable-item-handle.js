@@ -170,7 +170,7 @@
                   //moving over sortable bucket. not over item.
                   //Check there is no place holder placed by itemScope.
                   angular.forEach(targetElement.children(), function (item, key) {
-                    if (angular.element(item).hasClass('sortable-placeholder')) {
+                    if (angular.element(item).hasClass(sortableConfig.placeHolderClass)) {
                       hasPlaceHolder = true;
                       return;
                     }

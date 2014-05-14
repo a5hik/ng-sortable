@@ -43,3 +43,7 @@
     opacity: .8;
     z-index: 9999;
 }
+
+.sortable-hidden {
+    display: none;
+}

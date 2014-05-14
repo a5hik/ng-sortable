@@ -9,6 +9,7 @@
       itemClass: 'sortable-item',
       handleClass: 'sortable-handle',
       placeHolderClass: 'sortable-placeholder',
-      dragClass: 'sortable-drag'
+      dragClass: 'sortable-drag',
+      hiddenClass: 'sortable-hidden'
     });
 }());

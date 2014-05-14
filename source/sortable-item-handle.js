@@ -76,6 +76,9 @@
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeElement = angular.element($window.document.createElement(tagName));
+            if (sortableConfig.hiddenClass) {
+              placeElement.addClass(sortableConfig.hiddenClass);
+            }
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
 
@@ -125,11 +128,12 @@
            */
           dragMove = function (event) {
 
-            var eventObj, isEmpty,
-              targetX, targetY, targetScope, targetElement;
+            var eventObj, targetX, targetY, targetScope, targetElement, hasPlaceHolder;
 
             if (dragElement) {
+
               event.preventDefault();
+
               eventObj = $helper.eventObj(event);
               $helper.movePosition(eventObj, dragElement, itemPosition);
 
@@ -149,21 +153,7 @@
                 return;
               }
 
-              if (targetScope.type === 'sortable') {//sortable scope.
-                if (targetScope.accept(scope, targetScope)/* &&
-                    targetScope.modelValue.indexOf(scope.itemScope.modelValue) === -1*/) {//moving to other column.
-
-                  if (targetScope.isEmpty() || targetScope.modelValue.length === 1) {//no item or drag back one item column, where
-                                                                                     //the length will be one as there a place element.
-                    targetScope.element.append(placeHolder);
-                    dragItemInfo.moveTo(targetScope, 0);
-                  } else {
-                    /*//append to bottom.
-                    targetScope.element.append(placeHolder);
-                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);*/
-                  }
-                }
-              } else if (targetScope.type === 'item') {//item scope.
+              if (targetScope.type === 'item') {//item scope. moving over sortable items.
                 targetElement = targetScope.element;
                 if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
                   if (isMovingUpwards(eventObj, targetElement)) {
@@ -172,6 +162,23 @@
                   } else {
                     targetElement.after(placeHolder);
                     dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
+                  }
+                }
+              } else if (targetScope.type === 'sortable') {//sortable scope.
+                if (targetScope.accept(scope, targetScope)
+                        && targetElement[0].parentNode !== targetScope.element[0]) {
+                  //moving over sortable bucket. not over item.
+                  //Check there is no place holder placed by itemScope.
+                  angular.forEach(targetElement.children(), function (item, key) {
+                    if (angular.element(item).hasClass('sortable-placeholder')) {
+                      hasPlaceHolder = true;
+                      return;
+                    }
+                  });
+                  //append to bottom.
+                  if (!hasPlaceHolder) {
+                    targetElement[0].insertBefore(placeHolder[0]);
+                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }
                 }
               }

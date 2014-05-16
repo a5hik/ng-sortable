@@ -140,9 +140,11 @@
               targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
 
-              //call elementFromPoint() twice to make sure IE8 returns the correct value.
+              //IE fixes: hide show element, call element from point twice to return pick correct element.
+              dragElement.addClass(sortableConfig.hiddenClass);
               $window.document.elementFromPoint(targetX, targetY);
               targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
+              dragElement.removeClass(sortableConfig.hiddenClass);
 
               targetScope = targetElement.scope();
 

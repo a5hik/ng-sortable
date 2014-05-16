@@ -1,13 +1,4 @@
 
-.sortable-list {
-    display: block;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    min-height: 350px;
-}
-
 .sortable-item, .sortable-placeholder {
     padding: 10px;
     border-radius: 10px;
@@ -45,5 +36,5 @@
 }
 
 .sortable-hidden {
-    display: none;
+    display: none !important;
 }

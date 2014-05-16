@@ -75,7 +75,7 @@
                             <a href="#addNewCard" title="Add card to column" ng-click="addNewCard(column)"><i class="glyphicon glyphicon-plus addNewCard"></i></a>
                             <span>{{column.name}} ({{column.cards.length}})</span>
                         </div>
-                        <ul class="cards sortable-list" sortable="sortOptions" ng-model="column.cards">
+                        <ul class="cards card-list" sortable="sortOptions" ng-model="column.cards">
                             <li class="card" ng-repeat="card in column.cards" sortable-item ng-include="'card.html'">
                             </li>
                         </ul>

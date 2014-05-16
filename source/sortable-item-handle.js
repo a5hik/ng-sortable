@@ -177,7 +177,7 @@
                   });
                   //append to bottom.
                   if (!hasPlaceHolder) {
-                    targetElement[0].insertBefore(placeHolder[0]);
+                    targetElement[0].appendChild(placeHolder[0]);
                     dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }
                 }

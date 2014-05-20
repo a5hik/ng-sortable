@@ -37,6 +37,7 @@
             placeElement, //empty place element.
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
+            containment,//the drag container.
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -65,17 +66,20 @@
             event.preventDefault();
             eventObj = $helper.eventObj(event);
 
+            containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
+                angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
+
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
-            dragElement = angular.element($window.document.createElement(scope.sortableScope.element.prop('tagName')))
+            dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
               .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
 
-            placeHolder = angular.element($window.document.createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+            placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeElement = angular.element($window.document.createElement(tagName));
+            placeElement = angular.element($document[0].createElement(tagName));
             if (sortableConfig.hiddenClass) {
               placeElement.addClass(sortableConfig.hiddenClass);
             }
@@ -86,7 +90,7 @@
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
-            $document.find('body').append(dragElement);
+            angular.element($document[0].body).append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition);
 
             scope.sortableScope.$apply(function () {
@@ -137,13 +141,13 @@
               eventObj = $helper.eventObj(event);
               $helper.movePosition(eventObj, dragElement, itemPosition);
 
-              targetX = eventObj.pageX - $window.document.documentElement.scrollLeft;
-              targetY = eventObj.pageY - ($window.pageYOffset || $window.document.documentElement.scrollTop);
+              targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
+              targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
 
               //IE fixes: hide show element, call element from point twice to return pick correct element.
               dragElement.addClass(sortableConfig.hiddenClass);
-              $window.document.elementFromPoint(targetX, targetY);
-              targetElement = angular.element($window.document.elementFromPoint(targetX, targetY));
+              $document[0].elementFromPoint(targetX, targetY);
+              targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
 
               targetScope = targetElement.scope();
@@ -167,8 +171,8 @@
                   }
                 }
               } else if (targetScope.type === 'sortable') {//sortable scope.
-                if (targetScope.accept(scope, targetScope)
-                        && targetElement[0].parentNode !== targetScope.element[0]) {
+                if (targetScope.accept(scope, targetScope) &&
+                    targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   //Check there is no place holder placed by itemScope.
                   angular.forEach(targetElement.children(), function (item, key) {
@@ -249,7 +253,7 @@
           element.bind('mousedown', dragStart);
 
           //Cancel drag on escape press.
-          angular.element($window.document.body).bind('keydown', function (event) {
+          angular.element($document[0].body).bind('keydown', function (event) {
             if (event.keyCode === 27) {
               dragEnd(event);
             }
@@ -265,7 +269,7 @@
             angular.element($document).bind('mousemove', dragMove);
             angular.element($document).bind('mouseup', dragEnd);
             // stop move when the menu item is dragged outside the body element
-            angular.element($window.document.body).bind('mouseleave', dragEnd);
+            //angular.element($document[0].body).bind('mouseleave', dragEnd);
           };
 
           /**
@@ -277,7 +281,7 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
-            angular.element($window.document.body).unbind('mouseleave', dragEnd);
+            //angular.element($document[0].body).unbind('mouseleave', dragEnd);
           };
         }
       };

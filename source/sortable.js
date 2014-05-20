@@ -18,6 +18,7 @@
     $scope.modelValue = null; // sortable list.
     $scope.callbacks = null;
     $scope.type = 'sortable';
+    $scope.options = {};
 
     /**
      * Inserts the item in to the sortable list.
@@ -170,6 +171,8 @@
                 if (typeof value === 'function') {
                   callbacks[key] = value;
                 }
+              } else {
+                scope.options[key] = value;
               }
             });
             scope.callbacks = callbacks;

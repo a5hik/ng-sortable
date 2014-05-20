@@ -91,7 +91,7 @@
             dragElement.append(scope.itemScope.element);
 
             angular.element($document[0].body).append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment);
+            $helper.movePosition(eventObj, dragElement, itemPosition);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -271,8 +271,6 @@
             angular.element($document).bind('touchcancel', dragEnd);
             angular.element($document).bind('mousemove', dragMove);
             angular.element($document).bind('mouseup', dragEnd);
-            // stop move when the menu item is dragged outside the body element
-            angular.element($document[0].body).bind('mouseleave', dragEnd);
           };
 
           /**
@@ -284,7 +282,6 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
-            angular.element($document[0].body).unbind('mouseleave', dragEnd);
           };
         }
       };

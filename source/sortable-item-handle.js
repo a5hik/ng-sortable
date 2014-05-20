@@ -152,9 +152,14 @@
 
               targetScope = targetElement.scope();
 
+              if (!targetScope || !targetScope.type) {
+                return;
+              }
+
               if (targetScope.type === 'handle') {
                 targetScope = targetScope.itemScope;
               }
+
               if (targetScope.type !== 'item' && targetScope.type !== 'sortable') {
                 return;
               }
@@ -281,7 +286,7 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
-            //angular.element($document[0].body).unbind('mouseleave', dragEnd);
+           // angular.element($document[0].body).unbind('mouseleave', dragEnd);
           };
         }
       };

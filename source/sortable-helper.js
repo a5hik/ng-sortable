@@ -91,11 +91,30 @@
          * @param event the event object
          * @param element - the dom element
          * @param pos - current position
+         * @param container - the bounding container.
          */
-        movePosition: function (event, element, pos) {
+        movePosition: function (event, element, pos, container) {
+
+          var bounds = this.offset(container);
+
+          element.x = event.pageX - pos.offsetX;
+          element.y = event.pageY - pos.offsetY;
+
+          if (element.x < bounds.left) {
+            element.x = bounds.left;
+          } else if (element.x >= bounds.width - this.offset(element).width) {
+            element.x = bounds.width - this.offset(element).width;
+          }
+
+          if (element.y < bounds.top) {
+            element.y = bounds.top;
+          } else if (element.y >= bounds.height) {
+            element.y = bounds.height;
+          }
+
           element.css({
-            'left': event.pageX - pos.offsetX + 'px',
-            'top': event.pageY - pos.offsetY + 'px'
+            'left': element.x + 'px',
+            'top': element.y + 'px'
           });
         },
 

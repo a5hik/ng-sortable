@@ -91,7 +91,7 @@
             dragElement.append(scope.itemScope.element);
 
             angular.element($document[0].body).append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -139,7 +139,7 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
-              $helper.movePosition(eventObj, dragElement, itemPosition);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
@@ -155,11 +155,9 @@
               if (!targetScope || !targetScope.type) {
                 return;
               }
-
               if (targetScope.type === 'handle') {
                 targetScope = targetScope.itemScope;
               }
-
               if (targetScope.type !== 'item' && targetScope.type !== 'sortable') {
                 return;
               }
@@ -274,7 +272,7 @@
             angular.element($document).bind('mousemove', dragMove);
             angular.element($document).bind('mouseup', dragEnd);
             // stop move when the menu item is dragged outside the body element
-            //angular.element($document[0].body).bind('mouseleave', dragEnd);
+            angular.element($document[0].body).bind('mouseleave', dragEnd);
           };
 
           /**
@@ -286,7 +284,7 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
-           // angular.element($document[0].body).unbind('mouseleave', dragEnd);
+            angular.element($document[0].body).unbind('mouseleave', dragEnd);
           };
         }
       };

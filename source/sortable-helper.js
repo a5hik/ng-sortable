@@ -44,8 +44,8 @@
           var boundingClientRect = element[0].getBoundingClientRect();
 
           return {
-            width: element.prop('offsetWidth'),
-            height: element.prop('offsetHeight'),
+            width: boundingClientRect.width || element.prop('offsetWidth'),
+            height: boundingClientRect.height || element.prop('offsetHeight'),
             top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
             left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
           };
@@ -103,13 +103,13 @@
             bounds = this.offset(container);
             if (element.x < bounds.left) {
               element.x = bounds.left;
-            } else if (element.x >= bounds.width - this.offset(element).width) {
-              element.x = bounds.width - this.offset(element).width;
+            } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
+              element.x = bounds.width + bounds.left - this.offset(element).width;
             }
             if (element.y < bounds.top) {
               element.y = bounds.top;
-            } else if (element.y >= bounds.height) {
-              element.y = bounds.height;
+            } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
+              element.y = bounds.height + bounds.top - this.offset(element).height;
             }
           }
 

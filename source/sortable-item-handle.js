@@ -85,8 +85,9 @@
             }
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
-
+            //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
+            //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
@@ -132,7 +133,8 @@
            */
           dragMove = function (event) {
 
-            var eventObj, targetX, targetY, targetScope, targetElement, hasPlaceHolder;
+            var eventObj, targetX, targetY, targetScope,
+              targetElement, hasPlaceHolder, targetElements;
 
             if (dragElement) {
 
@@ -178,12 +180,13 @@
                     targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   //Check there is no place holder placed by itemScope.
-                  angular.forEach(targetElement.children(), function (item, key) {
-                    if (angular.element(item).hasClass(sortableConfig.placeHolderClass)) {
+                  targetElements =  targetElement.children();
+                  for (var i = 0; i < targetElements.length; i++) {
+                    if (angular.element(targetElements[i]).hasClass(sortableConfig.placeHolderClass)) {
                       hasPlaceHolder = true;
-                      return;
+                      break;
                     }
-                  });
+                  }
                   //append to bottom.
                   if (!hasPlaceHolder) {
                     targetElement[0].appendChild(placeHolder[0]);

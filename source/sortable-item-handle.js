@@ -42,6 +42,7 @@
             dragEnd,//drag end event.
             isDraggable,//is element draggable.
             isMovingUpwards,//is element moved up direction.
+            isPlaceHolderPresent,//is placeholder present.
             bindEvents,//bind the drag events.
             unBindEvents;//unbind the drag events.
 
@@ -128,8 +129,7 @@
            */
           dragMove = function (event) {
 
-            var eventObj, targetX, targetY, targetScope,
-              targetElement, hasPlaceHolder, itemElements;
+            var eventObj, targetX, targetY, targetScope, targetElement;
 
             if (dragElement) {
 
@@ -174,16 +174,8 @@
                 if (targetScope.accept(scope, targetScope) &&
                     targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
-                  //Check there is no place holder placed by itemScope.
-                  itemElements =  targetElement.children();
-                  for (var i = 0; i < itemElements.length; i++) {
-                    if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
-                      hasPlaceHolder = true;
-                      break;
-                    }
-                  }
-                  //append to bottom.
-                  if (!hasPlaceHolder) {
+                  if (!isPlaceHolderPresent(targetElement)) {
+                    //append to bottom.
                     targetElement[0].appendChild(placeHolder[0]);
                     dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }
@@ -191,6 +183,25 @@
               }
             }
           };
+
+          /**
+           * Check there is no place holder placed by itemScope.
+            * @param targetElement the target element to check with.
+           * @returns {*} true if place holder present.
+           */
+          isPlaceHolderPresent = function (targetElement) {
+            var itemElements, hasPlaceHolder, i;
+
+            itemElements =  targetElement.children();
+            for (i = 0; i < itemElements.length; i += 1) {
+              if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
+                hasPlaceHolder = true;
+                break;
+              }
+            }
+            return hasPlaceHolder;
+          };
+
 
           /**
            * Determines whether the item is dragged upwards.

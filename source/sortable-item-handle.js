@@ -34,7 +34,6 @@
 
           var dragElement, //drag item element.
             placeHolder, //place holder class element.
-            placeElement, //empty place element.
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
@@ -72,24 +71,20 @@
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
-            dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
-              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
+            dragElement = angular.element($document[0].createElement(tagName))
+              .addClass(scope.itemScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeElement = angular.element($document[0].createElement(tagName));
-            if (sortableConfig.hiddenClass) {
-              placeElement.addClass(sortableConfig.hiddenClass);
-            }
-
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
-            //hidden place element in original position.
-            scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
+            //place the item element html to drag element.
+            dragElement.html(scope.itemScope.element.html());
+            //remove the original element.
+            scope.itemScope.element.remove();
 
             angular.element($document[0].body).append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition);
@@ -134,7 +129,7 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope,
-              targetElement, hasPlaceHolder, targetElements;
+              targetElement, hasPlaceHolder, itemElements;
 
             if (dragElement) {
 
@@ -180,9 +175,9 @@
                     targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   //Check there is no place holder placed by itemScope.
-                  targetElements =  targetElement.children();
-                  for (var i = 0; i < targetElements.length; i++) {
-                    if (angular.element(targetElements[i]).hasClass(sortableConfig.placeHolderClass)) {
+                  itemElements =  targetElement.children();
+                  for (var i = 0; i < itemElements.length; i++) {
+                    if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
                       hasPlaceHolder = true;
                       break;
                     }
@@ -227,8 +222,7 @@
 
             if (dragElement) {
               event.preventDefault();
-              // roll back elements changed
-              placeElement.replaceWith(scope.itemScope.element);
+
               placeHolder.remove();
               dragElement.remove();
               dragElement = null;

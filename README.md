@@ -8,6 +8,16 @@ Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI
 
 [Agile Kanban Board] (http://a5hik.github.io/ng-sortable/)
 
+
+#### Features:
+
+- Drag and Drop Cards within a swimlane.
+- Drag and Drop Cards across swimlanes.
+- Can do Ranking and Moving.
+- Hooks provided to invoke API's after a particular action.
+- Preventing/Allowing Drop Zone can be determined at run time.
+- Drag Boundary can be defined.
+
 #### Implementation Details:
 
 - Uses angular/native JS for sortable and draggable. no JQueryUI used.
@@ -56,6 +66,14 @@ Following callbacks are defined, and should be overridden to perform custom logi
              dest: index
                   index: index after move.
                   sortableScope: destination sortable scope.  
+                  
+##### Html Structure:
+
+    <ul data-sortable="board.dragControlListeners" data-ng-model="cards">
+            <li data-ng-repeat="card in cards" data-sortable-item">
+                <div data-sortable-item-handle></div>
+            </li>
+    </ul>
 
 ##### Testing:
 

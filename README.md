@@ -1,14 +1,14 @@
 
 #### ng-sortable
 
-#### Implementation Details
+#### Implementation Details:
 
 - Uses angular/native JS for sortable and draggable. no JQueryUI used.
 - Provides callbacks for drag/drop events.
 - Implementation follows Prototypical scope inheritance.
 
 #### Directives structure:
-
+The directives are structured like below.
 ###### Structure:
   sortable                     --> Items list
     sortable-item              --> Item to sort/drag

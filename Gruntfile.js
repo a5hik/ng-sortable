@@ -99,7 +99,7 @@ module.exports = function(grunt) {
                     '<%= cfg.srcDir %>/sortable-item-handle.js',
                     '<%= cfg.srcDir %>/sortable-item.js'
                 ],
-                dest: '<%= cfg.buildDir %>/ng-drag-drop.js'
+                dest: '<%= cfg.buildDir %>/ng-sortable.js'
             }
         },
 
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    '<%= cfg.buildDir %>/ng-drag-drop.min.js': ['<%= cfg.buildDir %>/ng-drag-drop.js']
+                    '<%= cfg.buildDir %>/ng-sortable.min.js': ['<%= cfg.buildDir %>/ng-sortable.js']
                 }
             }
         },
@@ -137,10 +137,10 @@ module.exports = function(grunt) {
         cssmin: {
             add_banner: {
                 options: {
-                    banner: '/* ng-drag-drop css file */'
+                    banner: '/* ng-sortable css file */'
                 },
                 files: {
-                    '<%= cfg.buildDir %>/ng-drag-drop.min.css': ['<%= cfg.srcDir %>/ng-drag-drop.css']
+                    '<%= cfg.buildDir %>/ng-sortable.min.css': ['<%= cfg.srcDir %>/ng-sortable.css']
                 }
             }
         },

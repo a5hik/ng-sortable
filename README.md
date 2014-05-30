@@ -10,7 +10,6 @@
 #### Directives structure:
 
 ###### Structure:
-
   sortable                     --> Items list
     sortable-item              --> Item to sort/drag
       sortable-item-handle     --> Drag Handle 

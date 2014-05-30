@@ -161,7 +161,7 @@
            *
            * @param event - the event object.
            */
-          callbacks.dragStop = function (event) {
+          callbacks.dragEnd = function (event) {
           };
 
           //Set the sortOptions callbacks else set it to default.

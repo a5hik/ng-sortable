@@ -251,7 +251,7 @@
               });
 
               scope.sortableScope.$apply(function () {
-                scope.callbacks.dragStop(dragItemInfo.eventArgs());
+                scope.callbacks.dragEnd(dragItemInfo.eventArgs());
               });
 
               dragItemInfo = null;

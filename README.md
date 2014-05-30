@@ -2,7 +2,11 @@
 ng-sortable
 ==============
 
+Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI used. Supports Touch devices.
 
+#### Demo Page:
+
+[Agile Kanban Board] (http://a5hik.github.io/ng-sortable/)
 
 #### Implementation Details:
 

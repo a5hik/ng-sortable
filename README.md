@@ -70,9 +70,9 @@ Following callbacks are defined, and should be overridden to perform custom logi
 ##### Html Structure:
 
     <ul data-sortable="board.dragControlListeners" data-ng-model="cards">
-            <li data-ng-repeat="card in cards" data-sortable-item">
-                <div data-sortable-item-handle></div>
-            </li>
+       <li data-ng-repeat="card in cards" data-sortable-item">
+          <div data-sortable-item-handle></div>
+       </li>
     </ul>
 
 ##### Testing:

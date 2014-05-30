@@ -1,89 +1,127 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Angular Sortable and Draggable Demo.</title>
-    <!--styles -->
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="dist/ng-drag-drop.min.css">
-    <link rel="stylesheet" type="text/css" href="board.css">
-    <!--scripts-->
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="dist/ng-drag-drop.js"></script>
-    <script type="text/javascript" src="kanban-board.js"></script>
-    <script type="text/javascript" src="model.js"></script>
 
-</head>
-<body ng-app="demoApp">
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="board-header">
-            <ul class="nav nav-tabs nav-justified">
-                <li class="active"><a href="#">Kanban</a></li>
-                <li><a href="#">Sprint</a></li>
-            </ul>
-        </div>
-        <!-- Item template -->
-        <script type="text/ng-template" id="card.html">
-            <div>
-                <div class="row">
-                    <div class="col-sm-10">
-                        <span sortable-item-handle>{{card.title}}</span>
-                        <span>{{card.status}}</span>
-                    </div>
-                    <div class="col-sm-2">
-                        <a class="pull-right btn btn-xs" ng-click="removeCard(column, card)"><span class="glyphicon glyphicon-remove"></span></a>
-                    </div>
-                </div>
-            </div>
-        </script>
-        <!-- New Card template -->
-        <script type="text/ng-template" id="NewCard.html">
-            <form ng-submit="addNewCard()" class="noMargin" name="newCardForm">
-                <div class="modal-header">
-                    <button type="button" class="close" ng-click="close()">&times;</button>
-                    <h4 class="modal-title" ng-model="columnName">Add New Card in '{{columnName}}'</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label" for="newCardTitle">Card title</label>
-                        <div>
-                            <input type="text" id="newCardTitle" placeholder="Title on a card" ng-model="title" required focus-me class="cardInputs form-control"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="newCardDetails">More details <small>(optional)</small></label>
-                        <div>
-                            <textarea id="newCardDetails" ng-model="details" class="cardInputs form-control" rows="7" >
-                            </textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="close()">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </script>
-        <div ng-model="board" id="board" ng-controller="demoController">
-            <div id="columns" class="row">
-                <div class="col-md-{{12/board.numberOfColumns}}" ng-repeat="column in board.columns"
-                     data-columnindex="{{$index}}" id="column{{$index}}">
-                    <div class="column">
-                        <div class="columnHeader">
-                            <a href="#addNewCard" title="Add card to column" ng-click="addNewCard(column)"><i class="glyphicon glyphicon-plus addNewCard"></i></a>
-                            <span>{{column.name}} ({{column.cards.length}})</span>
-                        </div>
-                        <ul class="cards sortable-list" sortable="sortOptions" ng-model="column.cards">
-                            <li class="card" ng-repeat="card in column.cards" sortable-item="" ng-include="'card.html'">
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Ng-sortable : Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI used. Supports Touch devices." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ng-sortable</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/a5hik/ng-sortable">View on GitHub</a>
+
+          <h1 id="project_title">Ng-sortable</h1>
+          <h2 id="project_tagline">Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI used. Supports Touch devices.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/a5hik/ng-sortable/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/a5hik/ng-sortable/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
     </div>
-</nav>
-</body>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="ng-sortable" class="anchor" href="#ng-sortable"><span class="octicon octicon-link"></span></a>ng-sortable</h1>
+
+<h4>
+<a name="implementation-details" class="anchor" href="#implementation-details"><span class="octicon octicon-link"></span></a>Implementation Details:</h4>
+
+<ul>
+<li>Uses angular/native JS for sortable and draggable. no JQueryUI used.</li>
+<li>Provides callbacks for drag/drop events.</li>
+<li>Implementation follows Prototypical scope inheritance.</li>
+</ul><h4>
+<a name="directives-structure" class="anchor" href="#directives-structure"><span class="octicon octicon-link"></span></a>Directives structure:</h4>
+
+<blockquote>
+<p>sortable                     --&gt; Items list
+    sortable-item              --&gt; Item to sort/drag
+      sortable-item-handle     --&gt; Drag Handle </p>
+</blockquote>
+
+<h4>
+<a name="design-details" class="anchor" href="#design-details"><span class="octicon octicon-link"></span></a>Design details:</h4>
+
+<ul>
+<li>ng-model is used to bind the sortable list items with the sortable element.</li>
+<li>sortable can be added to the root element.</li>
+<li>sortable-item can be added in item element, and follows ng-repeat.</li>
+<li>sortable-item-handle can be added to the drag handle in item element.</li>
+<li>All sortable, ng-model, sortable-item and sortable-item-handle are required.</li>
+<li>the no-drag attribute can be added to avoid dragging an element inside item-handle.</li>
+<li>Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.</li>
+</ul><h4>
+<a name="callbacks" class="anchor" href="#callbacks"><span class="octicon octicon-link"></span></a>Callbacks:</h4>
+
+<p>Following callbacks are defined, and should be overridden to perform custom logic.</p>
+
+<ul>
+<li>callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.</li>
+</ul><h6>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters:</h6>
+
+<pre><code> sourceItemScope - the scope of the item being dragged.
+ destScope - the sortable destination scope, the list.
+</code></pre>
+
+<ul>
+<li>callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same swimlane.</li>
+<li>callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross swimlanes.</li>
+<li>callbacks.dragStart = function({type: Object}) // triggered on drag start.</li>
+<li>callbacks.dragEnd = function({type: Object}) // triggered on drag end.</li>
+</ul><h6>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters:</h6>
+
+<pre><code>Object (event) - structure         
+         source:
+              index: original index before move.
+              itemScope: original item scope before move.
+              sortableScope: original sortable list scope.
+         dest: index
+              index: index after move.
+              sortableScope: destination sortable scope.  
+</code></pre>
+
+<h5>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing:</h5>
+
+<ul>
+<li>Tested on FireFox, IE, Chrome.</li>
+<li>Ipad, Iphone and Android devices.</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ng-sortable maintained by <a href="https://github.com/a5hik">a5hik</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-51491396-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
 </html>

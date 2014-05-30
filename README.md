@@ -10,12 +10,11 @@
 #### Directives structure:
 
 The directives are structured like below.
-
-###### Structure:
+'''
   sortable                     --> Items list
     sortable-item              --> Item to sort/drag
       sortable-item-handle     --> Drag Handle 
-
+'''
 #### Design details:
 
 - ng-model is used to bind the sortable list items with the sortable element.

@@ -9,6 +9,8 @@
 
 #### Directives structure:
 
+###### Structure:
+
   sortable                     --> Items list
     sortable-item              --> Item to sort/drag
       sortable-item-handle     --> Drag Handle 
@@ -29,7 +31,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 1) callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.
 
-####### Parameters:
+###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
 
@@ -38,7 +40,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
 4) callbacks.dragStart = function({type: Object}) // triggered on drag start.
 5) callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 
-####### Parameters:
+###### Parameters:
     Object (event) - structure         
              source:
                   index: original index before move.

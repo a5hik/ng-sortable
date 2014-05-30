@@ -8,7 +8,9 @@
 - Implementation follows Prototypical scope inheritance.
 
 #### Directives structure:
+
 The directives are structured like below.
+
 ###### Structure:
   sortable                     --> Items list
     sortable-item              --> Item to sort/drag
@@ -28,16 +30,16 @@ The directives are structured like below.
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-1) callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.
+- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
 
-2) callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same swimlane.
-3) callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross swimlanes.
-4) callbacks.dragStart = function({type: Object}) // triggered on drag start.
-5) callbacks.dragEnd = function({type: Object}) // triggered on drag end.
+- callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same swimlane.
+- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross swimlanes.
+- callbacks.dragStart = function({type: Object}) // triggered on drag start.
+- callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 
 ###### Parameters:
     Object (event) - structure         

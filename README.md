@@ -21,7 +21,7 @@
 - sortable-item can be added in item element, and follows ng-repeat.
 - sortable-item-handle can be added to the drag handle in item element.
 - All sortable, ng-model, sortable-item and sortable-item-handle are required.
-- the nodrag attribute can be added to avoid dragging an element inside item-handle.
+- the no-drag attribute can be added to avoid dragging an element inside item-handle.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
 
 ## Callbacks:

@@ -20,6 +20,15 @@
     color: #ffffff;
 }
 
+.card-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    min-height: 50px;
+}
+
 .noMargin { margin-bottom: 0;}
 
 
@@ -39,6 +48,13 @@
     position: relative;
     padding: 10px 15px 0;
     border-style: solid;
+}
+
+.card-title {
+    color: #7c9eb2;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1.5em;
 }
 
 .addNewCard {

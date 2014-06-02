@@ -83,12 +83,13 @@ Following callbacks are defined, and should be overridden to perform custom logi
 ##### Development Environment setup:
 
 ##### Installation:
-Run the following commands from the project root directory.
 
 ##### Developmnet Dependencies (Grunt and Bower):
     $ sudo npm install -g grunt-cli bower
 
 ##### Install Project dependencies:
+Run the following commands from the project root directory.
+
     $ npm install
     $ bower install
 

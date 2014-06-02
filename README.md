@@ -2,7 +2,21 @@
 ng-sortable
 ==============
 
+Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI used. Supports Touch devices.
 
+#### Demo Page:
+
+[Agile Kanban Board] (http://a5hik.github.io/ng-sortable/)
+
+
+#### Features:
+
+- Drag and Drop items within a column.
+- Drag and Drop items across columns.
+- Can do Ranking by Sorting and Change Status by Moving.
+- Hooks provided to invoke API's after a particular action.
+- Preventing/Allowing Drop Zone can be determined at run time.
+- Drag Boundary can be defined.
 
 #### Implementation Details:
 
@@ -13,11 +27,11 @@ ng-sortable
 #### Directives structure:
 
 The directives are structured like below.
-'''
-  sortable                     --> Items list
-    sortable-item              --> Item to sort/drag
-      sortable-item-handle     --> Drag Handle 
-'''
+
+    sortable                     --> Items list
+      sortable-item              --> Item to sort/drag
+        sortable-item-handle     --> Drag Handle 
+
 #### Design details:
 
 - ng-model is used to bind the sortable list items with the sortable element.
@@ -52,6 +66,14 @@ Following callbacks are defined, and should be overridden to perform custom logi
              dest: index
                   index: index after move.
                   sortableScope: destination sortable scope.  
+                  
+##### Html Structure:
+
+    <ul data-sortable="board.dragControlListeners" data-ng-model="items">
+       <li data-ng-repeat="item in items" data-sortable-item">
+          <div data-sortable-item-handle></div>
+       </li>
+    </ul>
 
 ##### Testing:
 

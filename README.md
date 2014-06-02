@@ -106,10 +106,10 @@ Run the commands following commands from the project root directory.
 
 ##### Commands to run:
 
-$ grunt server - to run a local web server on node.js
-$ grunt build - build the source and generates the min files in dist.
-$ grunt test - test the changes.
-$ grunt test:continuous - end to end test.
+    $ grunt server - to run a local web server on node.js
+    $ grunt build - build the source and generates the min files in dist.
+    $ grunt test - test the changes.
+    $ grunt test:continuous - end to end test.
 
 To access the local server, enter the following URL into your web browser:
 

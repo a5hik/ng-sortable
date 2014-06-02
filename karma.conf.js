@@ -18,7 +18,7 @@ module.exports = function (config) {
             cfg.bowerComponents + '/angular-mocks/angular-mocks.js',
 
             // source files
-            'source/sortableMain.js',
+            'source/sortable-main.js',
             'source/**/*.js',
 
             // tests

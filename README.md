@@ -11,9 +11,9 @@ Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI
 
 #### Features:
 
-- Drag and Drop Cards within a swimlane.
-- Drag and Drop Cards across swimlanes.
-- Can do Ranking and Moving.
+- Drag and Drop items within a column.
+- Drag and Drop items across columns.
+- Can do Ranking by Sorting and Change Status by Moving.
 - Hooks provided to invoke API's after a particular action.
 - Preventing/Allowing Drop Zone can be determined at run time.
 - Drag Boundary can be defined.
@@ -69,8 +69,8 @@ Following callbacks are defined, and should be overridden to perform custom logi
                   
 ##### Html Structure:
 
-    <ul data-sortable="board.dragControlListeners" data-ng-model="cards">
-       <li data-ng-repeat="card in cards" data-sortable-item">
+    <ul data-sortable="board.dragControlListeners" data-ng-model="items">
+       <li data-ng-repeat="item in items" data-sortable-item">
           <div data-sortable-item-handle></div>
        </li>
     </ul>

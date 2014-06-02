@@ -46,14 +46,14 @@ The directives are structured like below.
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.
+- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drag zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
 
-- callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same swimlane.
-- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross swimlanes.
+- callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
+- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.
 - callbacks.dragStart = function({type: Object}) // triggered on drag start.
 - callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 
@@ -82,21 +82,13 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 ##### Development Environment setup:
 
-##### Prerequisites:
-* [Node Package Manager](https://npmjs.org/) (NPM)
-* [Git](http://git-scm.com/)
-
-##### Development Dependencies:
-* [Grunt](http://gruntjs.com/) (task automation)
-* [Bower](http://bower.io/) (package management)
-
 ##### Installation:
 Run the following commands from the project root directory.
 
-##### Grunt and Bower:
+##### Developmnet Dependencies (Grunt and Bower):
     $ sudo npm install -g grunt-cli bower
 
-##### Project dependencies:
+##### Install Project dependencies:
     $ npm install
     $ bower install
 
@@ -107,6 +99,7 @@ Run the following commands from the project root directory.
     $ grunt test:continuous - end to end test.
 
 To access the local server, enter the following URL into your web browser:
+
     http://localhost:9009/demo/
 By default, it serves the contents of the demo project.
 

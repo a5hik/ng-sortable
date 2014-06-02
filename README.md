@@ -86,17 +86,17 @@ Following callbacks are defined, and should be overridden to perform custom logi
 * [Node Package Manager](https://npmjs.org/) (NPM)
 * [Git](http://git-scm.com/)
 
-##### Dependencies:
+##### Development Dependencies:
 * [Grunt](http://gruntjs.com/) (task automation)
 * [Bower](http://bower.io/) (package management)
 
 ##### Installation:
-Run the commands following commands from the project root directory.
+Run the following commands from the project root directory.
 
-#####1. Install Grunt and Bower:
+##### Grunt and Bower:
     $ sudo npm install -g grunt-cli bower
 
-#####2. Install project dependencies:
+##### Project dependencies:
     $ npm install
     $ bower install
 
@@ -107,9 +107,7 @@ Run the commands following commands from the project root directory.
     $ grunt test:continuous - end to end test.
 
 To access the local server, enter the following URL into your web browser:
-
     http://localhost:9009/demo/
-
 By default, it serves the contents of the demo project.
 
     

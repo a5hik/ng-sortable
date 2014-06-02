@@ -1,5 +1,4 @@
-/*jslint indent: 2 */
-/*jslint unparam: false*/
+/*jshint indent: 2 */
 /*global angular: false */
 
 (function () {

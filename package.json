@@ -31,6 +31,7 @@
     "time-grunt": "~0.2.1",
     "karma-ng-scenario": "~0.1.0",
     "karma": "~0.12.1",
+    "karma-jasmine": "~0.2.2",
     "karma-ng-html2js-preprocessor": "~0.1.0",
     "grunt-karma": "~0.8.2"
   },

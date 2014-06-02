@@ -80,32 +80,27 @@ Following callbacks are defined, and should be overridden to perform custom logi
 - Tested on FireFox, IE, Chrome.
 - Ipad, Iphone and Android devices.
 
-##### Development Environment setup
+##### Development Environment setup:
 
-##### Prerequisites
-
+##### Prerequisites:
 * [Node Package Manager](https://npmjs.org/) (NPM)
 * [Git](http://git-scm.com/)
 
-##### Dependencies
-
+##### Dependencies:
 * [Grunt](http://gruntjs.com/) (task automation)
 * [Bower](http://bower.io/) (package management)
 
-##### Installation
+##### Installation:
 Run the commands following commands from the project root directory.
 
-#####1. Install Grunt and Bower
-
+#####1. Install Grunt and Bower:
     $ sudo npm install -g grunt-cli bower
 
-#####2. Install project dependencies
-
+#####2. Install project dependencies:
     $ npm install
     $ bower install
 
 ##### Commands to run:
-
     $ grunt server - to run a local web server on node.js
     $ grunt build - build the source and generates the min files in dist.
     $ grunt test - test the changes.

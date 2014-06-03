@@ -46,14 +46,14 @@ The directives are structured like below.
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drop zone is allowed are not.
+- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drag zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
 
-- callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same swimlane.
-- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross swimlanes.
+- callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
+- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.
 - callbacks.dragStart = function({type: Object}) // triggered on drag start.
 - callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 
@@ -79,3 +79,35 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 - Tested on FireFox, IE, Chrome.
 - Ipad, Iphone and Android devices.
+
+##### Development Environment setup:
+
+##### Installation:
+
+##### Developmnet Dependencies (Grunt and Bower):
+    $ sudo npm install -g grunt-cli bower
+
+##### Install Project dependencies:
+Run the following commands from the project root directory.
+
+    $ npm install
+    $ bower install
+
+##### Commands to run:
+    $ grunt server - to run a local web server on node.js
+    $ grunt build - build the source and generates the min files in dist.
+    $ grunt test - test the changes.
+    $ grunt test:continuous - end to end test.
+
+To access the local server, enter the following URL into your web browser:
+
+    http://localhost:9009/demo/
+By default, it serves the contents of the demo project.
+
+    
+##### NG Modules Link:
+
+If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
+
+Let [me](https://github.com/a5hik) know if you have any questions. Bug report, feature request: [issue](https://github.com/a5hik/ng-sortable/issues).
+

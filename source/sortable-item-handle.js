@@ -67,6 +67,8 @@
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
                 angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
+            //capture mouse move on containment.
+            containment.css('cursor', 'move');
 
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
@@ -232,10 +234,11 @@
 
             if (dragElement) {
               event.preventDefault();
-
+              //rollback all the changes.
               placeHolder.remove();
               dragElement.remove();
               dragElement = null;
+              containment.css('cursor', '');
 
               // update model data
               dragItemInfo.apply();

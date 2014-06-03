@@ -2,7 +2,6 @@
 .sortable-item, .sortable-placeholder {
     padding: 10px;
     border-radius: 10px;
-    cursor: default;
     display: block;
     position: relative;
     min-height: 20px;

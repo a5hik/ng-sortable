@@ -1,5 +1,4 @@
 node_modules
-dist
 .tmp
 demo/bower_components
 *.log

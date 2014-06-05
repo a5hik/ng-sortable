@@ -1,2 +1,0 @@
-/* ng-drag-drop css file */
-.sortable-item,.sortable-placeholder{padding:10px;border-radius:10px;cursor:default;display:block;position:relative;min-height:20px;line-height:20px}.sortable-item{margin:2px;border:solid 1px darkgrey;background-color:#fff}.sortable-handle{cursor:move;display:block;padding:2px 1px}.sortable-placeholder{margin:5px 0;border:1px dashed gray;box-sizing:border-box;background-color:#dbdbdb}.sortable-drag{position:absolute;pointer-events:none;opacity:.8;z-index:9999}.sortable-hidden{display:none!important}

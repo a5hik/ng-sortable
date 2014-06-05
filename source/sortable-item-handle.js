@@ -58,11 +58,10 @@
           dragStart = function (event) {
 
             var eventObj, tagName;
-
+            event.preventDefault();
             if (!isDraggable(event)) {
               return;
             }
-            event.preventDefault();
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?

@@ -169,7 +169,7 @@ module.exports = function (grunt) {
 
       continuous: {
         singleRun: false,
-        browsers: ['PhantomJS', 'Chrome']
+        browsers: ['Chrome']
       }
     },
 

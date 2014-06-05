@@ -425,6 +425,7 @@
             isDraggable,//is element draggable.
             isMovingUpwards,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
+            bindDrag,//bind drag events.
             bindEvents,//bind the drag events.
             unBindEvents;//unbind the drag events.
 
@@ -614,8 +615,9 @@
            */
           dragEnd = function (event) {
 
+            event.preventDefault();
+            scope.$$apply = true;
             if (dragElement) {
-              event.preventDefault();
               //rollback all the changes.
               placeHolder.remove();
               dragElement.remove();
@@ -623,29 +625,39 @@
               containment.css('cursor', '');
 
               // update model data
-              dragItemInfo.apply();
-              scope.sortableScope.$apply(function () {
-                if (dragItemInfo.isSameParent()) {
-                  if (dragItemInfo.isOrderChanged()) {
-                    scope.callbacks.orderChanged(dragItemInfo.eventArgs());
+              if (scope.$$apply) {
+                dragItemInfo.apply();
+                scope.sortableScope.$apply(function () {
+                  if (dragItemInfo.isSameParent()) {
+                    if (dragItemInfo.isOrderChanged()) {
+                      scope.callbacks.orderChanged(dragItemInfo.eventArgs());
+                    }
+                  } else {
+                    scope.callbacks.itemMoved(dragItemInfo.eventArgs());
                   }
-                } else {
-                  scope.callbacks.itemMoved(dragItemInfo.eventArgs());
-                }
-              });
-
+                });
+              } else {
+                bindDrag();
+              }
               scope.sortableScope.$apply(function () {
                 scope.callbacks.dragEnd(dragItemInfo.eventArgs());
               });
-
+              scope.$$apply = false;
               dragItemInfo = null;
             }
             unBindEvents();
           };
 
+          /**
+           * Binds the drag start events.
+           */
+          bindDrag = function () {
+            element.bind('touchstart', dragStart);
+            element.bind('mousedown', dragStart);
+          };
+
           //bind drag start events.
-          element.bind('touchstart', dragStart);
-          element.bind('mousedown', dragStart);
+          bindDrag();
 
           //Cancel drag on escape press.
           angular.element($document[0].body).bind('keydown', function (event) {

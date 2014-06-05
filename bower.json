@@ -18,17 +18,14 @@
     "directive"
   ],
   "dependencies": {
-    "angular": "1.2.6",
-    "es5-shim": "~2.1.0"
+    "angular": "1.2.6"
   },
   "devDependencies": {
       "angular": "1.2.6",
       "bootstrap": "~3.0.3",
+      "angular-bootstrap": "~0.10.0",
       "angular-mocks": "1.2.6",
-      "jquery": ">=1.10.x",
-      "jasmine-jquery": "~2.0.0",
-      "angular-scenario": "1.2.6",
-      "angular-ui-bootstrap-bower": "0.10.0"
+      "angular-scenario": "1.2.6"
   },
   "ignore": [
        "node_modules",

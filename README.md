@@ -104,6 +104,7 @@ Thats what all you have to do.
 ##### Development Environment setup:
 
 Clone the master $ git clone https://github.com/a5hik/ng-sortable.git
+
 or Download from [Source Master](https://github.com/a5hik/ng-sortable/archive/master.zip)
 
 ##### Installation:
@@ -136,5 +137,6 @@ By default, it serves the contents of the demo project.
 If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
 
 Let [me](https://github.com/a5hik) know if you have any questions.
-For Bug report, and feature request: [issue](https://github.com/a5hik/ng-sortable/issues).
+
+For Bug report, and feature request File an Issue here: [issue](https://github.com/a5hik/ng-sortable/issues).
 

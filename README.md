@@ -4,6 +4,8 @@ ng-sortable
 
 Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI used. Supports Touch devices.
 
+If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
+
 #### Demo Page:
 
 [Agile Kanban Board] (http://a5hik.github.io/ng-sortable/)
@@ -67,13 +69,32 @@ Following callbacks are defined, and should be overridden to perform custom logi
                   index: index after move.
                   sortableScope: destination sortable scope.  
                   
+##### Usage:
+
+Include the following files in your html source.
+
+    <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
+    
 ##### Html Structure:
+
+Invoke the Directives using below html structure.
 
     <ul data-sortable="board.dragControlListeners" data-ng-model="items">
        <li data-ng-repeat="item in items" data-sortable-item">
           <div data-sortable-item-handle></div>
        </li>
     </ul>
+
+Define your callbacks in the invoking controller.
+
+    $scope.dragControlListeners = function() {
+        itemMoved: function (event) {//Do what you want},
+        orderChanged: function(event) {//Do what you want},
+        containment: '#board'//optional param.
+    };
+    
+Thats what all you have to do.
 
 ##### Testing:
 
@@ -82,9 +103,14 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 ##### Development Environment setup:
 
+Clone the master $ git clone https://github.com/a5hik/ng-sortable.git
+or Download from [Source Master](https://github.com/a5hik/ng-sortable/archive/master.zip)
+
 ##### Installation:
 
 ##### Developmnet Dependencies (Grunt and Bower):
+
+Install Grunt and Bower.
     $ sudo npm install -g grunt-cli bower
 
 ##### Install Project dependencies:
@@ -94,8 +120,8 @@ Run the following commands from the project root directory.
     $ bower install
 
 ##### Commands to run:
-    $ grunt server - to run a local web server on node.js
     $ grunt build - build the source and generates the min files in dist.
+    $ grunt server - to run a local web server on node.js
     $ grunt test - test the changes.
     $ grunt test:continuous - end to end test.
 
@@ -109,5 +135,6 @@ By default, it serves the contents of the demo project.
 
 If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
 
-Let [me](https://github.com/a5hik) know if you have any questions. Bug report, feature request: [issue](https://github.com/a5hik/ng-sortable/issues).
+Let [me](https://github.com/a5hik) know if you have any questions.
+For Bug report, and feature request: [issue](https://github.com/a5hik/ng-sortable/issues).
 

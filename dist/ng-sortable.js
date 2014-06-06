@@ -86,16 +86,12 @@
          *
          * @param {Object} event Event
          * @param {Object} target Target element
-         * @returns {Object} Object with properties offsetX, offsetY, startX, startY, nowX and dirX.
+         * @returns {Object} Object with properties offsetX, offsetY.
          */
         positionStarted: function (event, target) {
           var pos = {};
           pos.offsetX = event.pageX - this.offset(target).left;
           pos.offsetY = event.pageY - this.offset(target).top;
-          pos.startX = pos.lastX = event.pageX;
-          pos.startY = pos.lastY = event.pageY;
-          pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
-          pos.dirX = pos.dirY = pos.lastDirX = pos.lastDirY = pos.distAxX = pos.distAxY = 0;
           return pos;
         },
 
@@ -195,7 +191,7 @@
         }
       };
     }
-    ]);
+  ]);
 
 }());
 /*jshint undef: false, unused: false, indent: 2*/
@@ -416,7 +412,7 @@
 
           var dragElement, //drag item element.
             placeHolder, //place holder class element.
-            placeElement,
+            placeElement,//hidden place element.
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
@@ -450,7 +446,7 @@
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
-                angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
+              angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
 
@@ -458,8 +454,9 @@
             tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
-              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
+              .addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
+            dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
@@ -472,10 +469,7 @@
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
-            //place the item element html to drag element.
-           // dragElement.html(scope.itemScope.element.html());
-            //remove the original element.
-           // scope.itemScope.element.remove();
+            //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
@@ -504,7 +498,7 @@
             if (!sourceScope || !sourceScope.type || sourceScope.type !== 'handle') {
               return false;
             }
-              //If a 'no-drag' element inside item-handle if any.
+            //If a 'no-drag' element inside item-handle if any.
             while (isDraggable && elementClicked[0] !== element[0]) {
               if ($helper.noDrag(elementClicked)) {
                 isDraggable = false;
@@ -564,7 +558,7 @@
                 }
               } else if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
-                    targetElement[0].parentNode !== targetScope.element[0]) {
+                  targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   if (!isPlaceHolderPresent(targetElement)) {
                     //append to bottom.
@@ -578,7 +572,7 @@
 
           /**
            * Check there is no place holder placed by itemScope.
-            * @param targetElement the target element to check with.
+           * @param targetElement the target element to check with.
            * @returns {*} true if place holder present.
            */
           isPlaceHolderPresent = function (targetElement) {

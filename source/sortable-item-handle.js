@@ -33,6 +33,7 @@
 
           var dragElement, //drag item element.
             placeHolder, //place holder class element.
+            placeElement,//hidden place element.
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
@@ -73,20 +74,25 @@
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
-            dragElement = angular.element($document[0].createElement(tagName))
-              .addClass(scope.itemScope.element.attr('class')).addClass(sortableConfig.dragClass);
+            dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
+              .addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
+            dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
+            placeElement = angular.element($document[0].createElement(tagName));
+            if (sortableConfig.hiddenClass) {
+              placeElement.addClass(sortableConfig.hiddenClass);
+            }
+
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
-            //place the item element html to drag element.
-            dragElement.html(scope.itemScope.element.html());
-            //remove the original element.
-            scope.itemScope.element.remove();
+            //hidden place element in original position.
+            scope.itemScope.element.after(placeElement);
+            dragElement.append(scope.itemScope.element);
 
             angular.element($document[0].body).append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition);
@@ -236,6 +242,7 @@
             scope.$$apply = true;
             if (dragElement) {
               //rollback all the changes.
+              placeElement.replaceWith(scope.itemScope.element);
               placeHolder.remove();
               dragElement.remove();
               dragElement = null;

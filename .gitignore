@@ -1,6 +1,5 @@
 node_modules
 .tmp
-demo/bower_components
 *.log
 .idea
 *.iml

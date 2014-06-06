@@ -71,16 +71,12 @@
          *
          * @param {Object} event Event
          * @param {Object} target Target element
-         * @returns {Object} Object with properties offsetX, offsetY, startX, startY, nowX and dirX.
+         * @returns {Object} Object with properties offsetX, offsetY.
          */
         positionStarted: function (event, target) {
           var pos = {};
           pos.offsetX = event.pageX - this.offset(target).left;
           pos.offsetY = event.pageY - this.offset(target).top;
-          pos.startX = pos.lastX = event.pageX;
-          pos.startY = pos.lastY = event.pageY;
-          pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
-          pos.dirX = pos.dirY = pos.lastDirX = pos.lastDirY = pos.distAxX = pos.distAxY = 0;
           return pos;
         },
 

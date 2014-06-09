@@ -420,7 +420,7 @@
             dragMove,//drag move event.
             dragEnd,//drag end event.
             isDraggable,//is element draggable.
-            isMovingUpwards,//is element moved up direction.
+            isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
             bindEvents,//bind the drag events.
@@ -548,7 +548,7 @@
               if (targetScope.type === 'item') {//item scope. moving over sortable items.
                 targetElement = targetScope.element;
                 if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
-                  if (isMovingUpwards(eventObj, targetElement)) {
+                  if (isDragBefore(eventObj, targetElement)) {
                     targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
                     dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
                   } else {
@@ -596,18 +596,18 @@
            * @param targetElement - the target element.
            * @returns {boolean} - true if moving upwards.
            */
-          isMovingUpwards = function (eventObj, targetElement) {
-            var movingUpwards, targetOffset;
+          isDragBefore = function (eventObj, targetElement) {
+            var dragBefore, targetOffset;
 
-            movingUpwards = false;
+            dragBefore = false;
             // check it's new position
             targetOffset = $helper.offset(targetElement);
             if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
-              movingUpwards = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
+              dragBefore = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
             } else {
-              movingUpwards = eventObj.pageY < targetOffset.top;
+              dragBefore = eventObj.pageY < targetOffset.top;
             }
-            return movingUpwards;
+            return dragBefore;
           };
 
           /**

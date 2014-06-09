@@ -3,9 +3,9 @@
     padding: 10px;
     border-radius: 10px;
     display: block;
-    position: relative;
     min-height: 20px;
     line-height: 20px;
+    position: relative;
 }
 
 .sortable-item {
@@ -16,8 +16,6 @@
 
 .sortable-handle {
     cursor: move;
-    display: block;
-    padding: 2px 1px;
 }
 
 .sortable-placeholder {
@@ -35,5 +33,5 @@
 }
 
 .sortable-hidden {
-    display: none !important;
+    display: none;
 }

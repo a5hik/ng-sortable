@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Demo Page:
 
-[Agile Kanban Board] (http://a5hik.github.io/ng-sortable/)
+[Demo Site] (http://a5hik.github.io/ng-sortable/)
 
 
 #### Features:
@@ -103,13 +103,14 @@ Thats what all you have to do.
 
 ##### Development Environment setup:
 
-Clone the master $ git clone https://github.com/a5hik/ng-sortable.git
+Clone the master 
+    $ git clone https://github.com/a5hik/ng-sortable.git
 
 or Download from [Source Master](https://github.com/a5hik/ng-sortable/archive/master.zip)
 
 ##### Installation:
 
-##### Developmnet Dependencies (Grunt and Bower):
+##### Development Dependencies (Grunt and Bower):
 
 Install Grunt and Bower.
     $ sudo npm install -g grunt-cli bower
@@ -121,16 +122,14 @@ Run the following commands from the project root directory.
     $ bower install
 
 ##### Commands to run:
-    $ grunt build - build the source and generates the min files in dist.
-    $ grunt server - to run a local web server on node.js
-    $ grunt test - test the changes.
-    $ grunt test:continuous - end to end test.
+    $ grunt build - builds the source and generates the min files in dist.
+    $ grunt server - runs a local web server on node.js
+    $ grunt test - runs the tests (WIP).
+    $ grunt test:continuous - end to end test (WIP).
 
 To access the local server, enter the following URL into your web browser:
 
     http://localhost:9009/demo/
-By default, it serves the contents of the demo project.
-
     
 ##### NG Modules Link:
 

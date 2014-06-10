@@ -458,7 +458,7 @@
               // disable right click
               return;
             }
-            if (event.itemDragging || (event.originalEvent && event.originalEvent.itemDragging)) {
+            if (scope.itemDragging) {
               // event has already fired in other scope.
               console.log('debug multiple touch');
               return;
@@ -466,10 +466,7 @@
             if (!isDraggable(event)) {
               return;
             }
-            event.itemDragging = true; // stop event bubbling
-            if (event.originalEvent) {
-              event.originalEvent.itemDragging = true;
-            }
+            scope.itemDragging = true;
 
             eventObj = $helper.eventObj(event);
 
@@ -647,6 +644,7 @@
             placeHolder.remove();
             dragElement.remove();
             dragElement = null;
+            scope.itemDragging = false;
             containment.css('cursor', '');
           }
 

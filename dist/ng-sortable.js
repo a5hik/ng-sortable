@@ -434,10 +434,10 @@
             bindDrag,//bind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
-            hasTouch; // has touch support
+            hasTouch,// has touch support.
+            dragHandled; //drag handled.
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
-          console.log('debug touch' + hasTouch);
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -458,7 +458,7 @@
               // disable right click
               return;
             }
-            if (scope.itemDragging) {
+            if (dragHandled) {
               // event has already fired in other scope.
               console.log('debug multiple touch');
               return;
@@ -466,7 +466,8 @@
             if (!isDraggable(event)) {
               return;
             }
-            scope.itemDragging = true;
+            // Set the flag to prevent other items from inheriting the touch event
+            dragHandled = true;
 
             eventObj = $helper.eventObj(event);
 
@@ -541,7 +542,10 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope, targetElement;
-
+            // Ignore event if not handled
+            if (!dragHandled) {
+              return;
+            }
             if (dragElement) {
 
               event.preventDefault();
@@ -644,7 +648,7 @@
             placeHolder.remove();
             dragElement.remove();
             dragElement = null;
-            scope.itemDragging = false;
+            dragHandled = false;
             containment.css('cursor', '');
           }
 
@@ -654,7 +658,10 @@
            * @param event - the event object.
            */
           dragEnd = function (event) {
-
+            // Ignore event if not handled
+            if (!dragHandled) {
+              return;
+            }
             event.preventDefault();
             if (dragElement) {
               //rollback all the changes.
@@ -684,10 +691,13 @@
            * @param event - the event object.
            */
           dragCancel = function (event) {
-
+            // Ignore event if not handled
+            if (!dragHandled) {
+              return;
+            }
             event.preventDefault();
+
             if (dragElement) {
-              console.log('touch cancel debug log');
               //rollback all the changes.
               rollbackDragChanges();
               scope.sortableScope.$apply(function () {

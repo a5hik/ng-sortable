@@ -433,7 +433,11 @@
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
             bindEvents,//bind the drag events.
-            unBindEvents;//unbind the drag events.
+            unBindEvents,//unbind the drag events.
+            hasTouch; // has touch support
+
+          hasTouch = $window.hasOwnProperty('ontouchstart');
+          console.log('debug touch' + hasTouch);
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -449,9 +453,24 @@
 
             var eventObj, tagName;
             event.preventDefault();
+
+            if (!hasTouch && (event.button === 2 || event.which === 3)) {
+              // disable right click
+              return;
+            }
+            if (event.itemDragging || (event.originalEvent && event.originalEvent.itemDragging)) {
+              // event has already fired in other scope.
+              console.log('debug multiple touch');
+              return;
+            }
             if (!isDraggable(event)) {
               return;
             }
+            event.itemDragging = true; // stop event bubbling
+            if (event.originalEvent) {
+              event.originalEvent.itemDragging = true;
+            }
+
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?

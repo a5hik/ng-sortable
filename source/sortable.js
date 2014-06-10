@@ -118,7 +118,7 @@
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
 
-          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragStop: null};
+          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragCancel: null, dragEnd: null};
 
           /**
            * Invoked to decide whether to allow drop.
@@ -153,6 +153,14 @@
            * @param event - the event object.
            */
           callbacks.dragStart = function (event) {
+          };
+
+          /**
+           * Invoked when the drag cancelled.
+           *
+           * @param event - the event object.
+           */
+          callbacks.dragCancel = function (event) {
           };
 
           /**

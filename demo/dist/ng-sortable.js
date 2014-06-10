@@ -314,7 +314,7 @@
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
 
-          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragStop: null};
+          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragCancel: null, dragEnd: null};
 
           /**
            * Invoked to decide whether to allow drop.
@@ -349,6 +349,14 @@
            * @param event - the event object.
            */
           callbacks.dragStart = function (event) {
+          };
+
+          /**
+           * Invoked when the drag cancelled.
+           *
+           * @param event - the event object.
+           */
+          callbacks.dragCancel = function (event) {
           };
 
           /**
@@ -419,6 +427,7 @@
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
+            dragCancel,//drag cancel event.
             isDraggable,//is element draggable.
             isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
@@ -498,7 +507,7 @@
             if (!sourceScope || !sourceScope.type || sourceScope.type !== 'handle') {
               return false;
             }
-              //If a 'no-drag' element inside item-handle if any.
+            //If a 'no-drag' element inside item-handle if any.
             while (isDraggable && elementClicked[0] !== element[0]) {
               if ($helper.noDrag(elementClicked)) {
                 isDraggable = false;
@@ -558,7 +567,7 @@
                 }
               } else if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
-                    targetElement[0].parentNode !== targetScope.element[0]) {
+                     targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   if (!isPlaceHolderPresent(targetElement)) {
                     //append to bottom.
@@ -572,13 +581,13 @@
 
           /**
            * Check there is no place holder placed by itemScope.
-            * @param targetElement the target element to check with.
+           * @param targetElement the target element to check with.
            * @returns {*} true if place holder present.
            */
           isPlaceHolderPresent = function (targetElement) {
             var itemElements, hasPlaceHolder, i;
 
-            itemElements =  targetElement.children();
+            itemElements = targetElement.children();
             for (i = 0; i < itemElements.length; i += 1) {
               if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
                 hasPlaceHolder = true;
@@ -611,6 +620,18 @@
           };
 
           /**
+           * Rollback the drag data changes.
+           */
+
+          function rollbackDragChanges() {
+            placeElement.replaceWith(scope.itemScope.element);
+            placeHolder.remove();
+            dragElement.remove();
+            dragElement = null;
+            containment.css('cursor', '');
+          }
+
+          /**
            * triggered while drag ends.
            *
            * @param event - the event object.
@@ -618,34 +639,43 @@
           dragEnd = function (event) {
 
             event.preventDefault();
-            scope.$$apply = true;
             if (dragElement) {
               //rollback all the changes.
-              placeElement.replaceWith(scope.itemScope.element);
-              placeHolder.remove();
-              dragElement.remove();
-              dragElement = null;
-              containment.css('cursor', '');
-
+              rollbackDragChanges();
               // update model data
-              if (scope.$$apply) {
-                dragItemInfo.apply();
-                scope.sortableScope.$apply(function () {
-                  if (dragItemInfo.isSameParent()) {
-                    if (dragItemInfo.isOrderChanged()) {
-                      scope.callbacks.orderChanged(dragItemInfo.eventArgs());
-                    }
-                  } else {
-                    scope.callbacks.itemMoved(dragItemInfo.eventArgs());
+              dragItemInfo.apply();
+              scope.sortableScope.$apply(function () {
+                if (dragItemInfo.isSameParent()) {
+                  if (dragItemInfo.isOrderChanged()) {
+                    scope.callbacks.orderChanged(dragItemInfo.eventArgs());
                   }
-                });
-              } else {
-                bindDrag();
-              }
+                } else {
+                  scope.callbacks.itemMoved(dragItemInfo.eventArgs());
+                }
+              });
               scope.sortableScope.$apply(function () {
                 scope.callbacks.dragEnd(dragItemInfo.eventArgs());
               });
-              scope.$$apply = false;
+              dragItemInfo = null;
+            }
+            unBindEvents();
+          };
+
+          /**
+           * triggered while drag is cancelled.
+           *
+           * @param event - the event object.
+           */
+          dragCancel = function (event) {
+
+            event.preventDefault();
+            if (dragElement) {
+              console.log('touch cancel debug log');
+              //rollback all the changes.
+              rollbackDragChanges();
+              scope.sortableScope.$apply(function () {
+                scope.callbacks.dragCancel(dragItemInfo.eventArgs());
+              });
               dragItemInfo = null;
             }
             unBindEvents();
@@ -665,7 +695,7 @@
           //Cancel drag on escape press.
           angular.element($document[0].body).bind('keydown', function (event) {
             if (event.keyCode === 27) {
-              dragEnd(event);
+              dragCancel(event);
             }
           });
 
@@ -675,7 +705,7 @@
           bindEvents = function () {
             angular.element($document).bind('touchmove', dragMove);
             angular.element($document).bind('touchend', dragEnd);
-            angular.element($document).bind('touchcancel', dragEnd);
+            angular.element($document).bind('touchcancel', dragCancel);
             angular.element($document).bind('mousemove', dragMove);
             angular.element($document).bind('mouseup', dragEnd);
           };
@@ -685,7 +715,7 @@
            */
           unBindEvents = function () {
             angular.element($document).unbind('touchend', dragEnd);
-            angular.element($document).unbind('touchcancel', dragEnd);
+            angular.element($document).unbind('touchcancel', dragCancel);
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);

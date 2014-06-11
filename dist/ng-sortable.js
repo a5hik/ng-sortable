@@ -82,6 +82,24 @@
         },
 
         /**
+         * Checks whether the touch is valid and multiple.
+         *
+         * @param event the event object.
+         * @returns {boolean} true if touch is multiple.
+         */
+        isMultipleTouch: function (event) {
+
+          var isMultipleTouch = false;
+          if (event.touches !== undefined && event.touches.length > 1) {
+            isMultipleTouch = true;
+          } else if (event.originalEvent !== undefined &&
+            event.originalEvent.touches !== undefined && event.originalEvent.touches.length > 1) {
+            isMultipleTouch = true;
+          }
+          return isMultipleTouch;
+        },
+
+        /**
          * Get the start position of the target element according to the provided event properties.
          *
          * @param {Object} event Event
@@ -458,17 +476,15 @@
               // disable right click
               return;
             }
-            if (dragHandled) {
+            if (hasTouch && $helper.isMultipleTouch(event)) {
+              return;
+            }
+            if (dragHandled || !isDraggable(event)) {
               // event has already fired in other scope.
-              console.log('debug multiple touch');
               return;
             }
-            if (!isDraggable(event)) {
-              return;
-            }
-            // Set the flag to prevent other items from inheriting the touch event
+            // Set the flag to prevent other items from inheriting the drag event
             dragHandled = true;
-
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
@@ -542,6 +558,10 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope, targetElement;
+
+            if (hasTouch && $helper.isMultipleTouch(event)) {
+              return;
+            }
             // Ignore event if not handled
             if (!dragHandled) {
               return;

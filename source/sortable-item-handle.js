@@ -71,11 +71,11 @@
               // disable right click
               return;
             }
-            if (dragHandled) {
-              // event has already fired in other scope.
+            if (hasTouch && $helper.isTouchInvalid(event)) {
               return;
             }
-            if (!isDraggable(event)) {
+            if (dragHandled || !isDraggable(event)) {
+              // event has already fired in other scope.
               return;
             }
             // Set the flag to prevent other items from inheriting the drag event
@@ -153,6 +153,10 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope, targetElement;
+
+            if (hasTouch && $helper.isTouchInvalid(event)) {
+              return;
+            }
             // Ignore event if not handled
             if (!dragHandled) {
               return;

@@ -82,6 +82,24 @@
         },
 
         /**
+         * Checks whether the touch is valid and multiple.
+         *
+         * @param event the event object.
+         * @returns {boolean} true if touch is multiple.
+         */
+        isTouchInvalid: function (event) {
+
+          var touchInvalid = false;
+          if (event.touches !== undefined && event.touches.length > 1) {
+            touchInvalid = true;
+          } else if (event.originalEvent !== undefined &&
+              event.originalEvent.touches !== undefined && event.originalEvent.touches.length > 1) {
+            touchInvalid = true;
+          }
+          return touchInvalid;
+        },
+
+        /**
          * Get the start position of the target element according to the provided event properties.
          *
          * @param {Object} event Event
@@ -458,11 +476,11 @@
               // disable right click
               return;
             }
-            if (dragHandled) {
-              // event has already fired in other scope.
+            if (hasTouch && $helper.isTouchInvalid(event)) {
               return;
             }
-            if (!isDraggable(event)) {
+            if (dragHandled || !isDraggable(event)) {
+              // event has already fired in other scope.
               return;
             }
             // Set the flag to prevent other items from inheriting the drag event
@@ -540,6 +558,10 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope, targetElement;
+
+            if (hasTouch && $helper.isTouchInvalid(event)) {
+              return;
+            }
             // Ignore event if not handled
             if (!dragHandled) {
               return;

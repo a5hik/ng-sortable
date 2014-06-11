@@ -67,6 +67,24 @@
         },
 
         /**
+         * Checks whether the touch is valid and multiple.
+         *
+         * @param event the event object.
+         * @returns {boolean} true if touch is multiple.
+         */
+        isTouchInvalid: function (event) {
+
+          var touchInvalid = false;
+          if (event.touches !== undefined && event.touches.length > 1) {
+            touchInvalid = true;
+          } else if (event.originalEvent !== undefined &&
+              event.originalEvent.touches !== undefined && event.originalEvent.touches.length > 1) {
+            touchInvalid = true;
+          }
+          return touchInvalid;
+        },
+
+        /**
          * Get the start position of the target element according to the provided event properties.
          *
          * @param {Object} event Event

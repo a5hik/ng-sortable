@@ -26,10 +26,11 @@
         </div>
         <!-- Item template -->
         <script type="text/ng-template" id="card.html">
-            <div>
+            <div sortable-item-handle>
                 <div class="row">
                     <div class="col-sm-10">
-                        <span sortable-item-handle class="card-title">{{card.title}}</span>
+                        <span class="card-title"><a data-no-drag target=_top href="https://github.com/a5hik/ng-sortable">test no-drag href</a></span>
+                        <span class="card-title">{{card.title}}</span>
                         <span>{{card.status}}</span>
                     </div>
                     <div class="col-sm-2">

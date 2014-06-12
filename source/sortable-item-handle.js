@@ -65,7 +65,6 @@
           dragStart = function (event) {
 
             var eventObj, tagName;
-            event.preventDefault();
 
             if (!hasTouch && (event.button === 2 || event.which === 3)) {
               // disable right click
@@ -80,6 +79,7 @@
             }
             // Set the flag to prevent other items from inheriting the drag event
             dragHandled = true;
+            event.preventDefault();
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?

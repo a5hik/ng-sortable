@@ -87,16 +87,16 @@
          * @param event the event object.
          * @returns {boolean} true if touch is multiple.
          */
-        isMultipleTouch: function (event) {
+        isTouchInvalid: function (event) {
 
-          var isMultipleTouch = false;
+          var touchInvalid = false;
           if (event.touches !== undefined && event.touches.length > 1) {
-            isMultipleTouch = true;
+            touchInvalid = true;
           } else if (event.originalEvent !== undefined &&
             event.originalEvent.touches !== undefined && event.originalEvent.touches.length > 1) {
-            isMultipleTouch = true;
+            touchInvalid = true;
           }
-          return isMultipleTouch;
+          return touchInvalid;
         },
 
         /**
@@ -470,13 +470,12 @@
           dragStart = function (event) {
 
             var eventObj, tagName;
-            event.preventDefault();
 
             if (!hasTouch && (event.button === 2 || event.which === 3)) {
               // disable right click
               return;
             }
-            if (hasTouch && $helper.isMultipleTouch(event)) {
+            if (hasTouch && $helper.isTouchInvalid(event)) {
               return;
             }
             if (dragHandled || !isDraggable(event)) {
@@ -485,6 +484,7 @@
             }
             // Set the flag to prevent other items from inheriting the drag event
             dragHandled = true;
+            event.preventDefault();
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
@@ -559,7 +559,7 @@
 
             var eventObj, targetX, targetY, targetScope, targetElement;
 
-            if (hasTouch && $helper.isMultipleTouch(event)) {
+            if (hasTouch && $helper.isTouchInvalid(event)) {
               return;
             }
             // Ignore event if not handled

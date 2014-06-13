@@ -682,8 +682,8 @@
             if (!dragHandled) {
               return;
             }
+            event.preventDefault();
             if (dragElement) {
-              event.preventDefault();
               //rollback all the changes.
               rollbackDragChanges();
               // update model data
@@ -715,8 +715,9 @@
             if (!dragHandled) {
               return;
             }
+            event.preventDefault();
+
             if (dragElement) {
-              event.preventDefault();
               //rollback all the changes.
               rollbackDragChanges();
               scope.sortableScope.$apply(function () {

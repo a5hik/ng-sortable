@@ -96,6 +96,20 @@ Define your callbacks in the invoking controller.
     
 Thats what all you have to do.
 
+###### Restrict Moving between Columns:
+
+Define the accept callback. and the implementation is your choice.
+The itemScope(dragged Item) and sortableScope(destination list) is exposed. 
+Compare the scope Objects there like below., If you have to exactly restrict moving between columns.
+
+    accept: function (itemScope, sortableScope) {
+      return itemScope.$parent.sortableScope === sortableScope;
+    }
+
+If you want to restrict only to certain columns say you have 5 columns and you want 
+the drag to be allowed in only 3 columns, then you need to implement your custom logic there.,
+and that too becomes straight forward as you have your scope Objects in hand.
+
 ##### Testing:
 
 - Tested on FireFox, IE, Chrome.

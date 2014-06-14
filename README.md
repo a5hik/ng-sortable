@@ -48,7 +48,7 @@ The directives are structured like below.
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-- callbacks.accept = function (sourceItemScope, destScope) {}; //used to determine drag zone is allowed are not.
+- callbacks.accept = function (sourceItemHandleScope, destSortableScope) {}; //used to determine drag zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
@@ -89,6 +89,7 @@ Invoke the Directives using below html structure.
 Define your callbacks in the invoking controller.
 
     $scope.dragControlListeners = function() {
+        accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
         itemMoved: function (event) {//Do what you want},
         orderChanged: function(event) {//Do what you want},
         containment: '#board'//optional param.
@@ -99,16 +100,18 @@ Thats what all you have to do.
 ###### Restrict Moving between Columns:
 
 Define the accept callback. and the implementation is your choice.
-The itemScope(dragged Item) and sortableScope(destination list) is exposed. 
+The itemHandleScope(dragged Item) and sortableScope(destination list) is exposed. 
 Compare the scope Objects there like below., If you have to exactly restrict moving between columns.
 
-    accept: function (itemScope, sortableScope) {
-      return itemScope.$parent.sortableScope === sortableScope;
+    accept: function (sourceItemHandleScope, descSortableScope) {
+      return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
     }
 
 If you want to restrict only to certain columns say you have 5 columns and you want 
 the drag to be allowed in only 3 columns, then you need to implement your custom logic there.,
 and that too becomes straight forward as you have your scope Objects in hand.
+
+And reversing the condition, allows you to Drag accross Columns but not within same Column.
 
 ##### Testing:
 

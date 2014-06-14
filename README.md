@@ -115,7 +115,7 @@ And reversing the condition, allows you to Drag accross Columns but not within s
 
 ##### Testing:
 
-- Tested on FireFox, IE, Chrome.
+- Tested on FireFox, IE, Chrome and Safari.
 - Ipad, Iphone and Android devices.
 
 ##### Development Environment setup:

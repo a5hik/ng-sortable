@@ -3,7 +3,6 @@
 #board { margin: 0; padding: 0 10px 0 10px;}
 #columns { margin: 20px 0 5px 0;}
 #columns > div { padding-left: 5px; padding-right:5px;}
-#columns a { color: #444; }
 
 .column {
     border: solid 1px darkgrey;
@@ -69,4 +68,5 @@
 
 .removeCard {
     padding: 20px;
+    color: #444;
 }

@@ -69,6 +69,12 @@ Following callbacks are defined, and should be overridden to perform custom logi
                   index: index after move.
                   sortableScope: destination sortable scope.  
                   
+##### Some Notable Fixes:
+
+- Touch is allowed on only one Item at a time. Multiple Finger touch is prevented as like JQuery.
+- Pressing 'Esc' key will Cancel the Drag Event, and moves back the Item to it's Original location.
+- Right Click on mouse is prevented on draggable Item.
+
 ##### Usage:
 
 Include the following files in your html source.
@@ -115,7 +121,7 @@ And reversing the condition, allows you to Drag accross Columns but not within s
 
 ##### Testing:
 
-- Tested on FireFox, IE, Chrome.
+- Tested on FireFox, IE, Chrome and Safari.
 - Ipad, Iphone and Android devices.
 
 ##### Development Environment setup:

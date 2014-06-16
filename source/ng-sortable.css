@@ -1,15 +1,11 @@
 
 .sortable-item, .sortable-placeholder {
-    padding: 10px;
-    border-radius: 10px;
     display: block;
     min-height: 20px;
-    line-height: 20px;
-    position: relative;
+    margin: 1px 2px 5px 1px;
 }
 
 .sortable-item {
-    margin: 2px;
     border: solid 1px darkgrey;
     background-color: #ffffff;
 }
@@ -19,8 +15,7 @@
 }
 
 .sortable-placeholder {
-    margin: 5px 0;
-    border: 1px dashed #808080;
+    border: 1px dashed darkgrey;
     box-sizing: border-box;
     background-color: #dbdbdb;
 }

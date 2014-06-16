@@ -7,7 +7,6 @@
 
 .column {
     border: solid 1px darkgrey;
-    border-radius: 10px;
     margin-left: 5px;
     background-color: #666;
     box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;
@@ -49,6 +48,10 @@
     border-style: solid;
 }
 
+.card {
+   padding: 10px;
+}
+
 .card-title {
     color: #7c9eb2;
     text-decoration: none;
@@ -62,4 +65,8 @@
     float: right;
     padding-right: 30px;
     color:  lightgrey;
+}
+
+.removeCard {
+    padding: 20px;
 }

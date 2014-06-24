@@ -1,6 +1,6 @@
 {
   "name": "ng-sortable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/a5hik/ng-sortable",
   "author": "Muhammed Ashik <https://github.com/a5hik>",
   "description": "Angular Library for Drag and Drop, supports Sortable and Draggable.",
@@ -30,6 +30,8 @@
   "ignore": [
        "node_modules",
        "bower_components",
-       "test"
+       "test",
+       "demo",
+       "source"
   ]
 }

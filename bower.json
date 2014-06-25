@@ -33,6 +33,6 @@
     "node_modules", "bower_components",
     "test", "demo", "source", ".gitignore",
     ".jshintrc", ".travis.yml", "Gruntfile.js",
-    ".bowerrc", "bower.json", "karma.conf.js", "package.json"
+    ".bowerrc", "karma.conf.js", "package.json"
   ]
 }

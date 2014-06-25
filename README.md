@@ -99,7 +99,7 @@ Make sure to load the scripts in your html.
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
 ```
 
-And Inject the sortable module.
+And Inject the sortable module as dependency.
 
 ```
 angular.module('xyzApp', ['ui.sortable', '....']);

@@ -78,15 +78,11 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 ##### Usage:
 
+Get the binaries of ng-sortable with any of the following ways.
+
 ```sh
 bower install ng-sortable
 ```
-Make sure to load the scripts in your html.
-```html
-<script src="dist/ng-sortable.min.js"></script>
-<link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
-```
-
 Or for yeoman with bower automatic include:
 ```
 bower install ng-sortable -save
@@ -97,13 +93,12 @@ Or bower.json
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1" ", ...],
 }
 ```
-
-Include the following files in your html source.
-
-    <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
+Make sure to load the scripts in your html.
+```html
+<script type="text/javascript" src="dist/ng-sortable.min.js"></script>
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
-    
-##### Html Structure:
+```
+###### Html Structure:
 
 Invoke the Directives using below html structure.
 

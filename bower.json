@@ -6,8 +6,9 @@
   "description": "Angular Library for Drag and Drop, supports Sortable and Draggable.",
   "license": "MIT",
   "main": [
-    "ng-sortable.min.js",
-    "ng-sortable.min.css"
+    "dist/ng-sortable.js",
+    "dist/ng-sortable.min.js",
+    "dist/ng-sortable.min.css"
   ],
   "keywords": [
     "angular",
@@ -29,10 +30,9 @@
     "angular-scenario": "1.2.x"
   },
   "ignore": [
-    "node_modules",
-    "bower_components",
-    "test",
-    "demo",
-    "source"
+    "node_modules", "bower_components",
+    "test", "demo", "source", ".gitignore",
+    ".jshintrc", ".travis.yml", "Gruntfile.js",
+    ".bowerrc", "bower.json", "karma.conf.js", "package.json"
   ]
 }

@@ -78,6 +78,26 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 ##### Usage:
 
+```sh
+bower install ng-sortable
+```
+Make sure to load the scripts in your html.
+```html
+<script src="dist/ng-sortable.min.js"></script>
+<link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
+```
+
+Or for yeoman with bower automatic include:
+```
+bower install ng-sortable -save
+```
+Or bower.json
+```
+{
+  "dependencies": [..., "ng-sortable: "latest_version eg - "1.1" ", ...],
+}
+```
+
 Include the following files in your html source.
 
     <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
@@ -102,7 +122,7 @@ Define your callbacks in the invoking controller.
         containment: '#board'//optional param.
     };
     
-Thats what all you have to do.
+That's what all you have to do.
 
 ###### Restrict Moving between Columns:
 

@@ -101,9 +101,9 @@ Make sure to load the scripts in your html.
 
 And Inject the sortable module.
 
-'''
+```
 angular.module('xyzApp', ['ui.sortable', '....']);
-'''
+```
 
 ###### Html Structure:
 

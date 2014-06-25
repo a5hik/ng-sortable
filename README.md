@@ -98,6 +98,13 @@ Make sure to load the scripts in your html.
 <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
 ```
+
+And Inject the sortable module.
+
+'''
+angular.module('xyzApp', ['ui.sortable', '....']);
+'''
+
 ###### Html Structure:
 
 Invoke the Directives using below html structure.

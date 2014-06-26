@@ -11,7 +11,7 @@
    *
    * @param $scope - item handle scope.
    */
-  mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
+  mainModule.controller('ui.sortable.sortableItemHandleController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -28,7 +28,7 @@
         require: '^sortableItem',
         scope: true,
         restrict: 'A',
-        controller: 'sortableItemHandleController',
+        controller: 'ui.sortable.sortableItemHandleController',
         link: function (scope, element, attrs, itemController) {
 
           var dragElement, //drag item element.

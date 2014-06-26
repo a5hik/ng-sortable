@@ -10,7 +10,7 @@
    * Controller for Sortable.
    * @param $scope - the sortable scope.
    */
-  mainModule.controller('sortableController', ['$scope', function ($scope) {
+  mainModule.controller('ui.sortable.sortableController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -96,7 +96,7 @@
         require: 'ngModel', // get a hold of NgModelController
         restrict: 'A',
         scope: true,
-        controller: 'sortableController',
+        controller: 'ui.sortable.sortableController',
         link: function (scope, element, attrs, ngModelController) {
 
           var ngModel, callbacks;

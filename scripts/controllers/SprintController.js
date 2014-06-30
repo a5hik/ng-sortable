@@ -8,11 +8,10 @@ angular.module('demoApp').controller('SprintController', ['$scope', 'BoardServic
   $scope.sprintBoard = BoardService.sprintBoard(BoardDataFactory.sprint);
 
   $scope.sprintSortOptions = {
-
-    //restrict move across columns. move only within column.
-    /*accept: function (sourceItemHandleScope, destSortableScope) {
-     return sourceItemHandleScope.itemScope.sortableScope.$id !== destSortableScope.$id;
-     },*/
+   //restrict move across backlogs. move only within backlog.
+    accept: function (sourceItemHandleScope, destSortableScope) {
+             return sourceItemHandleScope.itemScope.sortableScope.$parent.$parent.backlog.$$hashKey === destSortableScope.$parent.$parent.backlog.$$hashKey;
+    },
     itemMoved: function (event) {
 
     },

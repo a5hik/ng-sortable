@@ -1,27 +1,3 @@
-/*
- The MIT License (MIT)
-
- Copyright (c) 2014 Muhammed Ashik
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
-
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -236,7 +212,7 @@
     ]);
 
 }());
-  /*jshint undef: false, unused: false, indent: 2*/
+/*jshint undef: false, unused: false, indent: 2*/
 /*global angular: false */
 
 (function () {
@@ -248,7 +224,7 @@
    * Controller for Sortable.
    * @param $scope - the sortable scope.
    */
-  mainModule.controller('ui.sortable.sortableController', ['$scope', function ($scope) {
+  mainModule.controller('sortableController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -334,7 +310,7 @@
         require: 'ngModel', // get a hold of NgModelController
         restrict: 'A',
         scope: true,
-        controller: 'ui.sortable.sortableController',
+        controller: 'sortableController',
         link: function (scope, element, attrs, ngModelController) {
 
           var ngModel, callbacks;
@@ -440,7 +416,7 @@
    *
    * @param $scope - item handle scope.
    */
-  mainModule.controller('ui.sortable.sortableItemHandleController', ['$scope', function ($scope) {
+  mainModule.controller('sortableItemHandleController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -457,7 +433,7 @@
         require: '^sortableItem',
         scope: true,
         restrict: 'A',
-        controller: 'ui.sortable.sortableItemHandleController',
+        controller: 'sortableItemHandleController',
         link: function (scope, element, attrs, itemController) {
 
           var dragElement, //drag item element.
@@ -808,7 +784,7 @@
    *
    * @param $scope - drag item scope
    */
-  mainModule.controller('ui.sortable.sortableItemController', ['$scope', function ($scope) {
+  mainModule.controller('sortableItemController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -844,7 +820,7 @@
       return {
         require: '^sortable',
         restrict: 'A',
-        controller: 'ui.sortable.sortableItemController',
+        controller: 'sortableItemController',
         link: function (scope, element, attrs, sortableController) {
 
           if (sortableConfig.itemClass) {

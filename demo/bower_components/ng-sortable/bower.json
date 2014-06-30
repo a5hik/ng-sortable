@@ -27,9 +27,7 @@
     "bootstrap": "~3.0.3",
     "angular-bootstrap": "~0.10.0",
     "angular-mocks": "1.2.x",
-    "angular-scenario": "1.2.x",
-    "angular-route": "1.2.x",
-    "ng-sortable": "1.1"
+    "angular-scenario": "1.2.x"
   },
   "ignore": [
     "node_modules", "bower_components",

@@ -1,0 +1,54 @@
+{
+  "name": "ng-sortable",
+  "homepage": "https://github.com/a5hik/ng-sortable",
+  "author": "Muhammed Ashik <https://github.com/a5hik>",
+  "description": "Angular Library for Drag and Drop, supports Sortable and Draggable.",
+  "license": "MIT",
+  "main": [
+    "dist/ng-sortable.js",
+    "dist/ng-sortable.min.js",
+    "dist/ng-sortable.min.css"
+  ],
+  "keywords": [
+    "angular",
+    "drag",
+    "drop",
+    "sortable",
+    "draggable",
+    "touch",
+    "directive"
+  ],
+  "dependencies": {
+    "angular": "1.2.x"
+  },
+  "devDependencies": {
+    "angular": "1.2.x",
+    "bootstrap": "~3.0.3",
+    "angular-bootstrap": "~0.10.0",
+    "angular-mocks": "1.2.x",
+    "angular-scenario": "1.2.x"
+  },
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "demo",
+    "source",
+    ".gitignore",
+    ".jshintrc",
+    ".travis.yml",
+    "Gruntfile.js",
+    ".bowerrc",
+    "karma.conf.js",
+    "package.json"
+  ],
+  "_release": "1.1",
+  "_resolution": {
+    "type": "tag",
+    "tag": "1.1",
+    "commit": "fef4236e87889c8973764c352c657bb26bbe2ff7"
+  },
+  "_source": "git://github.com/a5hik/ng-sortable.git",
+  "_target": "1.1",
+  "_originalSource": "ng-sortable"
+}

@@ -8,9 +8,12 @@ angular.module('demoApp').service('BoardDataFactory', function () {
   return {
     kanban: {
       "name": "Kanban Board",
-      "numberOfColumns": 3,
+      "numberOfColumns": 4,
       "columns": [
-        // {"name":"Ideas","cards":[{"name":"Come up with a POC for new Project"},{"name":"Design new framework for reporting module"}]},
+        {"name": "Ideas", "cards": [
+          {"title": "Come up with a POC for new Project"},
+          {"title": "Design new framework for reporting module"}
+        ]},
         {"name": "Not started", "cards": [
           {"title": "Explore new IDE for Development",
             "details": "Testing Card Details"},
@@ -36,7 +39,11 @@ angular.module('demoApp').service('BoardDataFactory', function () {
     sprint: {
       "name": "Sprint Board",
       "numberOfColumns": 3,
-      "columns": [{"name": "Not started"}, {"name": "In progress"}, {"name": "Done"}],
+      "columns": [
+        {"name": "Not started"},
+        {"name": "In progress"},
+        {"name": "Done"}
+      ],
       "backlogs": [
         {"title": "Come up with a POC for new Project",
           "details": "backlog id 1",
@@ -72,7 +79,7 @@ angular.module('demoApp').service('BoardDataFactory', function () {
                   "status": "Done"}
               ]}
           ]
-          },
+        },
         {
           "title": "Design new framework for reporting module",
           "details": "backlog id 2",

@@ -19,11 +19,4 @@ angular.module('demoApp').controller('SprintController', ['$scope', 'BoardServic
     },
     containment: '#board'
   };
-
-  // Calculate phase column width
-  $scope.getColumnWidth = function (reservedSize, phasesCount) {
-    var columnWidth = (100 - reservedSize) / phasesCount;
-
-    return columnWidth + "%";
-  };
 }]);

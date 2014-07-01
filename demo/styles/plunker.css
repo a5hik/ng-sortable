@@ -1,0 +1,7 @@
+/* Put your css in here */
+.sortable-item,
+.sortable-placeholder {
+    display     : inline-block !important;
+    width       : 124px;
+    height      : 110px;
+}

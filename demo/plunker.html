@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+<head>
+    <title>Angular Horizontal Demo.</title>
+    <!--styles -->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/plunker.css">
+    <!--scripts-->
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="dist/ng-sortable.js"></script>
+    <script type="text/javascript" src="plunker.js"></script>
+
+</head>
+<body ng-controller="MainCtrl">
+<div id="sortable-container">
+    <div sortable="sortableOptions" ng-model="ctrlr.items">
+        <div ng-repeat="item in ctrlr.items" sortable-item>
+            <div class="thumbnail thumbnail-media-image" sortable-item-handle>
+                <!--<img class="thumb" width="100" height="100">-->
+                <span>{{item.Label}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

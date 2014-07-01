@@ -83,7 +83,7 @@
             eventObj = $helper.eventObj(event);
 
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
-                angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
+              angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
 
@@ -146,6 +146,28 @@
           };
 
           /**
+           * Inserts the placeHolder in to the targetScope.
+           *
+           * @param targetElement the target element
+           * @param targetScope the target scope
+           */
+          function insertBefore(targetElement, targetScope) {
+            targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
+            dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
+          }
+
+          /**
+           * Inserts the placeHolder next to the targetScope.
+           *
+           * @param targetElement the target element
+           * @param targetScope the target scope
+           */
+          function insertAfter(targetElement, targetScope) {
+            targetElement.after(placeHolder);
+            dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
+          }
+
+          /**
            * Triggered when drag is moving.
            *
            * @param event - the event object.
@@ -189,20 +211,28 @@
                 return;
               }
 
-              if (targetScope.type === 'item') {//item scope. moving over sortable items.
+              if (targetScope.type === 'item') {
                 targetElement = targetScope.element;
                 if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
-                  if (isDragBefore(eventObj, targetElement)) {
-                    targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
-                    dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
-                  } else {
-                    targetElement.after(placeHolder);
-                    dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
+                  if (itemPosition.dirAx) {//move horizontal
+                    itemPosition.distAxX = 0;
+                    if (itemPosition.distX < 0) {//move left
+                      insertBefore(targetElement, targetScope);
+                    } else if (itemPosition.distX > 0) {//move right
+                      insertAfter(targetElement, targetScope);
+                    }
+                  } else if (!itemPosition.dirAx) {//move vertical
+                    if (isDragBefore(eventObj, targetElement)) {//move up
+                      insertBefore(targetElement, targetScope);
+                    } else {//move bottom
+                      insertAfter(targetElement, targetScope);
+                    }
                   }
                 }
-              } else if (targetScope.type === 'sortable') {//sortable scope.
+              }
+              if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
-                     targetElement[0].parentNode !== targetScope.element[0]) {
+                  targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
                   if (!isPlaceHolderPresent(targetElement)) {
                     //append to bottom.

@@ -190,10 +190,6 @@ Let [me](https://github.com/a5hik) know if you have any questions.
 
 For Bug report, and feature request File an Issue here: [issue](https://github.com/a5hik/ng-sortable/issues).
 
-##### Credits
-
-This Library is written mainly to add the ability to support drag and drop of moving items across a Grid Like Layout and with out creating dependency on JQuery/Html5. This Library is inspired by [angular-ui-tree] (https://github.com/JimLiu/angular-ui-tree) module.
-
 ##### License
 
 MIT, see [LICENSE.md](./LICENSE.md).

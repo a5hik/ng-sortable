@@ -14,6 +14,10 @@ Latest release verision 1.1.0
 
 [Demo Site] (http://a5hik.github.io/ng-sortable/)
 
+Demo Includes:
+
+- Drag between adjacent Lists.
+- Controll Drag on Specific Destinations.
 
 #### Features:
 

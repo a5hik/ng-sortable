@@ -1,24 +1,27 @@
+'use strict'
+
 var app = angular.module('plunker', ['ui.sortable']);
 
-app.controller('MainCtrl', function($scope) {
-  $scope.ctrlr = {};
-  $scope.ctrlr.items = [];
-  $scope.ctrlr.items2 = [];
-  $scope.ctrlr.items.push({'Id': 0, 'Label': 'Item 0'});
-  $scope.ctrlr.items.push({'Id': 1, 'Label': 'Item 1'});
-  $scope.ctrlr.items.push({'Id': 2, 'Label': 'Item 2'});
-  $scope.ctrlr.items.push({'Id': 3, 'Label': 'Item 3'});
-  $scope.ctrlr.items.push({'Id': 4, 'Label': 'Item 4'});
-  $scope.ctrlr.items2.push({'Id': 0, 'Label': 'Item 2_0'});
-  $scope.ctrlr.items2.push({'Id': 1, 'Label': 'Item 2_1'});
-  $scope.ctrlr.items2.push({'Id': 2, 'Label': 'Item 2_2'});
-  $scope.ctrlr.items2.push({'Id': 3, 'Label': 'Item 2_3'});
-  $scope.ctrlr.items2.push({'Id': 4, 'Label': 'Item 2_4'});
+app.controller('MainCtrl', function ($scope) {
+
+  var i;
+  $scope.itemsList = {
+    items1: [],
+    items2: []
+  };
+
+  for (i = 0; i <= 5; i += 1) {
+    $scope.itemsList.items1.push({'Id': i, 'Label': 'Item ' + i});
+  }
+
+  for (i = 0; i <= 5; i += 1) {
+    $scope.itemsList.items2.push({'Id': i, 'Label': 'Item 2_' + i});
+  }
   $scope.sortableOptions = {
     containment: '#sortable-container',
     //restrict move across columns. move only within column.
     accept: function (sourceItemHandleScope, destSortableScope) {
-     return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+      return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
     }
   };
 });

@@ -14,13 +14,13 @@
 </head>
 <body ng-controller="MainCtrl">
 <div id="sortable-container">
-    <div class="sortable-row" sortable="sortableOptions" ng-model="ctrlr.items">
-        <div ng-repeat="item in ctrlr.items" sortable-item>
+    <div class="sortable-row" sortable="sortableOptions" ng-model="itemsList.items1">
+        <div ng-repeat="item in itemsList.items1" sortable-item>
             <div sortable-item-handle>{{item.Label}}</div>
         </div>
     </div>
-    <div class="sortable-row" sortable="sortableOptions" ng-model="ctrlr.items2">
-        <div ng-repeat="item in ctrlr.items2" sortable-item>
+    <div class="sortable-row" sortable="sortableOptions" ng-model="itemsList.items2">
+        <div ng-repeat="item in itemsList.items2" sortable-item>
             <div sortable-item-handle>{{item.Label}}</div>
         </div>
     </div>

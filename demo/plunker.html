@@ -14,12 +14,14 @@
 </head>
 <body ng-controller="MainCtrl">
 <div id="sortable-container">
-    <div sortable="sortableOptions" ng-model="ctrlr.items">
+    <div class="sortable-row" sortable="sortableOptions" ng-model="ctrlr.items">
         <div ng-repeat="item in ctrlr.items" sortable-item>
-            <div class="thumbnail thumbnail-media-image" sortable-item-handle>
-                <!--<img class="thumb" width="100" height="100">-->
-                <span>{{item.Label}}</span>
-            </div>
+            <div sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <div class="sortable-row" sortable="sortableOptions" ng-model="ctrlr.items2">
+        <div ng-repeat="item in ctrlr.items2" sortable-item>
+            <div sortable-item-handle>{{item.Label}}</div>
         </div>
     </div>
 </div>

@@ -20,7 +20,7 @@
          * @returns {String} Height
          */
         height: function (element) {
-          return element.prop('scrollHeight');
+          return element.prop('offsetHeight');
         },
 
         /**
@@ -30,7 +30,7 @@
          * @returns {String} Width
          */
         width: function (element) {
-          return element.prop('scrollWidth');
+          return element.prop('offsetWidth');
         },
 
         /**

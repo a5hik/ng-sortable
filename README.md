@@ -6,13 +6,22 @@ Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI
 
 If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
 
+#### Release:
+
+Latest release verision 1.1.0
+
 #### Demo Page:
 
 [Demo Site] (http://a5hik.github.io/ng-sortable/)
 
+Demo Includes:
+
+- Drag between adjacent Lists.
+- Controll Drag on Specific Destinations.
 
 #### Features:
 
+- Drag both Horizontally and Vertically.
 - Drag and Drop items within a column.
 - Drag and Drop items across columns.
 - Can do Ranking by Sorting and Change Status by Moving.
@@ -90,7 +99,7 @@ bower install ng-sortable -save
 Or bower.json
 ```
 {
-  "dependencies": [..., "ng-sortable: "latest_version eg - "1.1" ", ...],
+  "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
 ```
 Make sure to load the scripts in your html.
@@ -184,4 +193,8 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 Let [me](https://github.com/a5hik) know if you have any questions.
 
 For Bug report, and feature request File an Issue here: [issue](https://github.com/a5hik/ng-sortable/issues).
+
+##### License
+
+MIT, see [LICENSE.md](./LICENSE.md).
 

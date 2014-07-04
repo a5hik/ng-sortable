@@ -1,0 +1,20 @@
+/* Put your css in here */
+.sortable-item,
+.sortable-placeholder {
+    display: inline-block;
+    width: 124px;
+    height: 110px;
+    float: left;
+}
+
+/*.sortable-row:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}*/
+
+#sortable-container {
+    display: inline-block;
+}

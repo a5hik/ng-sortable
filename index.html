@@ -27,8 +27,8 @@
     <div class="container-fluid">
         <div class="board-header">
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#/kanban">Kanban</a></li>
-                <li><a href="#/sprint">Sprint</a></li>
+                <li><a href="#/kanban" ng-class="{active: isActive('#/kanban')}">Kanban</a></li>
+                <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}">Sprint</a></li>
             </ul>
         </div>
     <div ng-view></div>

@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release verision 1.1.0
+Latest release verision 1.1.1
 
 #### Demo Page:
 

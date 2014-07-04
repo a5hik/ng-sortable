@@ -699,14 +699,15 @@
               if (targetScope.type === 'item') {
                 targetElement = targetScope.element;
                 if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
-                  if (itemPosition.dirAx) {//move horizontal
+                  if (itemPosition.dirAx && //move horizontal
+                    scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
                     itemPosition.distAxX = 0;
                     if (itemPosition.distX < 0) {//move left
                       insertBefore(targetElement, targetScope);
                     } else if (itemPosition.distX > 0) {//move right
                       insertAfter(targetElement, targetScope);
                     }
-                  } else if (!itemPosition.dirAx) {//move vertical
+                  } else { //move vertical
                     if (isDragBefore(eventObj, targetElement)) {//move up
                       insertBefore(targetElement, targetScope);
                     } else {//move bottom

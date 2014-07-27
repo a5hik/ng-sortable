@@ -184,6 +184,11 @@
             });
             scope.callbacks = callbacks;
           }, true);
+
+          // Set isEnabled if attr is set, if undefined isEnabled = true
+          scope.$watch(attrs.isEnabled, function (newVal, oldVal) {
+            scope.isEnabled = newVal !== undefined ? newVal : true;
+          }, true);
         }
       };
     });

@@ -126,7 +126,7 @@ Invoke the Directives using below html structure.
 
 Define your callbacks in the invoking controller.
 
-    $scope.dragControlListeners = function() {
+    $scope.dragControlListeners = {
         accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
         itemMoved: function (event) {//Do what you want},
         orderChanged: function(event) {//Do what you want},

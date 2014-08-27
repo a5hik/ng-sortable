@@ -151,6 +151,10 @@ and that too becomes straight forward as you have your scope Objects in hand.
 
 And reversing the condition, allows you to Drag accross Columns but not within same Column.
 
+###### Horizontal Sorting:
+
+Horizontal Drag and Drop can be achieved using the same Library. The Column dispaly can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
+
 ##### Testing:
 
 - Tested on FireFox, IE 9 and Greater, Chrome and Safari.

@@ -119,7 +119,7 @@ angular.module('xyzApp', ['ui.sortable', '....']);
 Invoke the Directives using below html structure.
 
     <ul data-sortable="board.dragControlListeners" data-ng-model="items">
-       <li data-ng-repeat="item in items" data-sortable-item">
+       <li data-ng-repeat="item in items" data-sortable-item>
           <div data-sortable-item-handle></div>
        </li>
     </ul>

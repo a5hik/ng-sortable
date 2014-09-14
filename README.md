@@ -151,6 +151,33 @@ and that too becomes straight forward as you have your scope Objects in hand.
 
 And reversing the condition, allows you to Drag accross Columns but not within same Column.
 
+###### How To Revert Move After Validation Failure:
+
+In case you want the item to be reverted back to its original location after a validation failure
+You can just do the below.
+In your itemMoved call back define a 'moveSuccess' and 'moveFailure' callbacks.
+The move failure Impl here just reverts the moved item to its original location.
+
+    itemMoved: function (eventObj) {
+
+    var moveSuccess, moveFailure;
+          /**
+           * Action to perform after move success.
+           */
+          moveSuccess = function() {};
+
+          /**
+           * Action to perform on move failure.
+           * remove the item from destination Column.
+           * insert the item again in original Column.
+           */
+          moveFailure = function() {   
+               eventObj.dest.sortableScope.removeItem(eventObj.dest.index);
+               eventObj.source.itemScope.sortableScope.insertItem(eventObj.source.index, eventObj.source.itemScope.task);
+          };
+    }
+
+
 ###### Horizontal Sorting:
 
 Horizontal Drag and Drop can be achieved using the same Library. The Column dispaly can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).

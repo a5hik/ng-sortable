@@ -80,7 +80,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
                   
 ##### Some Notable Fixes:
 
-- Touch is allowed on only one Item at a time. Multiple Finger touch is prevented as like JQueryUI Touch Punch.
+- Touch is allowed on only one Item at a time. Tap is prevented on draggable item.
 - Pressing 'Esc' key will Cancel the Drag Event, and moves back the Item to it's Original location.
 - Right Click on mouse is prevented on draggable Item.
 - A child element inside a draggable Item can be made as non draggable.

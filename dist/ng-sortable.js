@@ -576,12 +576,11 @@
             tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
-              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
-            dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
-            dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
+              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass)
+              .css({width: $helper.width(scope.itemScope.element) + 'px', height: $helper.height(scope.itemScope.element) + 'px'});
 
-            placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
-            placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
+            placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass)
+              .css({height: $helper.height(scope.itemScope.element) + 'px', width: $helper.width(scope.itemScope.element) + 'px'});
 
             placeElement = angular.element($document[0].createElement(tagName));
             if (sortableConfig.hiddenClass) {

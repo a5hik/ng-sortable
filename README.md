@@ -57,11 +57,12 @@ The directives are structured like below.
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-- callbacks.accept = function (sourceItemHandleScope, destSortableScope) {}; //used to determine drag zone is allowed are not.
+- callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {}; //used to determine drag zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
+     destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).
 
 - callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
 - callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.

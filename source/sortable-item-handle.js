@@ -213,7 +213,7 @@
 
               if (targetScope.type === 'item') {
                 targetElement = targetScope.element;
-                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
+                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope, targetScope)) {
                   if (itemPosition.dirAx && //move horizontal
                     scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
                     itemPosition.distAxX = 0;

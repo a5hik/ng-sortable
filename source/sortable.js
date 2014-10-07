@@ -61,10 +61,11 @@
      *
      * @param sourceItemHandleScope - drag item handle scope.
      * @param destScope - sortable target scope.
+     * @param destItemScope - sortable destination item scope.
      * @returns {*|boolean} - true if drop is allowed for the drag item in drop target.
      */
-    $scope.accept = function (sourceItemHandleScope, destScope) {
-      return $scope.callbacks.accept(sourceItemHandleScope, destScope);
+    $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
+      return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
     };
 
     /**
@@ -125,9 +126,10 @@
            *
            * @param sourceItemHandleScope - the drag item handle scope.
            * @param destSortableScope - the drop target sortable scope.
+           * @param destItemScope - the drop target item scope.
            * @returns {boolean} - true if allowed for drop.
            */
-          callbacks.accept = function (sourceItemHandleScope, destSortableScope) {
+          callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {
             return true;
           };
 

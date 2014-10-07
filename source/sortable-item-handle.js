@@ -37,6 +37,7 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            dragListen,// listens for mousemove to fire drag start event.
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -56,6 +57,31 @@
             element.addClass(sortableConfig.handleClass);
           }
           scope.itemScope = itemController.scope;
+
+          /**
+           * Triggered on element mouse down event
+           * then waits for a mouse move event
+           * to fire the dragStart event. This allows
+           * for click events on the draggable elements.
+           *
+           * @param event the event object.
+           */
+          dragListen = function (event) {
+              var startEvent = event;
+              element.bind('mousemove.ui.sortable.dragListen', function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  element.unbind('mousemove.ui.sortable.dragListen');
+                  element.unbind('mouseup.ui.sortable.dragListen');
+                  dragStart(startEvent);
+                });
+              element.bind('mouseup.ui.sortable.dragListen', function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  element.unbind('mousemove.ui.sortable.dragListen');
+                  element.unbind('mouseup.ui.sortable.dragListen');
+                });
+            };
 
           /**
            * Triggered when drag event starts.
@@ -356,14 +382,14 @@
           };
 
           /**
-           * Binds the drag start events.
+           * Binds the drag listen events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragStart);
-            element.bind('mousedown', dragStart);
+            element.bind('touchstart', dragListen);
+            element.bind('mousedown', dragListen);
           };
 
-          //bind drag start events.
+          //bind drag listen events.
           bindDrag();
 
           //Cancel drag on escape press.
@@ -393,6 +419,8 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
+            element.unbind('mousemove.ui.sortable.dragListen');
+            element.unbind('mouseup.ui.sortable.dragListen');
           };
         }
       };

@@ -6,13 +6,22 @@ Angular Library for Drag and Drop, supports Sortable and Draggable. No JQuery UI
 
 If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
 
+#### Release:
+
+Latest release verision 1.1.0
+
 #### Demo Page:
 
 [Demo Site] (http://a5hik.github.io/ng-sortable/)
 
+Demo Includes:
+
+- Drag between adjacent Lists.
+- Controll Drag on Specific Destinations.
 
 #### Features:
 
+- Drag both Horizontally and Vertically.
 - Drag and Drop items within a column.
 - Drag and Drop items across columns.
 - Can do Ranking by Sorting and Change Status by Moving.
@@ -78,12 +87,34 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 ##### Usage:
 
-Include the following files in your html source.
+Get the binaries of ng-sortable with any of the following ways.
 
-    <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
+```sh
+bower install ng-sortable
+```
+Or for yeoman with bower automatic include:
+```
+bower install ng-sortable -save
+```
+Or bower.json
+```
+{
+  "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
+}
+```
+Make sure to load the scripts in your html.
+```html
+<script type="text/javascript" src="dist/ng-sortable.min.js"></script>
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
-    
-##### Html Structure:
+```
+
+And Inject the sortable module as dependency.
+
+```
+angular.module('xyzApp', ['ui.sortable', '....']);
+```
+
+###### Html Structure:
 
 Invoke the Directives using below html structure.
 
@@ -102,7 +133,7 @@ Define your callbacks in the invoking controller.
         containment: '#board'//optional param.
     };
     
-Thats what all you have to do.
+That's what all you have to do.
 
 ###### Restrict Moving between Columns:
 
@@ -162,4 +193,8 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 Let [me](https://github.com/a5hik) know if you have any questions.
 
 For Bug report, and feature request File an Issue here: [issue](https://github.com/a5hik/ng-sortable/issues).
+
+##### License
+
+MIT, see [LICENSE.md](./LICENSE.md).
 

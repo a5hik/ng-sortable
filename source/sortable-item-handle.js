@@ -25,7 +25,7 @@
   mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: '^sortableItem',
+        require: ['^sortableItem', '^sortable'],
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',
@@ -45,17 +45,33 @@
             isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
+            unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
-            dragHandled; //drag handled.
+            dragHandled, //drag handled.
+            isEnabled = true; //sortable is enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
           }
-          scope.itemScope = itemController.scope;
+
+          scope.itemScope = controllers[0].scope;
+          scope.sortableScope = controllers[1].scope;
+
+          scope.$watch('sortableScope.isEnabled', function(newVal){
+            if (isEnabled !== newVal) {
+              isEnabled = newVal;
+
+              if (isEnabled) {
+                bindDrag();
+              } else {
+                unbindDrag();
+              }
+            }
+          });
 
           /**
            * Triggered when drag event starts.
@@ -361,6 +377,14 @@
           bindDrag = function () {
             element.bind('touchstart', dragStart);
             element.bind('mousedown', dragStart);
+          };
+
+          /**
+           * Unbinds the drag start events.
+           */
+          unbindDrag = function () {
+            element.unbind('touchstart', dragStart);
+            element.unbind('mousedown', dragStart);
           };
 
           //bind drag start events.

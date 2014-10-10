@@ -27,6 +27,7 @@ Demo Includes:
 - Can do Ranking by Sorting and Change Status by Moving.
 - Hooks provided to invoke API's after a particular action.
 - Preventing/Allowing Drop Zone can be determined at run time.
+- Enable/Disable Drag at run time.
 - Drag Boundary can be defined.
 
 #### Implementation Details:
@@ -52,6 +53,7 @@ The directives are structured like below.
 - All sortable, ng-model, sortable-item and sortable-item-handle are required.
 - the no-drag attribute can be added to avoid dragging an element inside item-handle.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
+- isEnabled attribute on Sortable to determine Drag at runTime.
 
 #### Callbacks:
 

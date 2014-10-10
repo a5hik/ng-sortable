@@ -25,7 +25,7 @@
   mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: ['^sortableItem', '^sortable'],
+        require: '^sortableItem',
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',
@@ -58,10 +58,9 @@
             element.addClass(sortableConfig.handleClass);
           }
 
-          scope.itemScope = controllers[0].scope;
-          scope.sortableScope = controllers[1].scope;
+          scope.itemScope = itemController.scope;
 
-          scope.$watch('sortableScope.isEnabled', function(newVal){
+          scope.$watch('sortableScope.isEnabled', function(newVal) {
             if (isEnabled !== newVal) {
               isEnabled = newVal;
 

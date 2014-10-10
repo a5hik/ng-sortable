@@ -480,11 +480,17 @@
             });
             scope.callbacks = callbacks;
           }, true);
+
+          // Set isEnabled if attr is set, if undefined isEnabled = true
+          scope.$watch(attrs.isEnabled, function (newVal, oldVal) {
+            scope.isEnabled = newVal !== undefined ? newVal : true;
+          }, true);
         }
       };
     });
 
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -532,17 +538,32 @@
             isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
+            unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
-            dragHandled; //drag handled.
+            dragHandled, //drag handled.
+            isEnabled = true; //sortable is enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
           }
+
           scope.itemScope = itemController.scope;
+          
+          scope.$watch('sortableScope.isEnabled', function(newVal) {
+            if (isEnabled !== newVal) {
+              isEnabled = newVal;
+
+              if (isEnabled) {
+                bindDrag();
+              } else {
+                unbindDrag();
+              }
+            }
+          });
 
           /**
            * Triggered when drag event starts.
@@ -850,6 +871,14 @@
             element.bind('mousedown', dragStart);
           };
 
+          /**
+           * Unbinds the drag start events.
+           */
+          unbindDrag = function () {
+            element.unbind('touchstart', dragStart);
+            element.unbind('mousedown', dragStart);
+          };
+
           //bind drag start events.
           bindDrag();
 
@@ -885,6 +914,7 @@
       };
     }]);
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 

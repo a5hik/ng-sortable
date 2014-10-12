@@ -185,6 +185,12 @@ The move failure Impl here just reverts the moved item to its original location.
 
 Horizontal Drag and Drop can be achieved using the same Library. The Column dispaly can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
 
+###### Enable/Disable Drag at Runtime:
+
+The Drag can be controlled at runtime and you can enable/disable it by setting the "isEnabled" property to true or false.
+
+    <sortable isEnabled="true">..</div>
+
 ##### Testing:
 
 - Tested on FireFox, IE 9 and Greater, Chrome and Safari.

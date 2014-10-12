@@ -36,8 +36,8 @@ module.exports = function (grunt) {
       },
       build: {
         files: [
-          '<%= cfg.srcDir %>/**/*.js',
-          '!<%= cfg.buildDir %>/*.js'
+          '<%= cfg.srcDir %>/**/*.*',
+          '!<%= cfg.buildDir %>/*.*'
         ],
         tasks: ['jshint:source', 'clean:build', 'concat:build', 'uglify:build', 'cssmin', 'copy']
       },
@@ -61,6 +61,12 @@ module.exports = function (grunt) {
 
     // prepare files for demo
     copy: {
+      build: {
+        src: [
+          '<%= cfg.srcDir %>/ng-sortable.css'
+        ],
+        dest: '<%= cfg.buildDir %>/ng-sortable.css'
+      },
       demo: {
         files: [
           {
@@ -119,6 +125,17 @@ module.exports = function (grunt) {
       }
     },
 
+    cssmin: {
+      add_banner: {
+        options: {
+          banner: '/* ng-sortable css file */'
+        },
+        files: {
+          '<%= cfg.buildDir %>/ng-sortable.min.css': ['<%= cfg.srcDir %>/ng-sortable.css']
+        }
+      }
+    },
+
     // connect
     connect: {
       options: {
@@ -133,17 +150,6 @@ module.exports = function (grunt) {
               mountFolder(connect, '')
             ];
           }
-        }
-      }
-    },
-
-    cssmin: {
-      add_banner: {
-        options: {
-          banner: '/* ng-sortable css file */'
-        },
-        files: {
-          '<%= cfg.buildDir %>/ng-sortable.min.css': ['<%= cfg.srcDir %>/ng-sortable.css']
         }
       }
     },

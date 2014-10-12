@@ -1,33 +1,33 @@
 
-.sortable-item, .sortable-placeholder {
+.as-sortable-item, .as-sortable-placeholder {
     display: block;
     min-height: 20px;
     margin: 1px 2px 5px 1px;
     border-radius: 10px;
 }
 
-.sortable-item {
+.as-sortable-item {
     border: solid 1px darkgrey;
     background-color: #ffffff;
 }
 
-.sortable-handle {
+.as-sortable-item-handle {
     cursor: move;
 }
 
-.sortable-placeholder {
+.as-sortable-placeholder {
     border: 1px dashed darkgrey;
     box-sizing: border-box;
     background-color: #dbdbdb;
 }
 
-.sortable-drag {
+.as-sortable-drag {
     position: absolute;
     pointer-events: none;
     opacity: .8;
     z-index: 9999;
 }
 
-.sortable-hidden {
+.as-sortable-hidden {
     display: none !important;
 }

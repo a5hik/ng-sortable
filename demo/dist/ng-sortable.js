@@ -29,11 +29,11 @@
   'use strict';
   angular.module('ui.sortable', [])
     .constant('sortableConfig', {
-      itemClass: 'sortable-item',
-      handleClass: 'sortable-handle',
-      placeHolderClass: 'sortable-placeholder',
-      dragClass: 'sortable-drag',
-      hiddenClass: 'sortable-hidden'
+      itemClass: 'as-sortable-item',
+      handleClass: 'as-sortable-item-handle',
+      placeHolderClass: 'as-sortable-placeholder',
+      dragClass: 'as-sortable-drag',
+      hiddenClass: 'as-sortable-hidden'
     });
 }());
 
@@ -385,7 +385,7 @@
    * Parent directive for draggable and sortable items.
    * Sets modelValue, callbacks, element in scope.
    */
-  mainModule.directive('sortable',
+  mainModule.directive('asSortable',
     function () {
       return {
         require: 'ngModel', // get a hold of NgModelController
@@ -468,7 +468,7 @@
           };
 
           //Set the sortOptions callbacks else set it to default.
-          scope.$watch(attrs.sortable, function (newVal, oldVal) {
+          scope.$watch(attrs.asSortable, function (newVal, oldVal) {
             angular.forEach(newVal, function (value, key) {
               if (callbacks[key]) {
                 if (typeof value === 'function') {
@@ -515,10 +515,10 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: '^sortableItem',
+        require: '^asSortableItem',
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',
@@ -552,7 +552,7 @@
           }
 
           scope.itemScope = itemController.scope;
-          
+
           scope.$watch('sortableScope.isEnabled', function(newVal) {
             if (isEnabled !== newVal) {
               isEnabled = newVal;
@@ -959,10 +959,10 @@
   /**
    * sortableItem directive.
    */
-  mainModule.directive('sortableItem', ['sortableConfig',
+  mainModule.directive('asSortableItem', ['sortableConfig',
     function (sortableConfig) {
       return {
-        require: '^sortable',
+        require: '^asSortable',
         restrict: 'A',
         controller: 'ui.sortable.sortableItemController',
         link: function (scope, element, attrs, sortableController) {

@@ -29,10 +29,10 @@
   'use strict';
   angular.module('ui.sortable', [])
     .constant('sortableConfig', {
-      itemClass: 'sortable-item',
-      handleClass: 'sortable-handle',
-      placeHolderClass: 'sortable-placeholder',
-      dragClass: 'sortable-drag',
-      hiddenClass: 'sortable-hidden'
+      itemClass: 'as-sortable-item',
+      handleClass: 'as-sortable-item-handle',
+      placeHolderClass: 'as-sortable-placeholder',
+      dragClass: 'as-sortable-drag',
+      hiddenClass: 'as-sortable-hidden'
     });
 }());

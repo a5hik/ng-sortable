@@ -17,7 +17,7 @@ Latest release verision 1.1.1
 Demo Includes:
 
 - Drag between adjacent Lists.
-- Controll Drag on Specific Destinations.
+- Control Drag on Specific Destinations.
 
 #### Features:
 
@@ -40,20 +40,20 @@ Demo Includes:
 
 The directives are structured like below.
 
-    sortable                     --> Items list
-      sortable-item              --> Item to sort/drag
-        sortable-item-handle     --> Drag Handle 
+    as-sortable                     --> Items list
+      as-sortable-item              --> Item to sort/drag
+        as-sortable-item-handle     --> Drag Handle
 
 #### Design details:
 
 - ng-model is used to bind the sortable list items with the sortable element.
-- sortable can be added to the root element.
-- sortable-item can be added in item element, and follows ng-repeat.
-- sortable-item-handle can be added to the drag handle in item element.
-- All sortable, ng-model, sortable-item and sortable-item-handle are required.
-- the no-drag attribute can be added to avoid dragging an element inside item-handle.
+- as-sortable can be added to the root element.
+- as-sortable-item can be added in item element, and follows ng-repeat.
+- as-sortable-item-handle can be added to the drag handle in item element.
+- All as-sortable, ng-model, as-sortable-item and as-sortable-item-handle are required.
+- the no-drag attribute can be added to avoid dragging an element inside as-sortable-item-handle.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
-- isEnabled attribute on Sortable to determine Drag at runTime.
+- isEnabled attribute on as-sortable to determine Drag at runTime.
 
 #### Callbacks:
 
@@ -121,9 +121,9 @@ angular.module('xyzApp', ['ui.sortable', '....']);
 
 Invoke the Directives using below html structure.
 
-    <ul data-sortable="board.dragControlListeners" data-ng-model="items">
-       <li data-ng-repeat="item in items" data-sortable-item>
-          <div data-sortable-item-handle></div>
+    <ul data-as-sortable="board.dragControlListeners" data-ng-model="items">
+       <li data-ng-repeat="item in items" data-as-sortable-item>
+          <div data-as-sortable-item-handle></div>
        </li>
     </ul>
 
@@ -183,13 +183,13 @@ The move failure Impl here just reverts the moved item to its original location.
 
 ###### Horizontal Sorting:
 
-Horizontal Drag and Drop can be achieved using the same Library. The Column dispaly can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
+Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
 
 ###### Enable/Disable Drag at Runtime:
 
 The Drag can be controlled at runtime and you can enable/disable it by setting the "isEnabled" property to true or false.
 
-    <sortable isEnabled="true">..</div>
+    <div as-sortable isEnabled="true">..</div>
 
 ##### Testing:
 

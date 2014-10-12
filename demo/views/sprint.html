@@ -28,8 +28,8 @@
                 <a title="Add card to column" ng-click="addNewCard(column)"><i
                         class="glyphicon glyphicon-plus addNewCard"></i></a>
             </td>
-            <td sortable="sprintSortOptions" ng-repeat="phase in backlog.phases" ng-model="phase.cards">
-                <div class="card" ng-repeat="card in phase.cards" sortable-item
+            <td as-sortable="sprintSortOptions" ng-repeat="phase in backlog.phases" ng-model="phase.cards">
+                <div class="card" ng-repeat="card in phase.cards" as-sortable-item
                      ng-include="'views/partials/card.html'">
                 </div>
             </td>

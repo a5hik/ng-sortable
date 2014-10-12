@@ -22,10 +22,10 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: '^sortableItem',
+        require: '^asSortableItem',
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',

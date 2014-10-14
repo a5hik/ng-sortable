@@ -9,6 +9,8 @@
 .sortable-item {
     border: solid 1px darkgrey;
     background-color: #ffffff;
+    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .sortable-handle {

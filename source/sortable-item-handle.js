@@ -126,7 +126,7 @@
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
-            angular.element($document[0].body).append(dragElement);
+            containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition);
 
             scope.sortableScope.$apply(function () {

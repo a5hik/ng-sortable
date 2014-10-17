@@ -86,8 +86,8 @@
           return {
             width: boundingClientRect.width || element.prop('offsetWidth'),
             height: boundingClientRect.height || element.prop('offsetHeight'),
-            top: boundingClientRect.top + ($window.pageYOffset || scrollableContainer.scrollTop),
-            left: boundingClientRect.left + ($window.pageXOffset || scrollableContainer.scrollLeft)
+            top: boundingClientRect.top + ($window.pageYOffset || scrollableContainer.scrollTop - scrollableContainer.offsetTop),
+            left: boundingClientRect.left + ($window.pageXOffset || scrollableContainer.scrollLeft - scrollableContainer.offsetLeft)
           };
         },
 

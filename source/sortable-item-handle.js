@@ -37,6 +37,7 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            scrollableContainer, //the scrollable container
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -97,6 +98,10 @@
             event.preventDefault();
             eventObj = $helper.eventObj(event);
 
+            // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
+            scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
+              $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
+
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
               angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
@@ -119,7 +124,7 @@
               placeElement.addClass(sortableConfig.hiddenClass);
             }
 
-            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
+            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
@@ -127,7 +132,7 @@
             dragElement.append(scope.itemScope.element);
 
             containment.append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -204,7 +209,7 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);

@@ -108,7 +108,10 @@ Or bower.json
 Make sure to load the scripts in your html.
 ```html
 <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
+<link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
+
+<!-- OPTIONAL: default style -->
+<link rel="stylesheet" type="text/css" href="dist/ng-sortable.style.min.css">
 ```
 
 And Inject the sortable module as dependency.

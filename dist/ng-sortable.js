@@ -76,16 +76,18 @@
          * Get the offset values of an element.
          *
          * @param {Object} element Angular element.
+         * @param {Object} [scrollableContainer] Scrollable container object for calculating relative top & left (optional, defaults to Document)
          * @returns {Object} Object with properties width, height, top and left
          */
-        offset: function (element) {
+        offset: function (element, scrollableContainer) {
           var boundingClientRect = element[0].getBoundingClientRect();
+          if (!scrollableContainer) { scrollableContainer = $document[0].documentElement; }
 
           return {
             width: boundingClientRect.width || element.prop('offsetWidth'),
             height: boundingClientRect.height || element.prop('offsetHeight'),
-            top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-            left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+            top: boundingClientRect.top + ($window.pageYOffset || scrollableContainer.scrollTop),
+            left: boundingClientRect.left + ($window.pageXOffset || scrollableContainer.scrollLeft)
           };
         },
 
@@ -128,12 +130,13 @@
          *
          * @param {Object} event Event
          * @param {Object} target Target element
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          * @returns {Object} Object with properties offsetX, offsetY.
          */
-        positionStarted: function (event, target) {
+        positionStarted: function (event, target, scrollableContainer) {
           var pos = {};
-          pos.offsetX = event.pageX - this.offset(target).left;
-          pos.offsetY = event.pageY - this.offset(target).top;
+          pos.offsetX = event.pageX - this.offset(target, scrollableContainer).left;
+          pos.offsetY = event.pageY - this.offset(target, scrollableContainer).top;
           pos.startX = pos.lastX = event.pageX;
           pos.startY = pos.lastY = event.pageY;
           pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
@@ -198,15 +201,16 @@
          * @param element - the dom element
          * @param pos - current position
          * @param container - the bounding container.
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container) {
+        movePosition: function (event, element, pos, container, scrollableContainer) {
           var bounds;
 
           element.x = event.pageX - pos.offsetX;
           element.y = event.pageY - pos.offsetY;
 
           if (container) {
-            bounds = this.offset(container);
+            bounds = this.offset(container, scrollableContainer);
             if (element.x < bounds.left) {
               element.x = bounds.left;
             } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
@@ -530,6 +534,7 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            scrollableContainer, //the scrollable container
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -590,6 +595,10 @@
             event.preventDefault();
             eventObj = $helper.eventObj(event);
 
+            // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
+            scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
+              $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
+
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
               angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
@@ -612,15 +621,15 @@
               placeElement.addClass(sortableConfig.hiddenClass);
             }
 
-            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
+            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
-            angular.element($document[0].body).append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition);
+            containment.append(dragElement);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -697,7 +706,7 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);

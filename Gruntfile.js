@@ -62,10 +62,10 @@ module.exports = function (grunt) {
     // prepare files for demo
     copy: {
       build: {
-        src: [
-          '<%= cfg.srcDir %>/ng-sortable.css'
-        ],
-        dest: '<%= cfg.buildDir %>/ng-sortable.css'
+        expand: true,
+        cwd: '<%= cfg.srcDir %>/',
+        src: ['*.css'],
+        dest: '<%= cfg.buildDir %>/'
       },
       demo: {
         files: [
@@ -131,7 +131,8 @@ module.exports = function (grunt) {
           banner: '/* ng-sortable css file */'
         },
         files: {
-          '<%= cfg.buildDir %>/ng-sortable.min.css': ['<%= cfg.srcDir %>/ng-sortable.css']
+          '<%= cfg.buildDir %>/ng-sortable.min.css': ['<%= cfg.srcDir %>/ng-sortable.css'],
+          '<%= cfg.buildDir %>/ng-sortable.style.min.css': ['<%= cfg.srcDir %>/ng-sortable.style.css']
         }
       }
     },

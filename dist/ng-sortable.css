@@ -1,14 +1,12 @@
+/* ************************************** */
+/* Mandatory CSS required for ng-sortable */
+/* ************************************** */
 
 .as-sortable-item, .as-sortable-placeholder {
     display: block;
-    min-height: 20px;
-    margin: 1px 2px 5px 1px;
-    border-radius: 10px;
 }
 
 .as-sortable-item {
-    border: solid 1px darkgrey;
-    background-color: #ffffff;
 }
 
 .as-sortable-item-handle {
@@ -16,15 +14,11 @@
 }
 
 .as-sortable-placeholder {
-    border: 1px dashed darkgrey;
-    box-sizing: border-box;
-    background-color: #dbdbdb;
 }
 
 .as-sortable-drag {
     position: absolute;
     pointer-events: none;
-    opacity: .8;
     z-index: 9999;
 }
 

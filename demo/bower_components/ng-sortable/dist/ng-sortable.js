@@ -29,11 +29,11 @@
   'use strict';
   angular.module('ui.sortable', [])
     .constant('sortableConfig', {
-      itemClass: 'sortable-item',
-      handleClass: 'sortable-handle',
-      placeHolderClass: 'sortable-placeholder',
-      dragClass: 'sortable-drag',
-      hiddenClass: 'sortable-hidden'
+      itemClass: 'as-sortable-item',
+      handleClass: 'as-sortable-item-handle',
+      placeHolderClass: 'as-sortable-placeholder',
+      dragClass: 'as-sortable-drag',
+      hiddenClass: 'as-sortable-hidden'
     });
 }());
 
@@ -355,10 +355,11 @@
      *
      * @param sourceItemHandleScope - drag item handle scope.
      * @param destScope - sortable target scope.
+     * @param destItemScope - sortable destination item scope.
      * @returns {*|boolean} - true if drop is allowed for the drag item in drop target.
      */
-    $scope.accept = function (sourceItemHandleScope, destScope) {
-      return $scope.callbacks.accept(sourceItemHandleScope, destScope);
+    $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
+      return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
     };
 
     /**
@@ -384,7 +385,7 @@
    * Parent directive for draggable and sortable items.
    * Sets modelValue, callbacks, element in scope.
    */
-  mainModule.directive('sortable',
+  mainModule.directive('asSortable',
     function () {
       return {
         require: 'ngModel', // get a hold of NgModelController
@@ -419,9 +420,10 @@
            *
            * @param sourceItemHandleScope - the drag item handle scope.
            * @param destSortableScope - the drop target sortable scope.
+           * @param destItemScope - the drop target item scope.
            * @returns {boolean} - true if allowed for drop.
            */
-          callbacks.accept = function (sourceItemHandleScope, destSortableScope) {
+          callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {
             return true;
           };
 
@@ -466,7 +468,7 @@
           };
 
           //Set the sortOptions callbacks else set it to default.
-          scope.$watch(attrs.sortable, function (newVal, oldVal) {
+          scope.$watch(attrs.asSortable, function (newVal, oldVal) {
             angular.forEach(newVal, function (value, key) {
               if (callbacks[key]) {
                 if (typeof value === 'function') {
@@ -478,11 +480,17 @@
             });
             scope.callbacks = callbacks;
           }, true);
+
+          // Set isEnabled if attr is set, if undefined isEnabled = true
+          scope.$watch(attrs.isEnabled, function (newVal, oldVal) {
+            scope.isEnabled = newVal !== undefined ? newVal : true;
+          }, true);
         }
       };
     });
 
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -507,10 +515,10 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: '^sortableItem',
+        require: '^asSortableItem',
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',
@@ -530,17 +538,32 @@
             isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
+            unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
-            dragHandled; //drag handled.
+            dragHandled, //drag handled.
+            isEnabled = true; //sortable is enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
           }
+
           scope.itemScope = itemController.scope;
+
+          scope.$watch('sortableScope.isEnabled', function(newVal) {
+            if (isEnabled !== newVal) {
+              isEnabled = newVal;
+
+              if (isEnabled) {
+                bindDrag();
+              } else {
+                unbindDrag();
+              }
+            }
+          });
 
           /**
            * Triggered when drag event starts.
@@ -581,6 +604,7 @@
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+            placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeElement = angular.element($document[0].createElement(tagName));
@@ -698,7 +722,7 @@
 
               if (targetScope.type === 'item') {
                 targetElement = targetScope.element;
-                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
+                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope, targetScope)) {
                   if (itemPosition.dirAx && //move horizontal
                     scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
                     itemPosition.distAxX = 0;
@@ -847,6 +871,14 @@
             element.bind('mousedown', dragStart);
           };
 
+          /**
+           * Unbinds the drag start events.
+           */
+          unbindDrag = function () {
+            element.unbind('touchstart', dragStart);
+            element.unbind('mousedown', dragStart);
+          };
+
           //bind drag start events.
           bindDrag();
 
@@ -882,6 +914,7 @@
       };
     }]);
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -926,10 +959,10 @@
   /**
    * sortableItem directive.
    */
-  mainModule.directive('sortableItem', ['sortableConfig',
+  mainModule.directive('asSortableItem', ['sortableConfig',
     function (sortableConfig) {
       return {
-        require: '^sortable',
+        require: '^asSortable',
         restrict: 'A',
         controller: 'ui.sortable.sortableItemController',
         link: function (scope, element, attrs, sortableController) {

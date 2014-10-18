@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release verision 1.1.0
+Latest release verision 1.1.1
 
 #### Demo Page:
 
@@ -17,7 +17,7 @@ Latest release verision 1.1.0
 Demo Includes:
 
 - Drag between adjacent Lists.
-- Controll Drag on Specific Destinations.
+- Control Drag on Specific Destinations.
 
 #### Features:
 
@@ -27,6 +27,7 @@ Demo Includes:
 - Can do Ranking by Sorting and Change Status by Moving.
 - Hooks provided to invoke API's after a particular action.
 - Preventing/Allowing Drop Zone can be determined at run time.
+- Enable/Disable Drag at run time.
 - Drag Boundary can be defined.
 
 #### Implementation Details:
@@ -39,29 +40,31 @@ Demo Includes:
 
 The directives are structured like below.
 
-    sortable                     --> Items list
-      sortable-item              --> Item to sort/drag
-        sortable-item-handle     --> Drag Handle 
+    as-sortable                     --> Items list
+      as-sortable-item              --> Item to sort/drag
+        as-sortable-item-handle     --> Drag Handle
 
 #### Design details:
 
 - ng-model is used to bind the sortable list items with the sortable element.
-- sortable can be added to the root element.
-- sortable-item can be added in item element, and follows ng-repeat.
-- sortable-item-handle can be added to the drag handle in item element.
-- All sortable, ng-model, sortable-item and sortable-item-handle are required.
-- the no-drag attribute can be added to avoid dragging an element inside item-handle.
+- as-sortable can be added to the root element.
+- as-sortable-item can be added in item element, and follows ng-repeat.
+- as-sortable-item-handle can be added to the drag handle in item element.
+- All as-sortable, ng-model, as-sortable-item and as-sortable-item-handle are required.
+- the no-drag attribute can be added to avoid dragging an element inside as-sortable-item-handle.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
+- isEnabled attribute on as-sortable to determine Drag at runTime.
 
 #### Callbacks:
 
 Following callbacks are defined, and should be overridden to perform custom logic.
 
-- callbacks.accept = function (sourceItemHandleScope, destSortableScope) {}; //used to determine drag zone is allowed are not.
+- callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {}; //used to determine drag zone is allowed are not.
 
 ###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
+     destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).
 
 - callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
 - callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.
@@ -80,7 +83,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
                   
 ##### Some Notable Fixes:
 
-- Touch is allowed on only one Item at a time. Multiple Finger touch is prevented as like JQueryUI Touch Punch.
+- Touch is allowed on only one Item at a time. Tap is prevented on draggable item.
 - Pressing 'Esc' key will Cancel the Drag Event, and moves back the Item to it's Original location.
 - Right Click on mouse is prevented on draggable Item.
 - A child element inside a draggable Item can be made as non draggable.
@@ -118,15 +121,15 @@ angular.module('xyzApp', ['ui.sortable', '....']);
 
 Invoke the Directives using below html structure.
 
-    <ul data-sortable="board.dragControlListeners" data-ng-model="items">
-       <li data-ng-repeat="item in items" data-sortable-item">
-          <div data-sortable-item-handle></div>
+    <ul data-as-sortable="board.dragControlListeners" data-ng-model="items">
+       <li data-ng-repeat="item in items" data-as-sortable-item>
+          <div data-as-sortable-item-handle></div>
        </li>
     </ul>
 
 Define your callbacks in the invoking controller.
 
-    $scope.dragControlListeners = function() {
+    $scope.dragControlListeners = {
         accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
         itemMoved: function (event) {//Do what you want},
         orderChanged: function(event) {//Do what you want},
@@ -150,6 +153,43 @@ the drag to be allowed in only 3 columns, then you need to implement your custom
 and that too becomes straight forward as you have your scope Objects in hand.
 
 And reversing the condition, allows you to Drag accross Columns but not within same Column.
+
+###### How To Revert Move After Validation Failure:
+
+In case you want the item to be reverted back to its original location after a validation failure
+You can just do the below.
+In your itemMoved call back define a 'moveSuccess' and 'moveFailure' callbacks.
+The move failure Impl here just reverts the moved item to its original location.
+
+    itemMoved: function (eventObj) {
+
+    var moveSuccess, moveFailure;
+          /**
+           * Action to perform after move success.
+           */
+          moveSuccess = function() {};
+
+          /**
+           * Action to perform on move failure.
+           * remove the item from destination Column.
+           * insert the item again in original Column.
+           */
+          moveFailure = function() {   
+               eventObj.dest.sortableScope.removeItem(eventObj.dest.index);
+               eventObj.source.itemScope.sortableScope.insertItem(eventObj.source.index, eventObj.source.itemScope.task);
+          };
+    }
+
+
+###### Horizontal Sorting:
+
+Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
+
+###### Enable/Disable Drag at Runtime:
+
+The Drag can be controlled at runtime and you can enable/disable it by setting the "isEnabled" property to true or false.
+
+    <div as-sortable isEnabled="true">..</div>
 
 ##### Testing:
 

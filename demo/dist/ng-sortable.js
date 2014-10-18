@@ -530,6 +530,7 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            dragListen,// drag listen event.
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -564,6 +565,44 @@
               }
             }
           });
+
+
+          /**
+          * Listens for a 10px movement before
+          * dragStart is called to allow for
+          * a click event on the element.
+          *
+          * @param event - the event object.
+          */
+          dragListen = function (event) {
+
+            var unbindMoveListen = function () {
+              angular.element($document).unbind('mousemove', moveListen);
+              angular.element($document).unbind('touchmove', moveListen);
+              element.unbind('mouseup', unbindMoveListen);
+              element.unbind('touchend', unbindMoveListen);
+              element.unbind('touchcancel', unbindMoveListen);
+            };
+            
+            var startPosition;
+            var moveListen = function (e) {
+              e.preventDefault();
+              var eventObj = $helper.eventObj(e);
+              if (!startPosition) {
+                startPosition = { clientX: eventObj.clientX, clientY: eventObj.clientY };
+              }
+              if (Math.abs(eventObj.clientX - startPosition.clientX) + Math.abs(eventObj.clientY - startPosition.clientY) > 10) {
+                unbindMoveListen();
+                dragStart(event);
+              }
+            };
+            
+            angular.element($document).bind('mousemove', moveListen);
+            angular.element($document).bind('touchmove', moveListen);
+            element.bind('mouseup', unbindMoveListen);
+            element.bind('touchend', unbindMoveListen);
+            element.bind('touchcancel', unbindMoveListen);
+          };
 
           /**
            * Triggered when drag event starts.
@@ -867,16 +906,16 @@
            * Binds the drag start events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragStart);
-            element.bind('mousedown', dragStart);
+            element.bind('touchstart', dragListen);
+            element.bind('mousedown', dragListen);
           };
 
           /**
            * Unbinds the drag start events.
            */
           unbindDrag = function () {
-            element.unbind('touchstart', dragStart);
-            element.unbind('mousedown', dragStart);
+            element.unbind('touchstart', dragListen);
+            element.unbind('mousedown', dragListen);
           };
 
           //bind drag start events.

@@ -37,16 +37,18 @@
          * Get the offset values of an element.
          *
          * @param {Object} element Angular element.
+         * @param {Object} [scrollableContainer] Scrollable container object for calculating relative top & left (optional, defaults to Document)
          * @returns {Object} Object with properties width, height, top and left
          */
-        offset: function (element) {
+        offset: function (element, scrollableContainer) {
           var boundingClientRect = element[0].getBoundingClientRect();
+          if (!scrollableContainer) { scrollableContainer = $document[0].documentElement; }
 
           return {
             width: boundingClientRect.width || element.prop('offsetWidth'),
             height: boundingClientRect.height || element.prop('offsetHeight'),
-            top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-            left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+            top: boundingClientRect.top + ($window.pageYOffset || scrollableContainer.scrollTop - scrollableContainer.offsetTop),
+            left: boundingClientRect.left + ($window.pageXOffset || scrollableContainer.scrollLeft - scrollableContainer.offsetLeft)
           };
         },
 
@@ -89,12 +91,13 @@
          *
          * @param {Object} event Event
          * @param {Object} target Target element
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          * @returns {Object} Object with properties offsetX, offsetY.
          */
-        positionStarted: function (event, target) {
+        positionStarted: function (event, target, scrollableContainer) {
           var pos = {};
-          pos.offsetX = event.pageX - this.offset(target).left;
-          pos.offsetY = event.pageY - this.offset(target).top;
+          pos.offsetX = event.pageX - this.offset(target, scrollableContainer).left;
+          pos.offsetY = event.pageY - this.offset(target, scrollableContainer).top;
           pos.startX = pos.lastX = event.pageX;
           pos.startY = pos.lastY = event.pageY;
           pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
@@ -159,15 +162,16 @@
          * @param element - the dom element
          * @param pos - current position
          * @param container - the bounding container.
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container) {
+        movePosition: function (event, element, pos, container, scrollableContainer) {
           var bounds;
 
           element.x = event.pageX - pos.offsetX;
           element.y = event.pageY - pos.offsetY;
 
           if (container) {
-            bounds = this.offset(container);
+            bounds = this.offset(container, scrollableContainer);
             if (element.x < bounds.left) {
               element.x = bounds.left;
             } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {

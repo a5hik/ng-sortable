@@ -149,7 +149,7 @@ Define the accept callback. and the implementation is your choice.
 The itemHandleScope(dragged Item) and sortableScope(destination list) is exposed. 
 Compare the scope Objects there like below., If you have to exactly restrict moving between columns.
 
-    accept: function (sourceItemHandleScope, descSortableScope) {
+    accept: function (sourceItemHandleScope, destSortableScope) {
       return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
     }
 

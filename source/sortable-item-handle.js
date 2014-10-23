@@ -22,8 +22,8 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
-    function (sortableConfig, $helper, $window, $document) {
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$compile',
+    function (sortableConfig, $helper, $window, $document, $compile) {
       return {
         require: '^asSortableItem',
         scope: true,
@@ -149,8 +149,14 @@
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
-            dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
-              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
+            if (scope.options.proxyTemplate) {
+              dragElement = $compile(scope.options.proxyTemplate)(scope.itemScope);
+            }
+            else {
+              dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')));
+            }
+
+            dragElement.addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
@@ -168,7 +174,9 @@
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
+            if (!scope.options.proxyTemplate) {
+              dragElement.append(scope.itemScope.element);
+            }
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);

@@ -51,11 +51,11 @@ The directives are structured like below.
 - as-sortable-item can be added in item element, and follows ng-repeat.
 - as-sortable-item-handle can be added to the drag handle in item element.
 - All as-sortable, ng-model, as-sortable-item and as-sortable-item-handle are required.
-- the no-drag attribute can be added to an element to prevent dragging inside as-sortable-item-handle.
+- the 'no-drag' attribute can be added to an element to prevent dragging inside as-sortable-item-handle.
   allows you to perform the element specific event but prevent the element being dragged.
 - the drag item handle can listen for custom events as well.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
-- isEnabled attribute on as-sortable to determine Drag at runTime.
+- The 'is-enabled' attribute on as-sortable to determine Drag at runTime.
 
 #### Callbacks:
 

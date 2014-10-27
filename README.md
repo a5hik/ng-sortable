@@ -194,9 +194,9 @@ Plunkr example link: http://plnkr.co/edit/5hzdWd?p=preview
 
 ###### Enable/Disable Drag at Runtime:
 
-The Drag can be controlled at runtime and you can enable/disable it by setting the "isEnabled" property to true or false.
+The Drag can be controlled at runtime and you can enable/disable it by setting the "is-enabled" property to true or false.
 
-    <div as-sortable isEnabled="true">..</div>
+    <div as-sortable is-enabled="true">..</div>
 
 ##### Testing:
 

@@ -23,10 +23,8 @@
   },
   "devDependencies": {
     "angular": "1.2.x",
-    "bootstrap": "~3.0.3",
+    "bootstrap-css-only": "~3.2.0",
     "angular-bootstrap": "~0.10.0",
-    "angular-mocks": "1.2.x",
-    "angular-scenario": "1.2.x",
     "angular-route": "1.2.x",
     "ng-sortable": "1.1.2"
   },

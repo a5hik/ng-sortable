@@ -29,11 +29,11 @@
   'use strict';
   angular.module('ui.sortable', [])
     .constant('sortableConfig', {
-      itemClass: 'sortable-item',
-      handleClass: 'sortable-handle',
-      placeHolderClass: 'sortable-placeholder',
-      dragClass: 'sortable-drag',
-      hiddenClass: 'sortable-hidden'
+      itemClass: 'as-sortable-item',
+      handleClass: 'as-sortable-item-handle',
+      placeHolderClass: 'as-sortable-placeholder',
+      dragClass: 'as-sortable-drag',
+      hiddenClass: 'as-sortable-hidden'
     });
 }());
 
@@ -76,16 +76,18 @@
          * Get the offset values of an element.
          *
          * @param {Object} element Angular element.
+         * @param {Object} [scrollableContainer] Scrollable container object for calculating relative top & left (optional, defaults to Document)
          * @returns {Object} Object with properties width, height, top and left
          */
-        offset: function (element) {
+        offset: function (element, scrollableContainer) {
           var boundingClientRect = element[0].getBoundingClientRect();
+          if (!scrollableContainer) { scrollableContainer = $document[0].documentElement; }
 
           return {
             width: boundingClientRect.width || element.prop('offsetWidth'),
             height: boundingClientRect.height || element.prop('offsetHeight'),
-            top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-            left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+            top: boundingClientRect.top + ($window.pageYOffset || scrollableContainer.scrollTop - scrollableContainer.offsetTop),
+            left: boundingClientRect.left + ($window.pageXOffset || scrollableContainer.scrollLeft - scrollableContainer.offsetLeft)
           };
         },
 
@@ -128,12 +130,13 @@
          *
          * @param {Object} event Event
          * @param {Object} target Target element
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          * @returns {Object} Object with properties offsetX, offsetY.
          */
-        positionStarted: function (event, target) {
+        positionStarted: function (event, target, scrollableContainer) {
           var pos = {};
-          pos.offsetX = event.pageX - this.offset(target).left;
-          pos.offsetY = event.pageY - this.offset(target).top;
+          pos.offsetX = event.pageX - this.offset(target, scrollableContainer).left;
+          pos.offsetY = event.pageY - this.offset(target, scrollableContainer).top;
           pos.startX = pos.lastX = event.pageX;
           pos.startY = pos.lastY = event.pageY;
           pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
@@ -198,15 +201,16 @@
          * @param element - the dom element
          * @param pos - current position
          * @param container - the bounding container.
+         * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container) {
+        movePosition: function (event, element, pos, container, scrollableContainer) {
           var bounds;
 
           element.x = event.pageX - pos.offsetX;
           element.y = event.pageY - pos.offsetY;
 
           if (container) {
-            bounds = this.offset(container);
+            bounds = this.offset(container, scrollableContainer);
             if (element.x < bounds.left) {
               element.x = bounds.left;
             } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
@@ -292,7 +296,7 @@
   ]);
 
 }());
-  /*jshint undef: false, unused: false, indent: 2*/
+/*jshint undef: false, unused: false, indent: 2*/
 /*global angular: false */
 
 (function () {
@@ -355,10 +359,11 @@
      *
      * @param sourceItemHandleScope - drag item handle scope.
      * @param destScope - sortable target scope.
+     * @param destItemScope - sortable destination item scope.
      * @returns {*|boolean} - true if drop is allowed for the drag item in drop target.
      */
-    $scope.accept = function (sourceItemHandleScope, destScope) {
-      return $scope.callbacks.accept(sourceItemHandleScope, destScope);
+    $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
+      return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
     };
 
     /**
@@ -384,7 +389,7 @@
    * Parent directive for draggable and sortable items.
    * Sets modelValue, callbacks, element in scope.
    */
-  mainModule.directive('sortable',
+  mainModule.directive('asSortable',
     function () {
       return {
         require: 'ngModel', // get a hold of NgModelController
@@ -419,9 +424,10 @@
            *
            * @param sourceItemHandleScope - the drag item handle scope.
            * @param destSortableScope - the drop target sortable scope.
+           * @param destItemScope - the drop target item scope.
            * @returns {boolean} - true if allowed for drop.
            */
-          callbacks.accept = function (sourceItemHandleScope, destSortableScope) {
+          callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {
             return true;
           };
 
@@ -466,7 +472,7 @@
           };
 
           //Set the sortOptions callbacks else set it to default.
-          scope.$watch(attrs.sortable, function (newVal, oldVal) {
+          scope.$watch(attrs.asSortable, function (newVal, oldVal) {
             angular.forEach(newVal, function (value, key) {
               if (callbacks[key]) {
                 if (typeof value === 'function') {
@@ -478,11 +484,17 @@
             });
             scope.callbacks = callbacks;
           }, true);
+
+          // Set isEnabled if attr is set, if undefined isEnabled = true
+          scope.$watch(attrs.isEnabled, function (newVal, oldVal) {
+            scope.isEnabled = newVal !== undefined ? newVal : true;
+          }, true);
         }
       };
     });
 
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -507,10 +519,10 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('sortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
     function (sortableConfig, $helper, $window, $document) {
       return {
-        require: '^sortableItem',
+        require: '^asSortableItem',
         scope: true,
         restrict: 'A',
         controller: 'ui.sortable.sortableItemHandleController',
@@ -522,6 +534,8 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            dragListen,// drag listen event.
+            scrollableContainer, //the scrollable container
             dragStart,// drag start event.
             dragMove,//drag move event.
             dragEnd,//drag end event.
@@ -530,17 +544,70 @@
             isDragBefore,//is element moved up direction.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
+            unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
-            dragHandled; //drag handled.
+            dragHandled, //drag handled.
+            isEnabled = true; //sortable is enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
           }
+
           scope.itemScope = itemController.scope;
+
+          scope.$watch('sortableScope.isEnabled', function(newVal) {
+            if (isEnabled !== newVal) {
+              isEnabled = newVal;
+
+              if (isEnabled) {
+                bindDrag();
+              } else {
+                unbindDrag();
+              }
+            }
+          });
+
+
+          /**
+          * Listens for a 10px movement before
+          * dragStart is called to allow for
+          * a click event on the element.
+          *
+          * @param event - the event object.
+          */
+          dragListen = function (event) {
+
+            var unbindMoveListen = function () {
+              angular.element($document).unbind('mousemove', moveListen);
+              angular.element($document).unbind('touchmove', moveListen);
+              element.unbind('mouseup', unbindMoveListen);
+              element.unbind('touchend', unbindMoveListen);
+              element.unbind('touchcancel', unbindMoveListen);
+            };
+            
+            var startPosition;
+            var moveListen = function (e) {
+              e.preventDefault();
+              var eventObj = $helper.eventObj(e);
+              if (!startPosition) {
+                startPosition = { clientX: eventObj.clientX, clientY: eventObj.clientY };
+              }
+              if (Math.abs(eventObj.clientX - startPosition.clientX) + Math.abs(eventObj.clientY - startPosition.clientY) > 10) {
+                unbindMoveListen();
+                dragStart(event);
+              }
+            };
+            
+            angular.element($document).bind('mousemove', moveListen);
+            angular.element($document).bind('touchmove', moveListen);
+            element.bind('mouseup', unbindMoveListen);
+            element.bind('touchend', unbindMoveListen);
+            element.bind('touchcancel', unbindMoveListen);
+          };
 
           /**
            * Triggered when drag event starts.
@@ -567,6 +634,10 @@
             event.preventDefault();
             eventObj = $helper.eventObj(event);
 
+            // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
+            scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
+              $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
+
             containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
               angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
@@ -581,6 +652,7 @@
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+            placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeElement = angular.element($document[0].createElement(tagName));
@@ -588,15 +660,15 @@
               placeElement.addClass(sortableConfig.hiddenClass);
             }
 
-            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element);
+            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             //fill the immediate vacuum.
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
             dragElement.append(scope.itemScope.element);
 
-            angular.element($document[0].body).append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition);
+            containment.append(dragElement);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -673,7 +745,7 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
@@ -698,7 +770,7 @@
 
               if (targetScope.type === 'item') {
                 targetElement = targetScope.element;
-                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope)) {
+                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope, targetScope)) {
                   if (itemPosition.dirAx && //move horizontal
                     scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
                     itemPosition.distAxX = 0;
@@ -843,8 +915,16 @@
            * Binds the drag start events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragStart);
-            element.bind('mousedown', dragStart);
+            element.bind('touchstart', dragListen);
+            element.bind('mousedown', dragListen);
+          };
+
+          /**
+           * Unbinds the drag start events.
+           */
+          unbindDrag = function () {
+            element.unbind('touchstart', dragListen);
+            element.unbind('mousedown', dragListen);
           };
 
           //bind drag start events.
@@ -882,6 +962,7 @@
       };
     }]);
 }());
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -926,10 +1007,10 @@
   /**
    * sortableItem directive.
    */
-  mainModule.directive('sortableItem', ['sortableConfig',
+  mainModule.directive('asSortableItem', ['sortableConfig',
     function (sortableConfig) {
       return {
-        require: '^sortable',
+        require: '^asSortable',
         restrict: 'A',
         controller: 'ui.sortable.sortableItemController',
         link: function (scope, element, attrs, sortableController) {

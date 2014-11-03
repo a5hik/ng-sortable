@@ -162,16 +162,29 @@
          * @param element - the dom element
          * @param pos - current position
          * @param container - the bounding container.
+         * @param containerPositioning - absolute or relative positioning.
          * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container, scrollableContainer) {
+        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer) {
           var bounds;
+          var useRelative = (containerPositioning === 'relative');
 
           element.x = event.pageX - pos.offsetX;
           element.y = event.pageY - pos.offsetY;
 
           if (container) {
             bounds = this.offset(container, scrollableContainer);
+
+            if (useRelative) {
+              // reduce positioning by bounds
+              element.x -= bounds.left;
+              element.y -= bounds.top;
+
+              // reset bounds
+              bounds.left = 0;
+              bounds.top = 0;
+            }
+
             if (element.x < bounds.left) {
               element.x = bounds.left;
             } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {

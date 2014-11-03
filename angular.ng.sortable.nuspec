@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AngularJS.ng-sortable</id>
+        <version>1.1.4</version>
+        <title>AngularJS ng-sortable</title>
+        <authors>a5hik</authors>
+        <projectUrl>https://github.com/a5hik/ng-sortable</projectUrl>
+        <iconUrl>http://luisfarzati.github.io/angulartics/images/angularjs.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>AngularJS Library for Drag and Drop, supports Sortable and Draggable. No JQuery/JQuery UI used. Supports Touch devices.</description>
+        <summary>AngularJS Library for Drag and Drop, supports Sortable and Draggable. No JQuery/JQuery UI used. Supports Touch devices.</summary>
+        <releaseNotes />
+        <copyright />
+        <tags>angularjs sortable draggable html5 drag drop directive touch</tags>
+        <dependencies>
+            <dependency id="AngularJS.Core" version="1.2.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="dist\ng-sortable.js" target="content\Scripts\ng-sortable.js" />
+        <file src="dist\ng-sortable.min.js" target="content\Scripts\ng-sortable.min.js" />
+        <file src="dist\ng-sortable.css" target="content\Content\ng-sortable.css" />
+        <file src="dist\ng-sortable.min.css" target="content\Content\ng-sortable.min.css" />
+    </files>
+</package>

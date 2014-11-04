@@ -296,7 +296,7 @@
   ]);
 
 }());
-  /*jshint undef: false, unused: false, indent: 2*/
+/*jshint undef: false, unused: false, indent: 2*/
 /*global angular: false */
 
 (function () {

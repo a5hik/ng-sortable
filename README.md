@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.1.2
+Latest release version 1.1.6
 
 #### Demo Page:
 
@@ -51,11 +51,11 @@ The directives are structured like below.
 - as-sortable-item can be added in item element, and follows ng-repeat.
 - as-sortable-item-handle can be added to the drag handle in item element.
 - All as-sortable, ng-model, as-sortable-item and as-sortable-item-handle are required.
-- the no-drag attribute can be added to an element to prevent dragging inside as-sortable-item-handle.
+- the 'no-drag' attribute can be added to an element to prevent dragging inside as-sortable-item-handle.
   allows you to perform the element specific event but prevent the element being dragged.
 - the drag item handle can listen for custom events as well.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
-- isEnabled attribute on as-sortable to determine Drag at runTime.
+- The 'is-enabled' attribute on as-sortable to determine Drag at runTime.
 
 #### Callbacks:
 
@@ -149,7 +149,7 @@ Define the accept callback. and the implementation is your choice.
 The itemHandleScope(dragged Item) and sortableScope(destination list) is exposed. 
 Compare the scope Objects there like below., If you have to exactly restrict moving between columns.
 
-    accept: function (sourceItemHandleScope, descSortableScope) {
+    accept: function (sourceItemHandleScope, destSortableScope) {
       return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
     }
 
@@ -194,9 +194,9 @@ Plunkr example link: http://plnkr.co/edit/5hzdWd?p=preview
 
 ###### Enable/Disable Drag at Runtime:
 
-The Drag can be controlled at runtime and you can enable/disable it by setting the "isEnabled" property to true or false.
+The Drag can be controlled at runtime and you can enable/disable it by setting the "is-enabled" property to true or false.
 
-    <div as-sortable isEnabled="true">..</div>
+    <div as-sortable is-enabled="true">..</div>
 
 ##### Testing:
 

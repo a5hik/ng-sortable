@@ -57,6 +57,17 @@ The directives are structured like below.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
 - The 'is-enabled' attribute on as-sortable to determine Drag at runTime.
 
+#### Placeholder:
+- A placeholder element is created using the same tag as the as-sortable-item element
+- CSS styling may be applied via the 'as-sortable-placeholder' class
+- Additional classes may be applied via the 'additionalPlaceholderClass' option provided to the as-sortable item. e.g.
+    in JS:
+```$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };```
+    in HTML:
+```<div as-sortable="sortableOptions">
+   ...
+</div>```
+
 #### Callbacks:
 
 Following callbacks are defined, and should be overridden to perform custom logic.

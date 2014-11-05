@@ -158,7 +158,8 @@
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+            placeHolder = angular.element($document[0].createElement(tagName))
+                .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 

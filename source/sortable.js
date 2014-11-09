@@ -18,6 +18,7 @@
     $scope.callbacks = null;
     $scope.type = 'sortable';
     $scope.options = {};
+    $scope.isDisabled = false;
 
     /**
      * Inserts the item in to the sortable list.
@@ -187,10 +188,14 @@
             scope.callbacks = callbacks;
           }, true);
 
-          // Set isEnabled if attr is set, if undefined isEnabled = true
-          scope.$watch(attrs.isEnabled, function (newVal, oldVal) {
-            scope.isEnabled = newVal !== undefined ? newVal : true;
-          }, true);
+          // Set isDisabled if attr is set, if undefined isDisabled = false
+          if(angular.isDefined(attrs.isDisabled)) {
+            scope.$watch(attrs.isDisabled, function (newVal, oldVal) {
+              if(!angular.isUndefined(newVal)) {
+                scope.isDisabled = newVal;
+              }
+            }, true);
+          }
         }
       };
     });

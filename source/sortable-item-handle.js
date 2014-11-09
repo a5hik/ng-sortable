@@ -53,7 +53,7 @@
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             dragHandled, //drag handled.
-            isEnabled = true; //sortable is enabled
+            isDisabled = false; // drag enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
@@ -63,18 +63,16 @@
 
           scope.itemScope = itemController.scope;
 
-          scope.$watch('sortableScope.isEnabled', function(newVal) {
-            if (isEnabled !== newVal) {
-              isEnabled = newVal;
-
-              if (isEnabled) {
-                bindDrag();
-              } else {
+          scope.$watch('sortableScope.isDisabled', function(newVal) {
+            if(isDisabled !== newVal) {
+              isDisabled = newVal;
+              if(isDisabled) {
                 unbindDrag();
+              } else {
+                bindDrag();
               }
             }
           });
-
 
           /**
           * Listens for a 10px movement before

@@ -55,6 +55,7 @@ The directives are structured like below.
   allows you to perform the element specific event but prevent the element being dragged.
 - the drag item handle can listen for custom events as well.
 - Added a Jquery like 'containment' option to the sortable to prevent the drag outside specified bounds.
+- 'containerPositioning' option may be set to 'relative' to accomodate relative positioning on the container or its ancestry. Use this if the draggable item is offset from the mouse cursor while dragging. A common scenario for this is when using bootstrap columns.
 - The 'is-enabled' attribute on as-sortable to determine Drag at runTime.
 
 #### Placeholder:

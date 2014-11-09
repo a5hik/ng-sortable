@@ -201,16 +201,29 @@
          * @param element - the dom element
          * @param pos - current position
          * @param container - the bounding container.
+         * @param containerPositioning - absolute or relative positioning.
          * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container, scrollableContainer) {
+        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer) {
           var bounds;
+          var useRelative = (containerPositioning === 'relative');
 
           element.x = event.pageX - pos.offsetX;
           element.y = event.pageY - pos.offsetY;
 
           if (container) {
             bounds = this.offset(container, scrollableContainer);
+
+            if (useRelative) {
+              // reduce positioning by bounds
+              element.x -= bounds.left;
+              element.y -= bounds.top;
+
+              // reset bounds
+              bounds.left = 0;
+              bounds.top = 0;
+            }
+
             if (element.x < bounds.left) {
               element.x = bounds.left;
             } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
@@ -534,6 +547,7 @@
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
             containment,//the drag container.
+            containerPositioning, // absolute or relative positioning.
             dragListen,// drag listen event.
             scrollableContainer, //the scrollable container
             dragStart,// drag start event.
@@ -643,6 +657,9 @@
             //capture mouse move on containment.
             containment.css('cursor', 'move');
 
+            // container positioning
+            containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
+
             dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
@@ -651,7 +668,8 @@
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeHolder = angular.element($document[0].createElement(tagName)).addClass(sortableConfig.placeHolderClass);
+            placeHolder = angular.element($document[0].createElement(tagName))
+                .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
@@ -668,7 +686,7 @@
             dragElement.append(scope.itemScope.element);
 
             containment.append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -745,7 +763,7 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment, scrollableContainer);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);

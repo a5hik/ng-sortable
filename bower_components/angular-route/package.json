@@ -1,8 +1,8 @@
 {
-  "name": "angular",
+  "name": "angular-route",
   "version": "1.3.2",
-  "description": "HTML enhanced for web apps",
-  "main": "angular.js",
+  "description": "AngularJS router module",
+  "main": "angular-route.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +14,7 @@
     "angular",
     "framework",
     "browser",
+    "router",
     "client-side"
   ],
   "author": "Angular Core Team <angular-core+npm@google.com>",

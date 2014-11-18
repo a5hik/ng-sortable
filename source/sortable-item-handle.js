@@ -198,11 +198,11 @@
             // look for the handle on the current scope or parent scopes
             isDraggable = false;
             while (!isDraggable && sourceScope !== undefined) {
-                if (sourceScope.type && sourceScope.type === 'handle') {
-                    isDraggable = true;
-                } else {
-                    sourceScope = sourceScope.$parent;
-                }
+              if (sourceScope.type && sourceScope.type === 'handle') {
+                isDraggable = true;
+              } else {
+                sourceScope = sourceScope.$parent;
+              }
             }
 
             //If a 'no-drag' element inside item-handle if any.

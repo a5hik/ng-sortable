@@ -1,20 +1,23 @@
-/* Put your css in here */
-.sortable-item,
-.sortable-placeholder {
-    display: inline-block;
+/* Styles go here */
+
+.as-sortable-item,
+.as-sortable-placeholder {
     width: 124px;
-    height: 110px;
-    float: left;
+    margin: 2px;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    list-style: none;
 }
 
-/*.sortable-row:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}*/
+.as-sortable-placeholder {
+    border: 1px dotted #0000ff !important;
+}
 
 #sortable-container {
     display: inline-block;
+}
+
+.column {
+    border: 1px solid #000000;
+    border-radius: 5px;
 }

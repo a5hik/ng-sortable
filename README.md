@@ -12,7 +12,7 @@ Latest release version 1.1.8
 
 #### Demo Page:
 
-[Simple] ((http://a5hik.github.io/ng-sortable/plunker.html)
+[Simple] (http://a5hik.github.io/ng-sortable/plunker.html)
 
 [Advanced] (http://a5hik.github.io/ng-sortable/)
 

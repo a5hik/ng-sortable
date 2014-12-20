@@ -108,7 +108,6 @@
         /**
          * Calculates the event position and sets the direction
          * properties.
-         * this method code is from - https://github.com/JimLiu/angular-ui-tree
          *
          * @param pos the current position of the element.
          * @param event the move event.

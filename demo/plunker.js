@@ -26,14 +26,3 @@ app.controller('MainCtrl', function ($scope) {
     containment: '#sortable-container'
   };
 });
-
-app.directive('myDirective', function($compile) {
-  return {
-    restrict: 'E',
-    //scope: {
-    //  item: '='
-    //},
-    template: '<div><p data-ng-bind="item.name"></p></div>',
-    replace: true,
-  };
-});

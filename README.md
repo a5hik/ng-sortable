@@ -8,11 +8,13 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.1.7
+Latest release version 1.1.8
 
 #### Demo Page:
 
-[Demo Site] (http://a5hik.github.io/ng-sortable/)
+[Simple] ((http://a5hik.github.io/ng-sortable/plunker.html)
+
+[Advanced] (http://a5hik.github.io/ng-sortable/)
 
 Demo Includes:
 

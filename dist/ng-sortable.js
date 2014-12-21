@@ -27,7 +27,7 @@
 
 (function () {
   'use strict';
-  angular.module('as.sortable', [])
+  angular.module('ui.sortable', [])
     .constant('sortableConfig', {
       itemClass: 'as-sortable-item',
       handleClass: 'as-sortable-item-handle',
@@ -43,7 +43,7 @@
 (function () {
   'use strict';
 
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Helper factory for sortable.
@@ -147,7 +147,6 @@
         /**
          * Calculates the event position and sets the direction
          * properties.
-         * this method code is from - https://github.com/JimLiu/angular-ui-tree
          *
          * @param pos the current position of the element.
          * @param event the move event.
@@ -315,7 +314,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for Sortable.
@@ -519,7 +518,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for sortableItemHandle
@@ -997,7 +996,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for sortable item.

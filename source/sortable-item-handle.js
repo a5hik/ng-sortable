@@ -90,7 +90,7 @@
               element.unbind('touchend', unbindMoveListen);
               element.unbind('touchcancel', unbindMoveListen);
             };
-            
+
             var startPosition;
             var moveListen = function (e) {
               e.preventDefault();
@@ -103,7 +103,7 @@
                 dragStart(event);
               }
             };
-            
+
             angular.element($document).bind('mousemove', moveListen);
             angular.element($document).bind('touchmove', moveListen);
             element.bind('mouseup', unbindMoveListen);
@@ -258,6 +258,9 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
+              scope.sortableScope.$apply(function () {
+                scope.callbacks.dragMove(itemPosition, containment);
+              });
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;

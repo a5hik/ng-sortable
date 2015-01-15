@@ -82,7 +82,7 @@ e.g.
 ```<div class="as-sortable-drop-target as-sortable-dragging"></div>````
 
     in CSS
-    .as-sortable-drop-target.as-sortable-dragging
+    .as-sortable-drop-target.as-sortable-dragging{
        border: 1px dotted #000 !important;
     }
           

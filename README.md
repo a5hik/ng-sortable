@@ -31,6 +31,7 @@ Demo Includes:
 - Preventing/Allowing Drop Zone can be determined at run time.
 - Enable/Disable Drag at run time.
 - Drag Boundary can be defined.
+- Cloning (set clone = true on your SortOptions. Clones the dragged HTML element instead of moving it)
 
 #### Implementation Details:
 

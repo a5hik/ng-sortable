@@ -171,7 +171,17 @@
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
+            
+			if (typeof (scope.options.clone) === 'undefined') {
+            	scope.options.clone = false;
+            };
+
+			//if the user has requested cloning then clone the element before appending it it to the dragElement.
+            if (scope.options.clone == true) {
+            	dragElement.append(scope.itemScope.element.clone());
+            } else {
+            	dragElement.append(scope.itemScope.element);
+            }
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);

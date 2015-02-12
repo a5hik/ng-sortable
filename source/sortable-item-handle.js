@@ -172,15 +172,15 @@
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
             
-			if (typeof (scope.options.clone) === 'undefined') {
-            	scope.options.clone = false;
+            if (typeof (scope.options.clone) === 'undefined') {
+              scope.options.clone = false;
             };
 
-			//if the user has requested cloning then clone the element before appending it it to the dragElement.
+            //if the user has requested cloning then clone the element before appending it it to the dragElement.
             if (scope.options.clone == true) {
-            	dragElement.append(scope.itemScope.element.clone());
+              dragElement.append(scope.itemScope.element.clone());
             } else {
-            	dragElement.append(scope.itemScope.element);
+              dragElement.append(scope.itemScope.element);
             }
 
             containment.append(dragElement);

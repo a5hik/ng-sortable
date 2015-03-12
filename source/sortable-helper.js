@@ -20,7 +20,7 @@
          * @returns {String} Height
          */
         height: function (element) {
-          return element.prop('offsetHeight');
+          return element[0].getBoundingClientRect().height;
         },
 
         /**
@@ -30,7 +30,7 @@
          * @returns {String} Width
          */
         width: function (element) {
-          return element.prop('offsetWidth');
+          return element[0].getBoundingClientRect().width;
         },
 
         /**

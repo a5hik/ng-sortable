@@ -121,6 +121,15 @@ Or bower.json
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
 ```
+Or for NuGet, manage the NuGet Packages for your project and install AngularJS.ng-sortable.
+Alternatively, at the Package Manager Console type:
+```
+Install-Package AngularJS.ng-sortable
+```
+Or, in a command line (with nuget.exe in your path):
+```
+nuget.exe install AngularJS.ng-sortable
+```
 Make sure to load the scripts in your html.
 ```html
 <script type="text/javascript" src="dist/ng-sortable.min.js"></script>

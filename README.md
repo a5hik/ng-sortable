@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.1.9
+Latest release version 1.2.0
 
 #### Demo Page:
 
@@ -120,6 +120,8 @@ Or bower.json
 {
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
+```
+npm install ng-sortable
 ```
 Make sure to load the scripts in your html.
 ```html

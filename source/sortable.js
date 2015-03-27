@@ -27,9 +27,7 @@
      * @param itemData - the item model data.
      */
     $scope.insertItem = function (index, itemData) {
-      $scope.safeApply(function () {
-        $scope.modelValue.splice(index, 0, itemData);
-      });
+      $scope.modelValue.splice(index, 0, itemData);
     };
 
     /**
@@ -41,9 +39,7 @@
     $scope.removeItem = function (index) {
       var removedItem = null;
       if (index > -1) {
-        $scope.safeApply(function () {
-          removedItem = $scope.modelValue.splice(index, 1)[0];
-        });
+        removedItem = $scope.modelValue.splice(index, 1)[0];
       }
       return removedItem;
     };
@@ -67,22 +63,6 @@
      */
     $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
       return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
-    };
-
-    /**
-     * Checks the current phase before executing the function.
-     *
-     * @param fn the function to execute.
-     */
-    $scope.safeApply = function (fn) {
-      var phase = this.$root.$$phase;
-      if (phase === '$apply' || phase === '$digest') {
-        if (fn && (typeof fn === 'function')) {
-          fn();
-        }
-      } else {
-        this.$apply(fn);
-      }
     };
 
   }]);

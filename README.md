@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.1.9
+Latest release version 1.2.0
 
 #### Demo Page:
 
@@ -121,6 +121,8 @@ Or bower.json
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
 ```
+npm install ng-sortable
+```
 Make sure to load the scripts in your html.
 ```html
 <script type="text/javascript" src="dist/ng-sortable.min.js"></script>
@@ -171,7 +173,7 @@ If you want to restrict only to certain columns say you have 5 columns and you w
 the drag to be allowed in only 3 columns, then you need to implement your custom logic there.,
 and that too becomes straight forward as you have your scope Objects in hand.
 
-And reversing the condition, allows you to Drag accross Columns but not within same Column.
+And reversing the condition, allows you to Drag across Columns but not within same Column.
 
 ###### How To Revert Move After Validation Failure:
 
@@ -202,7 +204,7 @@ The move failure Impl here just reverts the moved item to its original location.
 
 ###### Horizontal Sorting:
 
-Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizonatal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
+Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizontal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
 
 Plunkr example link: http://plnkr.co/edit/5hzdWd?p=preview
 
@@ -257,5 +259,4 @@ For Bug report, and feature request File an Issue here: [issue](https://github.c
 
 ##### License
 
-MIT, see [LICENSE.md](./LICENSE.md).
-
+MIT, see [LICENSE](./LICENSE).

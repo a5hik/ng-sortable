@@ -36,7 +36,6 @@
       hiddenClass: 'as-sortable-hidden'
     });
 }());
-
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -491,7 +490,6 @@
     });
 
 }());
-
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -687,7 +685,7 @@
             var elementClicked, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
-            sourceScope = elementClicked.scope();
+            sourceScope = elementClicked.data().$asSortableItemHandleController.scope;
 
             // look for the handle on the current scope or parent scopes
             isDraggable = false;
@@ -763,7 +761,10 @@
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
 
-              targetScope = targetElement.scope();
+              var asSortableItemController = targetElement.data().$asSortableItemController || targetElement.parent().data().$asSortableItemController;
+              if(asSortableItemController) {
+                targetScope = asSortableItemController.scope;
+              }
 
               if (!targetScope || !targetScope.type) {
                 return;
@@ -969,7 +970,6 @@
       };
     }]);
 }());
-
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -1017,16 +1017,23 @@
   mainModule.directive('asSortableItem', ['sortableConfig',
     function (sortableConfig) {
       return {
-        require: '^asSortable',
+        require: ['^asSortable', '?ngModel'],
         restrict: 'A',
         controller: 'ui.sortable.sortableItemController',
-        link: function (scope, element, attrs, sortableController) {
-
+        link: function (scope, element, attrs, ctrl) {
+          var sortableController = ctrl[0];
+          var ngModelController = ctrl[1];
           if (sortableConfig.itemClass) {
             element.addClass(sortableConfig.itemClass);
           }
           scope.sortableScope = sortableController.scope;
-          scope.modelValue = sortableController.scope.modelValue[scope.$index];
+          if (ngModelController) {                        
+            ngModelController.$render = function () {
+              scope.modelValue = ngModelController.$modelValue;
+            };
+          } else {
+            scope.modelValue = sortableController.scope.modelValue[scope.$index];
+          }
           scope.element = element;
         }
       };

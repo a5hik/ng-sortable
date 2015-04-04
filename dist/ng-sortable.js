@@ -641,6 +641,7 @@
               angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
+            containment.addClass('as-sortable-un-selectable');
 
             // container positioning
             containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
@@ -869,6 +870,7 @@
             dragElement = null;
             dragHandled = false;
             containment.css('cursor', '');
+            containment.removeClass('as-sortable-un-selectable');
           }
 
           /**

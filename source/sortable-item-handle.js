@@ -259,6 +259,9 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
+              scope.sortableScope.$apply(function () {
+                scope.callbacks.dragMove(itemPosition, containment);
+              });
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;

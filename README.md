@@ -71,18 +71,18 @@ The directives are structured like below.
    ...
 </div>```
 
-#### DropTarget and Dragging
-- CSS styling may be applied via the "as-sortable-drop-target" class
-- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements with the class "as-sortable-drop-target".
+#### Dragging element CSS
+- CSS styling may be applied via the "as-sortable-dragging" class
+- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements.
 e.g.
     in HTML
 ```<!--not dragging-->````
-```<div class="as-sortable-drop-target"></div>````
+```<div class="as-sortable-item"></div>````
 ```<!--when dragging as-sortable-item-->```
-```<div class="as-sortable-drop-target as-sortable-dragging"></div>````
+```<div class="as-sortable-item as-sortable-dragging"></div>````
 
     in CSS
-    .as-sortable-drop-target.as-sortable-dragging{
+    .as-sortable-dragging{
        border: 1px dotted #000 !important;
     }
           

@@ -33,7 +33,8 @@
       handleClass: 'as-sortable-item-handle',
       placeHolderClass: 'as-sortable-placeholder',
       dragClass: 'as-sortable-drag',
-      hiddenClass: 'as-sortable-hidden'
+      hiddenClass: 'as-sortable-hidden',
+      dragging:'as-sortable-dragging'
     });
 }());
 
@@ -762,6 +763,9 @@
               $document[0].elementFromPoint(targetX, targetY);
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
+              
+              //Set Class as dragging starts
+              dragElement.addClass(sortableConfig.dragging);
 
               targetScope = targetElement.scope();
 

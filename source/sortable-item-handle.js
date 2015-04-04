@@ -270,7 +270,7 @@
               dragElement.removeClass(sortableConfig.hiddenClass);
               
               //Set Class as dragging starts
-              $("."+ sortableConfig.dropTarget).addClass(sortableConfig.dragging);
+              dragElement.addClass(sortableConfig.dragging);
 
               targetScope = targetElement.scope();
 
@@ -385,8 +385,6 @@
             if (dragElement) {
               //rollback all the changes.
               rollbackDragChanges();
-              //Remove dragging class when dragging ends
-              $("."+sortableConfig.dropTarget).removeClass(sortableConfig.dragging);
               // update model data
               dragItemInfo.apply();
               scope.sortableScope.$apply(function () {

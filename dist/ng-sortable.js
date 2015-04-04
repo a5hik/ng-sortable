@@ -413,7 +413,7 @@
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
 
-          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragCancel: null, dragEnd: null};
+          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null};
 
           /**
            * Invoked to decide whether to allow drop.
@@ -449,6 +449,14 @@
            * @param event - the event object.
            */
           callbacks.dragStart = function (event) {
+          };
+
+          /**
+           * Invoked when the drag started successfully.
+           *
+           * @param event - the event object.
+          */
+          callbacks.dragMove = function (event) {
           };
 
           /**
@@ -756,6 +764,9 @@
               event.preventDefault();
 
               eventObj = $helper.eventObj(event);
+              scope.sortableScope.$apply(function () {
+                scope.callbacks.dragMove(itemPosition, containment);
+              });
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;

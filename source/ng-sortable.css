@@ -2,6 +2,10 @@
 /* Mandatory CSS required for ng-sortable */
 /* ************************************** */
 
+.as-sortable-item, .as-sortable-placeholder {
+    display: block;
+}
+
 .as-sortable-item {
     -ms-touch-action: none;
     touch-action: none;

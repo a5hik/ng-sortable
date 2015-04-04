@@ -25,7 +25,7 @@
      * @returns {*} - index value.
      */
     $scope.index = function () {
-      return $scope.sortableScope.modelValue.indexOf($scope.modelValue);
+      return $scope.$index;
     };
 
     /**

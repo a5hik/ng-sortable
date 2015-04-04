@@ -193,7 +193,7 @@
             var elementClicked, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
-            sourceScope = elementClicked.data().$asSortableItemHandleController.scope;
+            sourceScope = elementClicked.scope();
 
             // look for the handle on the current scope or parent scopes
             isDraggable = false;

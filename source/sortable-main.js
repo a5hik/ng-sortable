@@ -33,6 +33,8 @@
       handleClass: 'as-sortable-item-handle',
       placeHolderClass: 'as-sortable-placeholder',
       dragClass: 'as-sortable-drag',
-      hiddenClass: 'as-sortable-hidden'
+      hiddenClass: 'as-sortable-hidden',
+      dropTarget:'as-sortable-drop-target',
+      dragging:'as-sortable-dragging'
     });
 }());

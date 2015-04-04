@@ -268,6 +268,9 @@
               $document[0].elementFromPoint(targetX, targetY);
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
+              
+              //Set Class as dragging starts
+              $("."+ sortableConfig.dropTarget).addClass(sortableConfig.dragging);
 
               targetScope = targetElement.scope();
 
@@ -382,6 +385,8 @@
             if (dragElement) {
               //rollback all the changes.
               rollbackDragChanges();
+              //Remove dragging class when dragging ends
+              $("."+sortableConfig.dropTarget).removeClass(sortableConfig.dragging);
               // update model data
               dragItemInfo.apply();
               scope.sortableScope.$apply(function () {

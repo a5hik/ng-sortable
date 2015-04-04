@@ -42,7 +42,9 @@
          */
         offset: function (element, scrollableContainer) {
           var boundingClientRect = element[0].getBoundingClientRect();
-          if (!scrollableContainer) { scrollableContainer = $document[0].documentElement; }
+          if (!scrollableContainer) {
+            scrollableContainer = $document[0].documentElement;
+          }
 
           return {
             width: boundingClientRect.width || element.prop('offsetWidth'),

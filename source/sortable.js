@@ -169,9 +169,9 @@
           }, true);
 
           // Set isDisabled if attr is set, if undefined isDisabled = false
-          if(angular.isDefined(attrs.isDisabled)) {
+          if (angular.isDefined(attrs.isDisabled)) {
             scope.$watch(attrs.isDisabled, function (newVal, oldVal) {
-              if(!angular.isUndefined(newVal)) {
+              if (!angular.isUndefined(newVal)) {
                 scope.isDisabled = newVal;
               }
             }, true);

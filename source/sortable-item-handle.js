@@ -63,10 +63,10 @@
 
           scope.itemScope = itemController.scope;
 
-          scope.$watch('sortableScope.isDisabled', function(newVal) {
-            if(isDisabled !== newVal) {
+          scope.$watch('sortableScope.isDisabled', function (newVal) {
+            if (isDisabled !== newVal) {
               isDisabled = newVal;
-              if(isDisabled) {
+              if (isDisabled) {
                 unbindDrag();
               } else {
                 bindDrag();
@@ -75,12 +75,12 @@
           });
 
           /**
-          * Listens for a 10px movement before
-          * dragStart is called to allow for
-          * a click event on the element.
-          *
-          * @param event - the event object.
-          */
+           * Listens for a 10px movement before
+           * dragStart is called to allow for
+           * a click event on the element.
+           *
+           * @param event - the event object.
+           */
           dragListen = function (event) {
 
             var unbindMoveListen = function () {
@@ -90,7 +90,7 @@
               element.unbind('touchend', unbindMoveListen);
               element.unbind('touchcancel', unbindMoveListen);
             };
-            
+
             var startPosition;
             var moveListen = function (e) {
               e.preventDefault();
@@ -103,7 +103,7 @@
                 dragStart(event);
               }
             };
-            
+
             angular.element($document).bind('mousemove', moveListen);
             angular.element($document).bind('touchmove', moveListen);
             element.bind('mouseup', unbindMoveListen);
@@ -157,7 +157,7 @@
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = angular.element($document[0].createElement(tagName))
-                .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+              .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
@@ -268,12 +268,12 @@
               $document[0].elementFromPoint(targetX, targetY);
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
-              
+
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
 
               var asSortableItemController = targetElement.data().$asSortableItemController || targetElement.parent().data().$asSortableItemController;
-              if(asSortableItemController) {
+              if (asSortableItemController) {
                 targetScope = asSortableItemController.scope;
               }
 

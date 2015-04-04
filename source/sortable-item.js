@@ -55,7 +55,7 @@
             element.addClass(sortableConfig.itemClass);
           }
           scope.sortableScope = sortableController.scope;
-          if (ngModelController) {                        
+          if (ngModelController) {
             ngModelController.$render = function () {
               scope.modelValue = ngModelController.$modelValue;
             };

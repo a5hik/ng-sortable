@@ -45,16 +45,23 @@
   mainModule.directive('asSortableItem', ['sortableConfig',
     function (sortableConfig) {
       return {
-        require: '^asSortable',
+        require: ['^asSortable', '?ngModel'],
         restrict: 'A',
         controller: 'ui.sortable.sortableItemController',
-        link: function (scope, element, attrs, sortableController) {
-
+        link: function (scope, element, attrs, ctrl) {
+          var sortableController = ctrl[0];
+          var ngModelController = ctrl[1];
           if (sortableConfig.itemClass) {
             element.addClass(sortableConfig.itemClass);
           }
           scope.sortableScope = sortableController.scope;
-          scope.modelValue = sortableController.scope.modelValue[scope.$index];
+          if (ngModelController) {                        
+            ngModelController.$render = function () {
+              scope.modelValue = ngModelController.$modelValue;
+            };
+          } else {
+            scope.modelValue = sortableController.scope.modelValue[scope.$index];
+          }
           scope.element = element;
         }
       };

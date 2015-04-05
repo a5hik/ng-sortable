@@ -195,7 +195,7 @@
 
             elementClicked = angular.element(event.target);
             elementClickedData = elementClicked.data();
-            if(elementClickedData && elementClickedData.$asSortableItemHandleController) { 
+            if(elementClickedData.$asSortableItemHandleController) { 
               sourceScope = elementClickedData.$asSortableItemHandleController.scope;
             }
 
@@ -283,10 +283,9 @@
               
               targetElementData = targetElement.data();
               parentTargetElementData = targetElement.parent().data();
-              if(targetElementData && targetElementData.$asSortableItemController) {
-                  asSortableItemController = targetElementData.$asSortableItemController;
-              } else if (parentTargetElementData && parentTargetElementData.$asSortableItemController) {
-                  asSortableItemController = parentTargetElementData.$asSortableItemController;
+              asSortableItemController = targetElementData.$asSortableItemController || targetElementData.$asSortableController;
+              if(!asSortableItemController) {
+                asSortableItemController = parentTargetElementData.$asSortableItemController || parentTargetElementData.$asSortableController;
               }
 
               targetScope = asSortableItemController ? asSortableItemController.scope : null;

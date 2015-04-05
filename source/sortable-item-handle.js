@@ -191,10 +191,13 @@
            */
           isDraggable = function (event) {
 
-            var elementClicked, sourceScope, isDraggable;
+            var elementClicked, elementClickedData, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
-            sourceScope = elementClicked.scope();
+            elementClickedData = elementClicked.data();
+            if(elementClickedData && elementClickedData.$asSortableItemHandleController) { 
+              sourceScope = elementClickedData.$asSortableItemHandleController.scope;
+            }
 
             // look for the handle on the current scope or parent scopes
             isDraggable = false;
@@ -276,10 +279,17 @@
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
 
-              var asSortableItemController = targetElement.data().$asSortableItemController || targetElement.parent().data().$asSortableItemController;
-              if (asSortableItemController) {
-                targetScope = asSortableItemController.scope;
+              var asSortableItemController, targetElementData, parentTargetElementData;
+              
+              targetElementData = targetElement.data();
+              parentTargetElementData = targetElement.parent().data();
+              if(targetElementData && targetElementData.$asSortableItemController) {
+                  asSortableItemController = targetElementData.$asSortableItemController;
+              } else if (parentTargetElementData && parentTargetElementData.$asSortableItemController) {
+                  asSortableItemController = parentTargetElementData.$asSortableItemController;
               }
+
+              targetScope = asSortableItemController ? asSortableItemController.scope : null;
 
               if (!targetScope || !targetScope.type) {
                 return;

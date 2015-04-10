@@ -276,10 +276,7 @@
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
 
-              var asSortableItemController = targetElement.data().$asSortableItemController || targetElement.parent().data().$asSortableItemController;
-              if (asSortableItemController) {
-                targetScope = asSortableItemController.scope;
-              }
+              targetScope = targetElement.scope();
 
               if (!targetScope || !targetScope.type) {
                 return;

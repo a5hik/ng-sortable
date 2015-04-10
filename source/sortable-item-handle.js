@@ -309,6 +309,7 @@
                 }
               }
               if (targetScope.type === 'sortable') {//sortable scope.
+                targetElement = angular.element(placeElement).parent();
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.

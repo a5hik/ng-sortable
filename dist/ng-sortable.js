@@ -404,10 +404,6 @@
 
           // Set the model value in to scope.
           ngModel.$render = function () {
-            //set an empty array, in case if none is provided.
-            if (!ngModel.$modelValue || !angular.isArray(ngModel.$modelValue)) {
-              ngModel.$setViewValue([]);
-            }
             scope.modelValue = ngModel.$modelValue;
           };
           //set the element in scope to be accessed by its sub scope.
@@ -814,6 +810,7 @@
                 }
               }
               if (targetScope.type === 'sortable') {//sortable scope.
+                targetElement = angular.element(placeElement).parent();
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.

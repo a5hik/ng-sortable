@@ -4,4 +4,6 @@ node_modules
 .idea
 *.iml
 *.yml
+demo/bower_components
+demo/dist
 .*

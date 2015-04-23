@@ -97,9 +97,11 @@
             var unbindMoveListen = function () {
               angular.element($document).unbind('mousemove', moveListen);
               angular.element($document).unbind('touchmove', moveListen);
+              angular.element($document).unbind('dragstart', moveListen);
               element.unbind('mouseup', unbindMoveListen);
               element.unbind('touchend', unbindMoveListen);
               element.unbind('touchcancel', unbindMoveListen);
+              element.unbind('dragend', unbindMoveListen);
             };
 
             var startPosition;
@@ -117,9 +119,11 @@
 
             angular.element($document).bind('mousemove', moveListen);
             angular.element($document).bind('touchmove', moveListen);
+            angular.element($document).bind('dragstart', moveListen);
             element.bind('mouseup', unbindMoveListen);
             element.bind('touchend', unbindMoveListen);
             element.bind('touchcancel', unbindMoveListen);
+            element.bind('dragend', unbindMoveListen);
           };
 
           /**
@@ -155,7 +159,6 @@
               angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
-            containment.addClass('as-sortable-un-selectable');
 
             // container positioning
             containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
@@ -385,7 +388,6 @@
             dragElement = null;
             dragHandled = false;
             containment.css('cursor', '');
-            containment.removeClass('as-sortable-un-selectable');
           }
 
           /**

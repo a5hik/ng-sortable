@@ -53,6 +53,7 @@
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             dragHandled, //drag handled.
+            createPlaceholder,
             isDisabled = false; // drag enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
@@ -73,6 +74,16 @@
               }
             }
           });
+
+          createPlaceholder = function(itemScope) {
+            if(typeof scope.sortableScope.options.placeholder === 'function') {
+              return angular.element(scope.sortableScope.options.placeholder(itemScope));
+            } else if(typeof scope.sortableScope.options.placeholder === 'string') {
+              return angular.element(scope.sortableScope.options.placeholder);
+            } else {
+              return angular.element($document[0].createElement(itemScope.element.prop('tagName')));
+            }
+          };
 
           /**
            * Listens for a 10px movement before
@@ -157,7 +168,7 @@
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeHolder = angular.element($document[0].createElement(tagName))
+            placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');

@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('scrollableContainer', ['as.sortable']);
+var app = angular.module('scrollableContainer', ['ui.sortable']);
 
 app.controller('MainCtrl', function ($scope) {
 

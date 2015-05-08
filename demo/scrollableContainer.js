@@ -10,7 +10,7 @@ app.controller('MainCtrl', function ($scope) {
     items2: []
   };
 
-  for (i = 0; i <= 5; i += 1) {
+  for (i = 0; i <= 15; i += 1) {
     $scope.itemsList.items1.push({'Id': i, 'Label': 'Item ' + i});
   }
 

@@ -143,6 +143,11 @@
               // event has already fired in other scope.
               return;
             }
+
+            if (scope.$eval(attrs.asSortableItemHandle) === false) {
+              return;
+            }
+
             // Set the flag to prevent other items from inheriting the drag event
             dragHandled = true;
             event.preventDefault();

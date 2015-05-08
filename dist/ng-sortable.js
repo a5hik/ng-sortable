@@ -810,7 +810,7 @@
                 return;
               }
 
-              if (targetScope.type === 'item' && targetScope.accept(scope, targetScope)) {
+              if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
                 // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
 

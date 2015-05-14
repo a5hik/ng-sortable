@@ -46,6 +46,7 @@
             dragCancel,//drag cancel event.
             isDraggable,//is element draggable.
             isDragBefore,//is element moved up direction.
+            placeHolderIndex,//placeholder index in items elements.
             isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
             unbindDrag,//unbind drag events.
@@ -299,38 +300,49 @@
                 return;
               }
 
-              if (targetScope.type === 'item') {
+              if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
+                // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
-                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope, targetScope)) {
-                  if (itemPosition.dirAx && //move horizontal
-                    scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
-                    itemPosition.distAxX = 0;
-                    if (itemPosition.distX < 0) {//move left
-                      insertBefore(targetElement, targetScope);
-                    } else if (itemPosition.distX > 0) {//move right
-                      insertAfter(targetElement, targetScope);
-                    }
-                  } else { //move vertical
-                    if (isDragBefore(eventObj, targetElement)) {//move up
-                      insertBefore(targetElement, targetScope);
-                    } else {//move bottom
-                      insertAfter(targetElement, targetScope);
-                    }
+
+                var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
+                if (placeholderIndex < 0) {
+                  insertBefore(targetElement, targetScope);
+                } else {
+                  if (placeholderIndex <= targetScope.index()) {
+                    insertAfter(targetElement, targetScope);
+                  } else {
+                    insertBefore(targetElement, targetScope);
                   }
                 }
               }
+
               if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
-                  //moving over sortable bucket. not over item.
-                  if (!isPlaceHolderPresent(targetElement)) {
-                    //append to bottom.
-                    targetElement[0].appendChild(placeHolder[0]);
-                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
-                  }
+                  targetElement[0].appendChild(placeHolder[0]);
+                  dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                 }
               }
             }
+          };
+
+          /**
+           * Get position of place holder amongs item elements in itemScope.
+           * @param targetElement the target element to check with.
+           * @returns {*} -1 if placeholder is not present, index if yes.
+           */
+          placeHolderIndex = function (targetElement) {
+            var itemElements, i;
+
+            itemElements = targetElement.children();
+            for (i = 0; i < itemElements.length; i += 1) {
+              //TODO may not be accurate when elements contain other siblings than item elements
+              //solve by adding 1 to model index of previous item element
+              if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
+                return i;
+              }
+            }
+            return -1;
           };
 
           /**
@@ -339,16 +351,7 @@
            * @returns {*} true if place holder present.
            */
           isPlaceHolderPresent = function (targetElement) {
-            var itemElements, hasPlaceHolder, i;
-
-            itemElements = targetElement.children();
-            for (i = 0; i < itemElements.length; i += 1) {
-              if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
-                hasPlaceHolder = true;
-                break;
-              }
-            }
-            return hasPlaceHolder;
+            return placeHolderIndex(targetElement) >= 0;
           };
 
 

@@ -64,6 +64,7 @@
           }
 
           scope.itemScope = itemController.scope;
+          element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
             if (isDisabled !== newVal) {
@@ -206,17 +207,11 @@
             var elementClicked, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
-            sourceScope = elementClicked.scope();
 
             // look for the handle on the current scope or parent scopes
-            isDraggable = false;
-            while (!isDraggable && sourceScope !== undefined) {
-              if (sourceScope.type && sourceScope.type === 'handle') {
-                isDraggable = true;
-              } else {
-                sourceScope = sourceScope.$parent;
-              }
-            }
+            sourceScope = fetchScope(elementClicked);
+            
+            isDraggable = (sourceScope && sourceScope.type === 'handle');
 
             //If a 'no-drag' element inside item-handle if any.
             while (isDraggable && elementClicked[0] !== element[0]) {
@@ -288,7 +283,7 @@
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
 
-              targetScope = targetElement.scope();
+              targetScope = fetchScope(targetElement);
 
               if (!targetScope || !targetScope.type) {
                 return;
@@ -325,6 +320,24 @@
               }
             }
           };
+
+
+          /**
+           * Fetch scope from element or parents
+           * @param  {object} element Source element
+           * @return {object}         Scope, or null if not found
+           */
+          function fetchScope (element){
+            var scope;
+            while (!scope && element.length) {
+              scope = element.data('_scope');
+              if (!scope) {
+                element = element.parent();
+              }
+            }
+            return scope;
+          }
+          
 
           /**
            * Get position of place holder amongs item elements in itemScope.

@@ -412,6 +412,7 @@
           };
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
+          element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
 
           callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null};
 

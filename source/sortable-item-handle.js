@@ -45,9 +45,7 @@
             dragEnd,//drag end event.
             dragCancel,//drag cancel event.
             isDraggable,//is element draggable.
-            isDragBefore,//is element moved up direction.
             placeHolderIndex,//placeholder index in items elements.
-            isPlaceHolderPresent,//is placeholder present.
             bindDrag,//bind drag events.
             unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
@@ -64,7 +62,7 @@
           }
 
           scope.itemScope = itemController.scope;
-          element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
+          element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
             if (isDisabled !== newVal) {
@@ -77,10 +75,10 @@
             }
           });
 
-          createPlaceholder = function(itemScope) {
-            if(typeof scope.sortableScope.options.placeholder === 'function') {
+          createPlaceholder = function (itemScope) {
+            if (typeof scope.sortableScope.options.placeholder === 'function') {
               return angular.element(scope.sortableScope.options.placeholder(itemScope));
-            } else if(typeof scope.sortableScope.options.placeholder === 'string') {
+            } else if (typeof scope.sortableScope.options.placeholder === 'string') {
               return angular.element(scope.sortableScope.options.placeholder);
             } else {
               return angular.element($document[0].createElement(itemScope.element.prop('tagName')));
@@ -210,7 +208,7 @@
 
             // look for the handle on the current scope or parent scopes
             sourceScope = fetchScope(elementClicked);
-            
+
             isDraggable = (sourceScope && sourceScope.type === 'handle');
 
             //If a 'no-drag' element inside item-handle if any.
@@ -327,7 +325,7 @@
            * @param  {object} element Source element
            * @return {object}         Scope, or null if not found
            */
-          function fetchScope (element){
+          function fetchScope(element) {
             var scope;
             while (!scope && element.length) {
               scope = element.data('_scope');
@@ -337,10 +335,10 @@
             }
             return scope;
           }
-          
+
 
           /**
-           * Get position of place holder amongs item elements in itemScope.
+           * Get position of place holder among item elements in itemScope.
            * @param targetElement the target element to check with.
            * @returns {*} -1 if placeholder is not present, index if yes.
            */
@@ -356,37 +354,6 @@
               }
             }
             return -1;
-          };
-
-          /**
-           * Check there is no place holder placed by itemScope.
-           * @param targetElement the target element to check with.
-           * @returns {*} true if place holder present.
-           */
-          isPlaceHolderPresent = function (targetElement) {
-            return placeHolderIndex(targetElement) >= 0;
-          };
-
-
-          /**
-           * Determines whether the item is dragged upwards.
-           *
-           * @param eventObj - the event object.
-           * @param targetElement - the target element.
-           * @returns {boolean} - true if moving upwards.
-           */
-          isDragBefore = function (eventObj, targetElement) {
-            var dragBefore, targetOffset;
-
-            dragBefore = false;
-            // check it's new position
-            targetOffset = $helper.offset(targetElement);
-            if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
-              dragBefore = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
-            } else {
-              dragBefore = eventObj.pageY < targetOffset.top;
-            }
-            return dragBefore;
           };
 
           /**

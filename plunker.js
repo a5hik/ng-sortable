@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('plunker', ['as.sortable']);
+var app = angular.module('plunker', ['ui.sortable']);
 
 app.controller('MainCtrl', function ($scope) {
 
@@ -24,16 +24,5 @@ app.controller('MainCtrl', function ($scope) {
 
   $scope.sortableOptions = {
     containment: '#sortable-container'
-  };
-});
-
-app.directive('myDirective', function($compile) {
-  return {
-    restrict: 'E',
-    //scope: {
-    //  item: '='
-    //},
-    template: '<div><p data-ng-bind="item.name"></p></div>',
-    replace: true,
   };
 });

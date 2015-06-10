@@ -8,7 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.2.0
+Latest release version 1.2.2
 
 #### Demo Page:
 
@@ -61,15 +61,16 @@ The directives are structured like below.
 - The 'is-disabled' attribute can be added optionally to as-sortable disable the Drag at runTime.
 
 #### Placeholder:
-- A placeholder element is created using the same tag as the as-sortable-item element
-- CSS styling may be applied via the 'as-sortable-placeholder' class
-- Additional classes may be applied via the 'additionalPlaceholderClass' option provided to the as-sortable item. e.g.
+- By default a placeholder element is created using the same tag as the as-sortable-item element
+- CSS styling may be applied via the `as-sortable-placeholder` class
+- Additional classes may be applied via the `additionalPlaceholderClass` option provided to the as-sortable item. e.g.
     in JS:
 ```$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };```
     in HTML:
 ```<div as-sortable="sortableOptions">
    ...
 </div>```
+- A customized placeholder can be provided by specifying the `placeholder` option provided to the as-sortable item. `placeholder` can be both a template string or a function returning a template string.
 
 #### Dragging element CSS
 - CSS styling may be applied via the "as-sortable-dragging" class

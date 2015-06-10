@@ -45,14 +45,14 @@
             dragEnd,//drag end event.
             dragCancel,//drag cancel event.
             isDraggable,//is element draggable.
-            isDragBefore,//is element moved up direction.
-            isPlaceHolderPresent,//is placeholder present.
+            placeHolderIndex,//placeholder index in items elements.
             bindDrag,//bind drag events.
             unbindDrag,//unbind drag events.
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             dragHandled, //drag handled.
+            createPlaceholder,
             isDisabled = false; // drag enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
@@ -62,6 +62,7 @@
           }
 
           scope.itemScope = itemController.scope;
+          element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
             if (isDisabled !== newVal) {
@@ -73,6 +74,16 @@
               }
             }
           });
+
+          createPlaceholder = function (itemScope) {
+            if (typeof scope.sortableScope.options.placeholder === 'function') {
+              return angular.element(scope.sortableScope.options.placeholder(itemScope));
+            } else if (typeof scope.sortableScope.options.placeholder === 'string') {
+              return angular.element(scope.sortableScope.options.placeholder);
+            } else {
+              return angular.element($document[0].createElement(itemScope.element.prop('tagName')));
+            }
+          };
 
           /**
            * Listens for a 10px movement before
@@ -157,7 +168,7 @@
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeHolder = angular.element($document[0].createElement(tagName))
+            placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
@@ -194,17 +205,11 @@
             var elementClicked, sourceScope, isDraggable;
 
             elementClicked = angular.element(event.target);
-            sourceScope = elementClicked.scope();
 
             // look for the handle on the current scope or parent scopes
-            isDraggable = false;
-            while (!isDraggable && sourceScope !== undefined) {
-              if (sourceScope.type && sourceScope.type === 'handle') {
-                isDraggable = true;
-              } else {
-                sourceScope = sourceScope.$parent;
-              }
-            }
+            sourceScope = fetchScope(elementClicked);
+
+            isDraggable = (sourceScope && sourceScope.type === 'handle');
 
             //If a 'no-drag' element inside item-handle if any.
             while (isDraggable && elementClicked[0] !== element[0]) {
@@ -276,7 +281,7 @@
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
 
-              targetScope = targetElement.scope();
+              targetScope = fetchScope(targetElement);
 
               if (!targetScope || !targetScope.type) {
                 return;
@@ -288,79 +293,67 @@
                 return;
               }
 
-              if (targetScope.type === 'item') {
+              if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
+                // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
-                if (targetScope.sortableScope.accept(scope, targetScope.sortableScope, targetScope)) {
-                  if (itemPosition.dirAx && //move horizontal
-                    scope.itemScope.sortableScope.$id === targetScope.sortableScope.$id) { //move same column
-                    itemPosition.distAxX = 0;
-                    if (itemPosition.distX < 0) {//move left
-                      insertBefore(targetElement, targetScope);
-                    } else if (itemPosition.distX > 0) {//move right
-                      insertAfter(targetElement, targetScope);
-                    }
-                  } else { //move vertical
-                    if (isDragBefore(eventObj, targetElement)) {//move up
-                      insertBefore(targetElement, targetScope);
-                    } else {//move bottom
-                      insertAfter(targetElement, targetScope);
-                    }
+
+                var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
+                if (placeholderIndex < 0) {
+                  insertBefore(targetElement, targetScope);
+                } else {
+                  if (placeholderIndex <= targetScope.index()) {
+                    insertAfter(targetElement, targetScope);
+                  } else {
+                    insertBefore(targetElement, targetScope);
                   }
                 }
               }
+
               if (targetScope.type === 'sortable') {//sortable scope.
-                targetElement = angular.element(placeElement).parent();
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
-                  //moving over sortable bucket. not over item.
-                  if (!isPlaceHolderPresent(targetElement)) {
-                    //append to bottom.
-                    targetElement[0].appendChild(placeHolder[0]);
-                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
-                  }
+                  targetElement[0].appendChild(placeHolder[0]);
+                  dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                 }
               }
             }
           };
 
+
           /**
-           * Check there is no place holder placed by itemScope.
-           * @param targetElement the target element to check with.
-           * @returns {*} true if place holder present.
+           * Fetch scope from element or parents
+           * @param  {object} element Source element
+           * @return {object}         Scope, or null if not found
            */
-          isPlaceHolderPresent = function (targetElement) {
-            var itemElements, hasPlaceHolder, i;
+          function fetchScope(element) {
+            var scope;
+            while (!scope && element.length) {
+              scope = element.data('_scope');
+              if (!scope) {
+                element = element.parent();
+              }
+            }
+            return scope;
+          }
+
+
+          /**
+           * Get position of place holder among item elements in itemScope.
+           * @param targetElement the target element to check with.
+           * @returns {*} -1 if placeholder is not present, index if yes.
+           */
+          placeHolderIndex = function (targetElement) {
+            var itemElements, i;
 
             itemElements = targetElement.children();
             for (i = 0; i < itemElements.length; i += 1) {
+              //TODO may not be accurate when elements contain other siblings than item elements
+              //solve by adding 1 to model index of previous item element
               if (angular.element(itemElements[i]).hasClass(sortableConfig.placeHolderClass)) {
-                hasPlaceHolder = true;
-                break;
+                return i;
               }
             }
-            return hasPlaceHolder;
-          };
-
-
-          /**
-           * Determines whether the item is dragged upwards.
-           *
-           * @param eventObj - the event object.
-           * @param targetElement - the target element.
-           * @returns {boolean} - true if moving upwards.
-           */
-          isDragBefore = function (eventObj, targetElement) {
-            var dragBefore, targetOffset;
-
-            dragBefore = false;
-            // check it's new position
-            targetOffset = $helper.offset(targetElement);
-            if ($helper.offset(placeHolder).top > targetOffset.top) { // the move direction is up?
-              dragBefore = $helper.offset(dragElement).top < targetOffset.top + $helper.height(targetElement) / 2;
-            } else {
-              dragBefore = eventObj.pageY < targetOffset.top;
-            }
-            return dragBefore;
+            return -1;
           };
 
           /**

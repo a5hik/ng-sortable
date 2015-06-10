@@ -63,6 +63,7 @@
             scope.modelValue = sortableController.scope.modelValue[scope.$index];
           }
           scope.element = element;
+          element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
         }
       };
     }]);

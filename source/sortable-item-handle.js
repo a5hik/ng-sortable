@@ -168,22 +168,36 @@
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeHolder = createPlaceholder(scope.itemScope)
-              .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
-            placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
-            placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
+            if (scope.cloneable === true) {
 
-            placeElement = angular.element($document[0].createElement(tagName));
-            if (sortableConfig.hiddenClass) {
-              placeElement.addClass(sortableConfig.hiddenClass);
+                placeElement = angular.element($document[0].createElement(tagName));
+                if (sortableConfig.hiddenClass) {
+                    placeElement.addClass(sortableConfig.hiddenClass);
+                }
+                itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
+                //hidden place element in original position.
+                scope.itemScope.element.after(placeElement);
+
+                dragElement.append(scope.itemScope.element.clone());
             }
+            else {
+                placeHolder = createPlaceholder(scope.itemScope)
+                  .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+                placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+                placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
-            //fill the immediate vacuum.
-            scope.itemScope.element.after(placeHolder);
-            //hidden place element in original position.
-            scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
+                placeElement = angular.element($document[0].createElement(tagName));
+                if (sortableConfig.hiddenClass) {
+                    placeElement.addClass(sortableConfig.hiddenClass);
+                }
+
+                itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
+                //fill the immediate vacuum.
+                scope.itemScope.element.after(placeHolder);
+                //hidden place element in original position.
+                scope.itemScope.element.after(placeElement);
+                dragElement.append(scope.itemScope.element);
+            }
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
@@ -287,11 +301,22 @@
                 return;
               }
               if (targetScope.type === 'handle') {
-                targetScope = targetScope.itemScope;
+                  targetScope = targetScope.itemScope;
               }
               if (targetScope.type !== 'item' && targetScope.type !== 'sortable') {
-                return;
+                  return;
               }
+              if (targetScope.cloneable === false && !placeHolder) {
+                  placeHolder = createPlaceholder(scope.itemScope)
+                    .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+                  placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+                  placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
+                  //fill the immediate vacuum.
+                  scope.itemScope.element.after(placeHolder);
+
+              }
+              if (targetScope.cloneable === true)
+                  return;
 
               if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
                 // decide where to insert placeholder based on target element and current placeholder if is present
@@ -310,11 +335,11 @@
               }
 
               if (targetScope.type === 'sortable') {//sortable scope.
-                if (targetScope.accept(scope, targetScope) &&
-                  targetElement[0].parentNode !== targetScope.element[0]) {
-                  targetElement[0].appendChild(placeHolder[0]);
-                  dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
-                }
+                  if (targetScope.accept(scope, targetScope) && placeHolder[0].parentNode !== targetElement[0] &&
+                    targetElement[0].parentNode !== targetScope.element[0]) {
+                      targetElement[0].appendChild(placeHolder[0]);
+                      dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
+                  }
               }
             }
           };
@@ -362,7 +387,8 @@
 
           function rollbackDragChanges() {
             placeElement.replaceWith(scope.itemScope.element);
-            placeHolder.remove();
+            if (placeHolder)
+                placeHolder.remove();
             dragElement.remove();
             dragElement = null;
             dragHandled = false;
@@ -382,10 +408,35 @@
             }
             event.preventDefault();
             if (dragElement) {
-              //rollback all the changes.
-              rollbackDragChanges();
-              // update model data
-              dragItemInfo.apply();
+                var eventObj, targetX, targetY, targetScope, targetElement;
+                eventObj = $helper.eventObj(event);
+                targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
+                targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
+
+                $document[0].elementFromPoint(targetX, targetY);
+                targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
+
+                targetScope = fetchScope(targetElement);
+
+                var deleteItem = false;
+                if (!targetScope || !targetScope.type) {
+                    deleteItem = true;
+                }
+                else
+                    if (targetScope.type === 'handle') {
+                        targetScope = targetScope.itemScope;
+
+                        if (targetScope.cloneable === true || targetScope.type !== 'item' && targetScope.type !== 'sortable') {
+                            deleteItem = true;
+
+                        }
+
+                    }
+
+                //rollback all the changes.
+                rollbackDragChanges();
+                // update model data
+                dragItemInfo.apply(deleteItem);
               scope.sortableScope.$apply(function () {
                 if (dragItemInfo.isSameParent()) {
                   if (dragItemInfo.isOrderChanged()) {

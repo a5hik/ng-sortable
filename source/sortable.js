@@ -19,7 +19,7 @@
     $scope.type = 'sortable';
     $scope.options = {};
     $scope.isDisabled = false;
-
+    $scope.cloneable = false;
     /**
      * Inserts the item in to the sortable list.
      *
@@ -181,6 +181,9 @@
               }
             }, true);
           }
+            // Set cloneable if attr is set, if undefined cloneable = false
+          if (angular.isDefined(attrs.cloneable))
+              scope.cloneable = true;
         }
       };
     });

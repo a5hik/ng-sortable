@@ -193,7 +193,7 @@
             }
             if (element.y < bounds.top) {
               element.y = bounds.top;
-            } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
+            } else if (bounds.height > 0 && element.y >= bounds.height + bounds.top - this.offset(element).height) {
               element.y = bounds.height + bounds.top - this.offset(element).height;
             }
           }
@@ -250,9 +250,11 @@
                 }
               };
             },
-            apply: function () {
-              this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
-              this.parent.insertItem(this.index, this.source.modelValue); // Insert in to destination.
+            apply: function (deleteItem) {
+                if (this.sourceInfo.sortableScope.cloneable === false)
+                    this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
+                if (!deleteItem)
+                    this.parent.insertItem(this.index, angular.copy(this.source.modelValue)); // Insert in to destination.
             }
           };
         },

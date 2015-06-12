@@ -291,9 +291,9 @@
               };
             },
             apply: function (deleteItem) {
-                if (this.sourceInfo.sortableScope.cloneable === false)
+                if (this.sourceInfo.sortableScope.cloneable === false && !(this.sourceInfo.sortableScope.cloneableAndSortable === true && this.isSameParent()))
                     this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
-                if (!deleteItem)
+                if (!deleteItem && this.parent.cloneable === false)
                     this.parent.insertItem(this.index, angular.copy(this.source.modelValue)); // Insert in to destination.
             }
           };
@@ -335,6 +335,9 @@
     $scope.options = {};
     $scope.isDisabled = false;
     $scope.cloneable = false;
+    $scope.cloneableAndSortable = false;
+    $scope.removeWhenDropOut = false;
+    $scope.showRemoveIcon = false;
     /**
      * Inserts the item in to the sortable list.
      *
@@ -499,6 +502,14 @@
             // Set cloneable if attr is set, if undefined cloneable = false
           if (angular.isDefined(attrs.cloneable))
               scope.cloneable = true;
+          if (angular.isDefined(attrs.cloneableAndSortable))
+              scope.cloneableAndSortable = true;
+          
+          if (angular.isDefined(attrs.showRemoveIcon))
+              scope.showRemoveIcon = true;
+            //if remove the item when it was dropped out of sortable area
+          if (angular.isDefined(attrs.removeWhenDropOut))
+              scope.removeWhenDropOut = true;
         }
       };
     });
@@ -703,7 +714,10 @@
                 scope.itemScope.element.after(placeHolder);
                 //hidden place element in original position.
                 scope.itemScope.element.after(placeElement);
-                dragElement.append(scope.itemScope.element);
+                if (scope.cloneableAndSortable === true)
+                    dragElement.append(scope.itemScope.element.clone());
+                else
+                    dragElement.append(scope.itemScope.element);
             }
 
             containment.append(dragElement);
@@ -943,8 +957,8 @@
                 //rollback all the changes.
                 rollbackDragChanges();
                 // update model data
-                dragItemInfo.apply(deleteItem);
-              scope.sortableScope.$apply(function () {
+                dragItemInfo.apply(scope.removeWhenDropOut ? deleteItem : false);
+                scope.sortableScope.$apply(function () {
                 if (dragItemInfo.isSameParent()) {
                   if (dragItemInfo.isOrderChanged()) {
                     scope.callbacks.orderChanged(dragItemInfo.eventArgs());

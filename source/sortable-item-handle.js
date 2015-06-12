@@ -196,7 +196,10 @@
                 scope.itemScope.element.after(placeHolder);
                 //hidden place element in original position.
                 scope.itemScope.element.after(placeElement);
-                dragElement.append(scope.itemScope.element);
+                if (scope.cloneableAndSortable === true)
+                    dragElement.append(scope.itemScope.element.clone());
+                else
+                    dragElement.append(scope.itemScope.element);
             }
 
             containment.append(dragElement);
@@ -436,8 +439,8 @@
                 //rollback all the changes.
                 rollbackDragChanges();
                 // update model data
-                dragItemInfo.apply(deleteItem);
-              scope.sortableScope.$apply(function () {
+                dragItemInfo.apply(scope.removeWhenDropOut ? deleteItem : false);
+                scope.sortableScope.$apply(function () {
                 if (dragItemInfo.isSameParent()) {
                   if (dragItemInfo.isOrderChanged()) {
                     scope.callbacks.orderChanged(dragItemInfo.eventArgs());

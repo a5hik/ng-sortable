@@ -252,9 +252,9 @@
             },
             apply: function (deleteItem) {
                 if (this.sourceInfo.sortableScope.cloneable === false && !(this.sourceInfo.sortableScope.cloneableAndSortable === true && this.isSameParent()))
-                    this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
+                    {this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);} // Remove from source.
                 if (!deleteItem && this.parent.cloneable === false)
-                    this.parent.insertItem(this.index, angular.copy(this.source.modelValue)); // Insert in to destination.
+                    {this.parent.insertItem(this.index, angular.copy(this.source.modelValue));} // Insert in to destination.
             }
           };
         },

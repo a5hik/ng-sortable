@@ -186,15 +186,15 @@
           }
             // Set cloneable if attr is set, if undefined cloneable = false
           if (angular.isDefined(attrs.cloneable))
-              scope.cloneable = true;
+              {scope.cloneable = true;}
           if (angular.isDefined(attrs.cloneableAndSortable))
-              scope.cloneableAndSortable = true;
+              {scope.cloneableAndSortable = true;}
           
           if (angular.isDefined(attrs.showRemoveIcon))
-              scope.showRemoveIcon = true;
+              {scope.showRemoveIcon = true;}
             //if remove the item when it was dropped out of sortable area
           if (angular.isDefined(attrs.removeWhenDropOut))
-              scope.removeWhenDropOut = true;
+              {scope.removeWhenDropOut = true;}
         }
       };
     });

@@ -19,7 +19,10 @@
     $scope.type = 'sortable';
     $scope.options = {};
     $scope.isDisabled = false;
-
+    $scope.cloneable = false;
+    $scope.cloneableAndSortable = false;
+    $scope.removeWhenDropOut = false;
+    $scope.showRemoveIcon = false;
     /**
      * Inserts the item in to the sortable list.
      *
@@ -181,6 +184,17 @@
               }
             }, true);
           }
+            // Set cloneable if attr is set, if undefined cloneable = false
+          if (angular.isDefined(attrs.cloneable))
+              {scope.cloneable = true;}
+          if (angular.isDefined(attrs.cloneableAndSortable))
+              {scope.cloneableAndSortable = true;}
+          
+          if (angular.isDefined(attrs.showRemoveIcon))
+              {scope.showRemoveIcon = true;}
+            //if remove the item when it was dropped out of sortable area
+          if (angular.isDefined(attrs.removeWhenDropOut))
+              {scope.removeWhenDropOut = true;}
         }
       };
     });

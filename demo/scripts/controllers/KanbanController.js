@@ -17,8 +17,7 @@ angular.module('demoApp').controller('KanbanController', ['$scope', 'BoardServic
       event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
     },
     orderChanged: function (event) {
-    },
-    containment: '#board'
+    }
   };
 
   $scope.removeCard = function (column, card) {

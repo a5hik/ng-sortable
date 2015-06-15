@@ -52,7 +52,8 @@
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             dragHandled, //drag handled.
-            createPlaceholder,
+            createPlaceholder,//create place holder.
+            isPlaceHolderPresent,//is placeholder present.
             isDisabled = false; // drag enabled
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
@@ -312,8 +313,11 @@
               if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
-                  targetElement[0].appendChild(placeHolder[0]);
-                  dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
+                  //moving over sortable bucket. not over item.
+                  if (!isPlaceHolderPresent(targetElement)) {
+                    targetElement[0].appendChild(placeHolder[0]);
+                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
+                  }
                 }
               }
             }
@@ -354,6 +358,16 @@
               }
             }
             return -1;
+          };
+
+
+          /**
+           * Check there is no place holder placed by itemScope.
+           * @param targetElement the target element to check with.
+           * @returns {*} true if place holder present.
+           */
+          isPlaceHolderPresent = function (targetElement) {
+            return placeHolderIndex(targetElement) >= 0;
           };
 
           /**

@@ -7,6 +7,7 @@
 }
 
 .as-sortable-item {
+    pointer-events: none;
     -ms-touch-action: none;
     touch-action: none;
 }

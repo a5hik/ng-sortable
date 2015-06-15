@@ -92,9 +92,13 @@
             return; // do nothing if no ng-model
           }
 
-          // Set the model value in to scope.
+            // Set the model value in to scope.
           ngModel.$render = function () {
-            scope.modelValue = ngModel.$modelValue;
+              //set an empty array, in case if none is provided.
+              if (!ngModel.$modelValue || !angular.isArray(ngModel.$modelValue)) {
+                  ngModel.$setViewValue([]);
+              }
+              scope.modelValue = ngModel.$modelValue;
           };
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;

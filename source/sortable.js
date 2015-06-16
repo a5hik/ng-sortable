@@ -103,7 +103,12 @@
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
-
+            //make a minimum size, so we can drop items into the empty container
+          element.css({
+              'min-height': '30px',
+              'min-width': '60px',
+              'padding': '10px'
+          });
           callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null};
 
           /**

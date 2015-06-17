@@ -337,7 +337,7 @@
                 }
               }
 
-              if (targetScope.type === 'sortable') {//sortable scope.
+              if (targetScope.type === 'sortable' && targetScope.accept(scope, targetScope, targetScope)) {//sortable scope.
                   if (targetScope.accept(scope, targetScope) && placeHolder[0].parentNode !== targetElement[0] &&
                     targetElement[0].parentNode !== targetScope.element[0]) {
                       targetElement[0].appendChild(placeHolder[0]);

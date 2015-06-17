@@ -17,6 +17,7 @@
     $scope.modelValue = null; // sortable list.
     $scope.callbacks = null;
     $scope.type = 'sortable';
+    $scope.containerType = 'container';
     $scope.options = {};
     $scope.isDisabled = false;
     $scope.cloneable = false;
@@ -203,7 +204,10 @@
               {scope.showRemoveIcon = true;}
             //if remove the item when it was dropped out of sortable area
           if (angular.isDefined(attrs.removeWhenDropOut))
-              {scope.removeWhenDropOut = true;}
+          { scope.removeWhenDropOut = true; }
+            //set container type, this will be used in accept function
+          if (angular.isDefined(attrs.containerType))
+          { scope.containerType = attrs['containerType']; }
         }
       };
     });

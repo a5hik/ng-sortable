@@ -68,7 +68,6 @@
     $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
       return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
     };
-
   }]);
 
   /**

@@ -18,7 +18,7 @@
     $scope.sortableScope = null;
     $scope.modelValue = null; // sortable item.
     $scope.type = 'item';
-
+    $scope.itemContainerType = 'itemContainer';
     /**
      * returns the index of the drag item from the sortable list.
      *
@@ -63,7 +63,10 @@
             scope.modelValue = sortableController.scope.modelValue[scope.$index];
           }
           scope.element = element;
-          element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
+          element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
+            //set item(sub) container type, this will be used in accept function
+          if (angular.isDefined(attrs.itemContainerType))
+          { scope.itemContainerType = attrs['itemContainerType']; }
         }
       };
     }]);

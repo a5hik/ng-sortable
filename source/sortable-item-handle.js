@@ -93,7 +93,13 @@
            * @param event - the event object.
            */
           dragListen = function (event) {
+              event = event || window.event;
+              if (event.stopPropagation) {
+                  event.stopPropagation();
 
+              } else {
+                  event.cancelBubble = true;
+              }
             var unbindMoveListen = function () {
               angular.element($document).unbind('mousemove', moveListen);
               angular.element($document).unbind('touchmove', moveListen);

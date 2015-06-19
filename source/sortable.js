@@ -17,13 +17,13 @@
     $scope.modelValue = null; // sortable list.
     $scope.callbacks = null;
     $scope.type = 'sortable';
-    $scope.containerType = 'container';
     $scope.options = {};
     $scope.isDisabled = false;
-    $scope.cloneable = false;
-    $scope.cloneableAndSortable = false;
-    $scope.removeWhenDropOut = false;
-    $scope.showRemoveIcon = false;
+    $scope.containerType = 'container';//for nested containers
+    $scope.cloneable = false;//support clone, only copy item to destination, not sortable
+    $scope.cloneableAndSortable = false;//support clone, only copy item to destination, is sortable
+    $scope.removeWhenDropOut = false;//whether remove the item when it was dropped out of container
+    $scope.showRemoveIcon = false;//if show remove button
     /**
      * Inserts the item in to the sortable list.
      *
@@ -40,9 +40,12 @@
      * @param index - index to be removed.
      * @returns {*} - removed item.
      */
-    $scope.removeItem = function (index) {
+    $scope.removeItem = function (index, confirm) {
       var removedItem = null;
       if (index > -1) {
+        if (confirm === true && !$scope.removeConfirm()) {
+          return removedItem;
+        }
         removedItem = $scope.modelValue.splice(index, 1)[0];
       }
       return removedItem;
@@ -68,6 +71,15 @@
     $scope.accept = function (sourceItemHandleScope, destScope, destItemScope) {
       return $scope.callbacks.accept(sourceItemHandleScope, destScope, destItemScope);
     };
+    /**
+    * Wrapper for the removeConfirm callback delegates to callback.
+    *
+    * @param sourceItemHandleScope - drag item handle scope.       *
+    * @returns {*|boolean} - true if remove is allowed for the drag item .
+    */
+    $scope.removeConfirm = function () {
+      return $scope.callbacks.removeConfirm();
+    };
   }]);
 
   /**
@@ -92,24 +104,15 @@
             return; // do nothing if no ng-model
           }
 
-            // Set the model value in to scope.
+          // Set the model value in to scope.
           ngModel.$render = function () {
-              //set an empty array, in case if none is provided.
-              if (!ngModel.$modelValue || !angular.isArray(ngModel.$modelValue)) {
-                  ngModel.$setViewValue([]);
-              }
-              scope.modelValue = ngModel.$modelValue;
+            scope.modelValue = ngModel.$modelValue;
           };
           //set the element in scope to be accessed by its sub scope.
           scope.element = element;
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
-            //make a minimum size, so we can drop items into the empty container
-          element.css({
-              'min-height': '30px',
-              'min-width': '60px',
-              'padding': '10px'
-          });
-          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null};
+
+          callbacks = { accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove: null, dragCancel: null, dragEnd: null, removeConfirm: null };
 
           /**
            * Invoked to decide whether to allow drop.
@@ -170,7 +173,15 @@
            */
           callbacks.dragEnd = function (event) {
           };
-
+          /**
+            * Invoked before the item to be removed.
+            *
+            * @param event - the event object.
+            * return: true :can be removed, false: cancel the removing 
+            */
+          callbacks.removeConfirm = function () {
+            return true;
+          };
           //Set the sortOptions callbacks else set it to default.
           scope.$watch(attrs.asSortable, function (newVal, oldVal) {
             angular.forEach(newVal, function (value, key) {
@@ -194,19 +205,24 @@
             }, true);
           }
             // Set cloneable if attr is set, if undefined cloneable = false
-          if (angular.isDefined(attrs.cloneable))
-              {scope.cloneable = true;}
-          if (angular.isDefined(attrs.cloneableAndSortable))
-              {scope.cloneableAndSortable = true;}
-          
-          if (angular.isDefined(attrs.showRemoveIcon))
-              {scope.showRemoveIcon = true;}
+          if (angular.isDefined(attrs.cloneable)) {
+            scope.cloneable = true;
+          }
+          if (angular.isDefined(attrs.cloneableAndSortable)) {
+            scope.cloneableAndSortable = true;
+          }
+
+          if (angular.isDefined(attrs.showRemoveIcon)) {
+            scope.showRemoveIcon = true;
+          }
             //if remove the item when it was dropped out of sortable area
-          if (angular.isDefined(attrs.removeWhenDropOut))
-          { scope.removeWhenDropOut = true; }
+          if (angular.isDefined(attrs.removeWhenDropOut)) {
+            scope.removeWhenDropOut = true;
+          }
             //set container type, this will be used in accept function
-          if (angular.isDefined(attrs.containerType))
-          { scope.containerType = attrs['containerType']; }
+          if (angular.isDefined(attrs.containerType)) {
+            scope.containerType = attrs.containerType;
+          }
         }
       };
     });

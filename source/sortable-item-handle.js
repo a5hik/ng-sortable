@@ -20,6 +20,20 @@
   }]);
 
   /**
+   * Helper function to find the first ancestor with a given selector
+   * @param el - angular element to start looking at
+   * @param selector - selector to find the parent
+   * @returns {Object} - Angular element of the ancestor or body if not found
+   * @private
+   */
+  var _findAncestor = function (el, selector) {
+    el = el[0];
+    var matches = Element.matches || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;
+    while ((el = el.parentElement) && !matches.call(el, selector)){}
+    return el?angular.element(el):angular.element(document.body);
+  };
+
+  /**
    * Directive for sortable item handle.
    */
   mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
@@ -152,8 +166,7 @@
             scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
               $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
 
-            containment = angular.element($document[0].querySelector(scope.sortableScope.options.containment)).length > 0 ?
-              angular.element($document[0].querySelector(scope.sortableScope.options.containment)) : angular.element($document[0].body);
+            containment = (scope.sortableScope.options.containment)?_findAncestor(element, scope.sortableScope.options.containment):angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
             containment.addClass('as-sortable-un-selectable');

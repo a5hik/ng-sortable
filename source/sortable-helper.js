@@ -265,6 +265,21 @@
          */
         noDrag: function (element) {
           return element.attr('no-drag') !== undefined || element.attr('data-no-drag') !== undefined;
+        },
+
+        /**
+         * Helper function to find the first ancestor with a given selector
+         * @param el - angular element to start looking at
+         * @param selector - selector to find the parent
+         * @returns {Object} - Angular element of the ancestor or body if not found
+         * @private
+         */
+        findAncestor: function (el, selector) {
+          el = el[0];
+          var matches = Element.matches || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;
+          while ((el = el.parentElement) && !matches.call(el, selector)) {
+          }
+          return el ? angular.element(el) : angular.element(document.body);
         }
       };
     }

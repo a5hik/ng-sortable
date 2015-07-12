@@ -27,7 +27,7 @@
 
 (function () {
   'use strict';
-  angular.module('ui.sortable', [])
+  angular.module('as.sortable', [])
     .constant('sortableConfig', {
       itemClass: 'as-sortable-item',
       handleClass: 'as-sortable-item-handle',
@@ -44,7 +44,7 @@
 (function () {
   'use strict';
 
-  var mainModule = angular.module('ui.sortable');
+  var mainModule = angular.module('as.sortable');
 
   /**
    * Helper factory for sortable.
@@ -332,13 +332,13 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('ui.sortable');
+  var mainModule = angular.module('as.sortable');
 
   /**
    * Controller for Sortable.
    * @param $scope - the sortable scope.
    */
-  mainModule.controller('ui.sortable.sortableController', ['$scope', function ($scope) {
+  mainModule.controller('as.sortable.sortableController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -406,7 +406,7 @@
         require: 'ngModel', // get a hold of NgModelController
         restrict: 'A',
         scope: true,
-        controller: 'ui.sortable.sortableController',
+        controller: 'as.sortable.sortableController',
         link: function (scope, element, attrs, ngModelController) {
 
           var ngModel, callbacks;
@@ -521,14 +521,14 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('ui.sortable');
+  var mainModule = angular.module('as.sortable');
 
   /**
    * Controller for sortableItemHandle
    *
    * @param $scope - item handle scope.
    */
-  mainModule.controller('ui.sortable.sortableItemHandleController', ['$scope', function ($scope) {
+  mainModule.controller('as.sortable.sortableItemHandleController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -545,7 +545,7 @@
         require: '^asSortableItem',
         scope: true,
         restrict: 'A',
-        controller: 'ui.sortable.sortableItemHandleController',
+        controller: 'as.sortable.sortableItemHandleController',
         link: function (scope, element, attrs, itemController) {
 
           var dragElement, //drag item element.
@@ -1014,14 +1014,14 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('ui.sortable');
+  var mainModule = angular.module('as.sortable');
 
   /**
    * Controller for sortable item.
    *
    * @param $scope - drag item scope
    */
-  mainModule.controller('ui.sortable.sortableItemController', ['$scope', function ($scope) {
+  mainModule.controller('as.sortable.sortableItemController', ['$scope', function ($scope) {
 
     this.scope = $scope;
 
@@ -1057,7 +1057,7 @@
       return {
         require: ['^asSortable', '?ngModel'],
         restrict: 'A',
-        controller: 'ui.sortable.sortableItemController',
+        controller: 'as.sortable.sortableItemController',
         link: function (scope, element, attrs, ctrl) {
           var sortableController = ctrl[0];
           var ngModelController = ctrl[1];

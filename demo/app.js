@@ -7,7 +7,7 @@
 // Declare app level module which depends on other modules
 angular.module('demoApp', [
     'ngRoute',
-    'ui.sortable',
+    'as.sortable',
     'ui.bootstrap'
   ]).
   config(['$compileProvider', function ($compileProvider) {

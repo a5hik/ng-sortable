@@ -226,7 +226,7 @@ The move failure Impl here just reverts the moved item to its original location.
 
 Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizontal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
 
-Plunkr example link: http://plnkr.co/edit/5hzdWd?p=preview
+Plunkr example link: http://plnkr.co/edit/OcaMzBV3c0K3CL1nw9L4?p=preview
 
 ###### Enable/Disable Drag at Runtime:
 

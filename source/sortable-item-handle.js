@@ -366,6 +366,10 @@
            * @returns {*} true if place holder present.
            */
           isPlaceHolderPresent = function (targetElement) {
+            // in case targetElement is placeHolder itself
+            if (targetElement.hasClass(sortableConfig.placeHolderClass)){
+              return true;
+            }
             return placeHolderIndex(targetElement) >= 0;
           };
 

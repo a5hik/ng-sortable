@@ -349,7 +349,7 @@
             var itemElements, i;
             // targetElement is placeHolder itself, return index 0
             if (targetElement.hasClass(sortableConfig.placeHolderClass)){
-                return 0;
+              return 0;
             }
             // find index in target children
             itemElements = targetElement.children();

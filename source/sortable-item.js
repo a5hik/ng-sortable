@@ -4,7 +4,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for sortable item.

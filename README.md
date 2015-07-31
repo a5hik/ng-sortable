@@ -8,8 +8,8 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.2.3 
-[Module name is modified from 'ui.sortable' to 'as.sortable',
+Latest release version 1.3.0 
+[Module name will be modified from 'ui.sortable' to 'as.sortable' from versions 1.3.x,
 considering the conflict with the sortable module from bootstrap-ui.]
 
 #### Demo Page:
@@ -154,7 +154,7 @@ Make sure to load the scripts in your html.
 And Inject the sortable module as dependency.
 
 ```
-angular.module('xyzApp', ['as.sortable', '....']);
+angular.module('xyzApp', ['ui.sortable', '....']);
 ```
 
 ##### Html Structure:

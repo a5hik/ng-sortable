@@ -27,7 +27,7 @@
 
 (function () {
   'use strict';
-  angular.module('as.sortable', [])
+  angular.module('ui.sortable', [])
     .constant('sortableConfig', {
       itemClass: 'as-sortable-item',
       handleClass: 'as-sortable-item-handle',
@@ -44,7 +44,7 @@
 (function () {
   'use strict';
 
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Helper factory for sortable.
@@ -332,7 +332,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for Sortable.
@@ -523,7 +523,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for sortableItemHandle
@@ -1020,7 +1020,7 @@
 (function () {
 
   'use strict';
-  var mainModule = angular.module('as.sortable');
+  var mainModule = angular.module('ui.sortable');
 
   /**
    * Controller for sortable item.

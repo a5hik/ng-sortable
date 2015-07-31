@@ -1,6 +1,6 @@
 'use strict'
 
-var app = angular.module('plunker', ['as.sortable']);
+var app = angular.module('plunker', ['ui.sortable']);
 
 app.controller('MainCtrl', function ($scope) {
 

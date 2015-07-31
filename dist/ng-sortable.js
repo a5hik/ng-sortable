@@ -464,11 +464,13 @@
           };
 
           /**
-           * Invoked when the drag started successfully.
+           * Invoked when the drag move.
            *
-           * @param event - the event object.
+           * @param itemPosition - the item position.
+           * @param containment - the containment element.
+           * @param eventObj - the event object.
           */
-          callbacks.dragMove = function (event) {
+          callbacks.dragMove = function (itemPosition, containment, eventObj) {
           };
 
           /**
@@ -782,7 +784,7 @@
 
               eventObj = $helper.eventObj(event);
               scope.sortableScope.$apply(function () {
-                scope.callbacks.dragMove(itemPosition, containment);
+                scope.callbacks.dragMove(itemPosition, containment, eventObj);
               });
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 

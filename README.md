@@ -228,6 +228,10 @@ Horizontal Drag and Drop can be achieved using the same Library. The Column disp
 
 Plunkr example link: http://plnkr.co/edit/OcaMzBV3c0K3CL1nw9L4?p=preview
 
+###### Scroll page after reaching end of visible area.
+
+Implement dragMove callback and follow https://github.com/a5hik/ng-sortable/issues/13#issuecomment-120388981
+
 ###### Enable/Disable Drag at Runtime:
 
 The Drag can be controlled at runtime and you can enable/disable it by setting the "is-disabled" property to true or false.

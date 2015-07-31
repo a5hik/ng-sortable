@@ -27,7 +27,7 @@
 
 (function () {
   'use strict';
-  angular.module('ui.sortable', [])
+  angular.module('as.sortable', [])
     .constant('sortableConfig', {
       itemClass: 'as-sortable-item',
       handleClass: 'as-sortable-item-handle',

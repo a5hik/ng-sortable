@@ -864,7 +864,11 @@
            */
           placeHolderIndex = function (targetElement) {
             var itemElements, i;
-
+            // targetElement is placeHolder itself, return index 0
+            if (targetElement.hasClass(sortableConfig.placeHolderClass)){
+              return 0;
+            }
+            // find index in target children
             itemElements = targetElement.children();
             for (i = 0; i < itemElements.length; i += 1) {
               //TODO may not be accurate when elements contain other siblings than item elements

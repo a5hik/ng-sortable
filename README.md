@@ -8,10 +8,9 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.2.2 
-[Module name is modified from 'ui.sortable' to 'as.sortable' in the master copy,
-considering the conflict with the sortable module from bootstrap-ui, 
-the next release will include this change.]
+Latest release version 1.2.3 
+[Module name is modified from 'ui.sortable' to 'as.sortable',
+considering the conflict with the sortable module from bootstrap-ui.]
 
 #### Demo Page:
 
@@ -97,7 +96,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 - callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {}; //used to determine drag zone is allowed are not.
 
-##### Parameters:
+###### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
      destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).

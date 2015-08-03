@@ -6,8 +6,7 @@
   "description": "Angular Library for Drag and Drop, supports Sortable and Draggable.",
   "main": [
     "dist/ng-sortable.min.js",
-    "dist/ng-sortable.min.css",
-    "dist/ng-sortable.style.min.css"
+    "dist/ng-sortable.min.css"
   ],
   "keywords": [
     "angular",

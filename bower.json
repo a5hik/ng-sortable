@@ -7,8 +7,7 @@
   "license": "MIT",
   "main": [
     "dist/ng-sortable.js",
-    "dist/ng-sortable.css",
-    "dist/ng-sortable.style.css"
+    "dist/ng-sortable.css"
   ],
   "keywords": [
     "angular",

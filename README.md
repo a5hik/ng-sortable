@@ -154,7 +154,7 @@ Make sure to load the scripts in your html.
 And Inject the sortable module as dependency.
 
 ```
-angular.module('xyzApp', ['ui.sortable', '....']);
+angular.module('xyzApp', ['as.sortable', '....']);
 ```
 
 ##### Html Structure:

@@ -80,6 +80,10 @@
     $scope.removeConfirm = function () {
       return $scope.callbacks.removeConfirm();
     };
+
+    $scope.disableSort = function (disable) {
+        $scope.isDisabled = disable;
+    };
   }]);
 
   /**

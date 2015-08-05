@@ -399,6 +399,10 @@
     $scope.removeConfirm = function () {
       return $scope.callbacks.removeConfirm();
     };
+
+    $scope.disableSort = function (disable) {
+        $scope.isDisabled = disable;
+    };
   }]);
 
   /**
@@ -864,16 +868,7 @@
               if (targetScope.type !== 'item' && targetScope.type !== 'sortable') {
                 return;
               }
-                //create placholder for cloneable( in cloneable only case,  we didn't create placeholder at start phase)
-              if (targetScope.cloneable === false && !placeHolder) {
-                placeHolder = createPlaceholder(scope.itemScope)
-                  .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
-                placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
-                placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
-                  //fill the immediate vacuum.
-                scope.itemScope.element.after(placeHolder);
 
-              }
               if (targetScope.cloneable === true) {//don't move placeholder in cloneable container
                 return;
               }
@@ -881,7 +876,14 @@
               if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
                 // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
+                //create placholder for cloneable( in cloneable only case,  we didn't create placeholder at start phase)
+                if (targetScope.cloneable === false && !placeHolder) {
+                  placeHolder = createPlaceholder(scope.itemScope)
+                    .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+                  placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+                  placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
+                }
                 var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
                 if (placeholderIndex < 0) {
                   insertBefore(targetElement, targetScope);
@@ -898,9 +900,17 @@
                 if (targetScope.accept(scope, targetScope) &&
                   targetElement[0].parentNode !== targetScope.element[0]) {
                   //moving over sortable bucket. not over item.
-                  if (!isPlaceHolderPresent(targetElement)) {
-                    targetElement[0].appendChild(placeHolder[0]);
-                    dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
+                    if (!isPlaceHolderPresent(targetElement)) {
+                    //create placholder for cloneable( in cloneable only case,  we didn't create placeholder at start phase)
+                      if (targetScope.cloneable === false && !placeHolder) {
+                        placeHolder = createPlaceholder(scope.itemScope)
+                            .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+                        placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+                        placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
+
+                      }
+                      targetElement[0].appendChild(placeHolder[0]);
+                      dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }
                 }
               }
@@ -1133,7 +1143,7 @@
     $scope.sortableScope = null;
     $scope.modelValue = null; // sortable item.
     $scope.type = 'item';
-    $scope.itemContainerType = 'itemContainer';//for nested containers, this is container type of the item
+    $scope.itemType = 'itemType';//for nested containers, this is type of the item
     /**
      * returns the index of the drag item from the sortable list.
      *
@@ -1180,8 +1190,8 @@
           scope.element = element;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
             //set item(sub) container type, this will be used in accept function
-          if (angular.isDefined(attrs.itemContainerType))
-          { scope.itemContainerType = attrs.itemContainerType; }
+          if (angular.isDefined(attrs.itemType))
+          { scope.itemType = attrs.itemType; }
         }
       };
     }]);

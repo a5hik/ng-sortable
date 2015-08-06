@@ -80,10 +80,7 @@
     $scope.removeConfirm = function () {
       return $scope.callbacks.removeConfirm();
     };
-
-    $scope.disableSort = function (disable) {
-        $scope.isDisabled = disable;
-    };
+      
   }]);
 
   /**
@@ -208,6 +205,9 @@
               }
             }, true);
           }
+          attrs.$observe('isDisabled', function (newVal) {
+              scope.isDisabled = newVal;
+          });
             // Set cloneable if attr is set, if undefined cloneable = false
           if (angular.isDefined(attrs.cloneable)) {
             scope.cloneable = true;

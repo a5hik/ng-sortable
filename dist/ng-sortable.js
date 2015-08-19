@@ -573,7 +573,8 @@
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
             isPlaceHolderPresent,//is placeholder present.
-            isDisabled = false; // drag enabled
+            isDisabled = false, // drag enabled
+            escapeListen; // escape listen event
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
 
@@ -593,6 +594,10 @@
                 bindDrag();
               }
             }
+          });
+          
+          scope.$on('$destroy', function () {
+            angular.element($document[0].body).unbind('keydown', escapeListen);
           });
 
           createPlaceholder = function (itemScope) {
@@ -982,11 +987,12 @@
           bindDrag();
 
           //Cancel drag on escape press.
-          angular.element($document[0].body).bind('keydown', function (event) {
+          escapeListen = function (event) {
             if (event.keyCode === 27) {
               dragCancel(event);
             }
-          });
+          };
+          angular.element($document[0].body).bind('keydown', escapeListen);
 
           /**
            * Binds the events based on the actions.

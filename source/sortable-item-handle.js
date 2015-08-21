@@ -194,7 +194,6 @@
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
 
             if (scope.itemScope.sortableScope.options.clone) {
               // clone option is true, so clone the element.

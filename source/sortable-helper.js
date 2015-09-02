@@ -251,8 +251,22 @@
               };
             },
             apply: function () {
-              this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index); // Remove from source.
-              this.parent.insertItem(this.index, this.source.modelValue); // Insert in to destination.
+
+              // If clone is not set, set it to false
+              if (typeof (this.sourceInfo.sortableScope.options.clone) === 'undefined') {
+                this.sourceInfo.sortableScope.options.clone = false;
+              }
+
+              // If clone is not set to true, remove the item from the source model.
+              if (this.sourceInfo.sortableScope.options.clone === false) {
+                this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);
+              }
+
+              // If the dragged item is not already there, insert the item. This avoids ng-repeat dupes error
+              if(this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
+                this.parent.insertItem(this.index, this.source.modelValue);
+              }
+
             }
           };
         },

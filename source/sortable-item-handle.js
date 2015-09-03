@@ -186,6 +186,7 @@
                 //hidden place element in original position.
               scope.itemScope.element.after(placeElement);
               dragElement.append(scope.itemScope.element.clone());
+              scope.itemScope.element.addClass(sortableConfig.placeHolderClass);
             }
             else {
               placeHolder = createPlaceholder(scope.itemScope)
@@ -448,7 +449,12 @@
            */
 
           function rollbackDragChanges() {
-            placeElement.replaceWith(scope.itemScope.element);
+              if (scope.cloneable === false && scope.cloneableAndSortable === false) {
+                  placeElement.replaceWith(scope.itemScope.element);
+              }
+              if (scope.cloneable === true) {
+                  scope.itemScope.element.removeClass(sortableConfig.placeHolderClass);
+              }
             if (placeHolder) {
               placeHolder.remove();
             }

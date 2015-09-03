@@ -525,7 +525,13 @@
             }, true);
           }
           attrs.$observe('isDisabled', function (newVal) {
-              scope.isDisabled = newVal;
+              if (angular.isUndefined(newVal) || newVal === false || newVal === 'false') {
+                  scope.isDisabled = false;
+              }
+              else
+                  if (newVal === true || newVal === 'true') {
+                      scope.isDisabled = true;
+                  }
           });
             // Set cloneable if attr is set, if undefined cloneable = false
           if (angular.isDefined(attrs.cloneable)) {
@@ -740,6 +746,7 @@
                 //hidden place element in original position.
               scope.itemScope.element.after(placeElement);
               dragElement.append(scope.itemScope.element.clone());
+              scope.itemScope.element.addClass(sortableConfig.placeHolderClass);
             }
             else {
               placeHolder = createPlaceholder(scope.itemScope)
@@ -1002,7 +1009,12 @@
            */
 
           function rollbackDragChanges() {
-            placeElement.replaceWith(scope.itemScope.element);
+              if (scope.cloneable === false && scope.cloneableAndSortable === false) {
+                  placeElement.replaceWith(scope.itemScope.element);
+              }
+              if (scope.cloneable === true) {
+                  scope.itemScope.element.removeClass(sortableConfig.placeHolderClass);
+              }
             if (placeHolder) {
               placeHolder.remove();
             }

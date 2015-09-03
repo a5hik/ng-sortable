@@ -206,7 +206,13 @@
             }, true);
           }
           attrs.$observe('isDisabled', function (newVal) {
-              scope.isDisabled = newVal;
+              if (angular.isUndefined(newVal) || newVal === false || newVal === 'false') {
+                  scope.isDisabled = false;
+              }
+              else
+                  if (newVal === true || newVal === 'true') {
+                      scope.isDisabled = true;
+                  }
           });
             // Set cloneable if attr is set, if undefined cloneable = false
           if (angular.isDefined(attrs.cloneable)) {

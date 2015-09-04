@@ -33,6 +33,7 @@ Demo Includes:
 - Preventing/Allowing Drop Zone can be determined at run time.
 - Enable/Disable Drag at run time.
 - Drag Boundary can be defined.
+- Clone an item and drop.
 
 #### Implementation Details:
 
@@ -174,6 +175,7 @@ Define your callbacks in the invoking controller.
         itemMoved: function (event) {//Do what you want},
         orderChanged: function(event) {//Do what you want},
         containment: '#board'//optional param.
+        clone: true //optional param for clone feature.
     };
     
 That's what all you have to do.

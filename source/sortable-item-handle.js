@@ -180,6 +180,12 @@
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
+            // If clone option is true, hide the placeholder element in the source list. Note this will only be hidden
+            // while in the source list.
+            if (scope.itemScope.sortableScope.options.clone) {
+              placeHolder.css('display', 'none');
+            }
+
             placeElement = angular.element($document[0].createElement(tagName));
             if (sortableConfig.hiddenClass) {
               placeElement.addClass(sortableConfig.hiddenClass);
@@ -190,7 +196,15 @@
             scope.itemScope.element.after(placeHolder);
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
-            dragElement.append(scope.itemScope.element);
+
+            if (scope.itemScope.sortableScope.options.clone) {
+              // clone option is true, so clone the element.
+              dragElement.append(scope.itemScope.element.clone());
+            }
+            else {
+              // Not cloning, so use the original element.
+              dragElement.append(scope.itemScope.element);
+            }
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
@@ -235,6 +249,9 @@
            * @param targetScope the target scope
            */
           function insertBefore(targetElement, targetScope) {
+            // Ensure the placeholder is visible in the target.
+            placeHolder.css('display', 'block');
+
             targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
             dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
           }
@@ -246,6 +263,9 @@
            * @param targetScope the target scope
            */
           function insertAfter(targetElement, targetScope) {
+            // Ensure the placeholder is visible in the target.
+            placeHolder.css('display', 'block');
+
             targetElement.after(placeHolder);
             dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
           }

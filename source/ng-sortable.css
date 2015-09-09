@@ -13,14 +13,9 @@
 
 .as-sortable-item-handle {
     cursor: move;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
 }
 
-.as-sortable-item-handle:active, .as-sortable-placeholder {
-    cursor: move;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
+.as-sortable-placeholder {
 }
 
 .as-sortable-drag {

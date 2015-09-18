@@ -22,8 +22,8 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
-    function (sortableConfig, $helper, $window, $document) {
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window',
+    function (sortableConfig, $helper, $window) {
       return {
         require: '^asSortableItem',
         scope: true,
@@ -65,6 +65,7 @@
 
           scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
+          var $document = angular.element(element[0].ownerDocument);
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
             if (isDisabled !== newVal) {

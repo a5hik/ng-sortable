@@ -9,8 +9,8 @@
   /**
    * Helper factory for sortable.
    */
-  mainModule.factory('$helper', ['$document', '$window',
-    function ($document, $window) {
+  mainModule.factory('$helper', ['$window',
+    function ($window) {
       return {
 
         /**
@@ -43,7 +43,7 @@
         offset: function (element, scrollableContainer) {
           var boundingClientRect = element[0].getBoundingClientRect();
           if (!scrollableContainer) {
-            scrollableContainer = $document[0].documentElement;
+            scrollableContainer = element[0].ownerDocument;
           }
 
           return {
@@ -291,9 +291,11 @@
         findAncestor: function (el, selector) {
           el = el[0];
           var matches = Element.matches || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;
+          var lastEl = el;
           while ((el = el.parentElement) && !matches.call(el, selector)) {
+            lastEl = el;
           }
-          return el ? angular.element(el) : angular.element(document.body);
+          return el ? angular.element(el) : angular.element(lastEl.ownerDocument);
         }
       };
     }

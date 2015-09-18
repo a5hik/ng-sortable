@@ -1,0 +1,83 @@
+<h1>Should work inside of iframe</h1>
+
+<iframe id="preview" frame>
+
+</iframe>
+
+<script type="application/x-ejs" id="template">
+  <html>
+  <body>
+  <h1>CSS Isolated Iframe</h1>
+  <div ng-include="'views/partials/iframe.html'"></div>
+  <style>
+
+    .as-sortable-item, .as-sortable-placeholder {
+    display: block;
+    }
+
+    .as-sortable-item {
+    -ms-touch-action: none;
+    touch-action: none;
+    }
+
+    .as-sortable-item-handle {
+    cursor: move;
+    }
+
+    .as-sortable-placeholder {
+    }
+
+    .as-sortable-drag {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
+    }
+
+    .as-sortable-hidden {
+    display: none !important;
+    }
+
+    .as-sortable-un-selectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+    .as-sortable-item,
+    .as-sortable-placeholder {
+    width: 124px;
+    margin: 2px;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    list-style: none;
+    }
+
+    .as-sortable-placeholder {
+    border: 1px dotted #0000ff !important;
+    }
+  </style>
+  </body>
+  </html>
+</script>
+
+<style>
+  .as-sortable-item,
+  .as-sortable-placeholder {
+    width: 124px;
+    margin: 2px;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    list-style: none;
+  }
+
+  .as-sortable-placeholder {
+    border: 1px dotted #0000ff !important;
+  }
+
+  iframe {
+    min-height: 500px;
+  }
+</style>

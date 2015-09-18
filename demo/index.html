@@ -21,6 +21,7 @@
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/SprintController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/IframeController.js"></script>
 
 </head>
 <body ng-app="demoApp">
@@ -30,6 +31,8 @@
             <ul class="nav nav-tabs nav-justified">
                 <li><a href="#/kanban" ng-class="{active: isActive('#/kanban')}">Kanban</a></li>
                 <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}">Sprint</a></li>
+                <li><a href="#/iframe"
+                    ng-class="{active: isActive('#/iframe')}">Iframe</a></li>
             </ul>
         </div>
     <div ng-view></div>

@@ -141,6 +141,8 @@ Or bower.json
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
 ```
+Or npm
+```
 npm install ng-sortable
 ```
 Make sure to load the scripts in your html.

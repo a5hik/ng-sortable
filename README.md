@@ -103,7 +103,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
      destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).
 
 - callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
-- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.
+- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved across columns.
 - callbacks.dragStart = function({type: Object}) // triggered on drag start.
 - callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 

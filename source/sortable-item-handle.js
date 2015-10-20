@@ -126,6 +126,7 @@
             element.bind('mouseup', unbindMoveListen);
             element.bind('touchend', unbindMoveListen);
             element.bind('touchcancel', unbindMoveListen);
+            event.stopPropagation();
           };
 
           /**

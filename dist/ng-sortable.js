@@ -552,6 +552,19 @@
     $scope.type = 'handle';
   }]);
 
+  //Check if a node is parent to another node
+  function isParent(possibleParent, elem) {
+    if(!elem || elem.nodeName === 'HTML') {
+      return false;
+    }
+
+    if(elem.parentNode === possibleParent) {
+      return true;
+    }
+
+    return isParent(possibleParent, elem.parentNode);
+  }
+
   /**
    * Directive for sortable item handle.
    */
@@ -609,7 +622,7 @@
               }
             }
           });
-          
+
           scope.$on('$destroy', function () {
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });
@@ -783,8 +796,10 @@
            * @param targetScope the target scope
            */
           function insertBefore(targetElement, targetScope) {
-            // Ensure the placeholder is visible in the target.
-            placeHolder.css('display', 'block');
+            // Ensure the placeholder is visible in the target (unless it's a table row)
+            if (placeHolder.css('display') !== 'table-row') {
+              placeHolder.css('display', 'block');
+            }
 
             targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
             dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
@@ -797,8 +812,10 @@
            * @param targetScope the target scope
            */
           function insertAfter(targetElement, targetScope) {
-            // Ensure the placeholder is visible in the target.
-            placeHolder.css('display', 'block');
+            // Ensure the placeholder is visible in the target (unless it's a table row)
+            if (placeHolder.css('display') !== 'table-row') {
+              placeHolder.css('display', 'block');
+            }
 
             targetElement.after(placeHolder);
             dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
@@ -872,7 +889,7 @@
 
               if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
-                  targetElement[0].parentNode !== targetScope.element[0]) {
+                  !isParent(targetScope.element[0], targetElement[0])) {
                   //moving over sortable bucket. not over item.
                   if (!isPlaceHolderPresent(targetElement)) {
                     targetElement[0].appendChild(placeHolder[0]);

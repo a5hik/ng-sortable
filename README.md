@@ -103,7 +103,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
      destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).
 
 - callbacks.orderChanged = function({type: Object}) // triggered when item order is changed with in the same column.
-- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved accross columns.
+- callbacks.itemMoved = function({type: Object}) // triggered when an item is moved across columns.
 - callbacks.dragStart = function({type: Object}) // triggered on drag start.
 - callbacks.dragEnd = function({type: Object}) // triggered on drag end.
 
@@ -140,6 +140,8 @@ Or bower.json
 {
   "dependencies": [..., "ng-sortable: "latest_version eg - "1.1.0" ", ...],
 }
+```
+Or npm 
 ```
 npm install ng-sortable
 ```
@@ -235,9 +237,9 @@ Implement dragMove callback and follow https://github.com/a5hik/ng-sortable/issu
 
 ##### Enable/Disable Drag at Runtime:
 
-The Drag can be controlled at runtime and you can enable/disable it by setting the "is-disabled" property to true or false.
+The Drag can be controlled at runtime and you can enable/disable it by setting the "is-disabled" property to a boolean value of either true or false.
 
-    <div as-sortable is-disabled="true">..</div>
+    <div as-sortable is-disabled="is-disabled-boolean-property">..</div>
 
 ##### Testing:
 

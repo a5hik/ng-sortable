@@ -312,7 +312,7 @@
 
               // checking if dragMove callback exists, to prevent application
               // rerenderings on each mouse move event
-              if (scope.callbacks.dragMove) {
+              if (scope.callbacks.dragMove !== angular.noop) {
                 scope.sortableScope.$apply(function () {
                   scope.callbacks.dragMove(itemPosition, containment, eventObj);
                 });

@@ -142,8 +142,7 @@
            * @param containment - the containment element.
            * @param eventObj - the event object.
           */
-          callbacks.dragMove = function (itemPosition, containment, eventObj) {
-          };
+          callbacks.dragMove = angular.noop;
 
           /**
            * Invoked when the drag cancelled.

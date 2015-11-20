@@ -68,15 +68,19 @@
             createPlaceholder,//create place holder.
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
-            escapeListen; // escape listen event
+            escapeListen, // escape listen event;
+            sortableScope,
+            callbacks;
 
           hasTouch = $window.hasOwnProperty('ontouchstart');
+          scope.itemScope = itemController.scope;
+          sortableScope = scope.sortableScope ? scope.sortableScope : scope.itemScope.sortableScope;
+          callbacks = scope.callbacks ? scope.callbacks : scope.itemScope.callbacks;
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
           }
 
-          scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
@@ -95,10 +99,10 @@
           });
 
           createPlaceholder = function (itemScope) {
-            if (typeof scope.sortableScope.options.placeholder === 'function') {
-              return angular.element(scope.sortableScope.options.placeholder(itemScope));
-            } else if (typeof scope.sortableScope.options.placeholder === 'string') {
-              return angular.element(scope.sortableScope.options.placeholder);
+            if (typeof itemScope.sortableScope.options.placeholder === 'function') {
+              return angular.element(itemScope.sortableScope.options.placeholder(itemScope));
+            } else if (typeof itemScope.sortableScope.options.placeholder === 'string') {
+              return angular.element(itemScope.sortableScope.options.placeholder);
             } else {
               return angular.element($document[0].createElement(itemScope.element.prop('tagName')));
             }
@@ -150,6 +154,8 @@
           dragStart = function (event) {
 
             var eventObj, tagName;
+            var sortableScope = scope.sortableScope ? scope.sortableScope : scope.itemScope.sortableScope;
+            var callbacks = scope.callbacks ? scope.callbacks : scope.itemScope.callbacks;
 
             if (!hasTouch && (event.button === 2 || event.which === 3)) {
               // disable right click
@@ -168,10 +174,10 @@
             eventObj = $helper.eventObj(event);
 
             // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
-            scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
-              $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
+            scrollableContainer = angular.element($document[0].querySelector(sortableScope.options.scrollableContainer)).length > 0 ?
+              $document[0].querySelector(sortableScope.options.scrollableContainer) : $document[0].documentElement;
 
-            containment = (scope.sortableScope.options.containment)? $helper.findAncestor(element, scope.sortableScope.options.containment):angular.element($document[0].body);
+            containment = (sortableScope.options.containment)? $helper.findAncestor(element, sortableScope.options.containment):angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
             containment.css('cursor', '-webkit-grabbing');
@@ -179,18 +185,18 @@
             containment.addClass('as-sortable-un-selectable');
 
             // container positioning
-            containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
+            containerPositioning = sortableScope.options.containerPositioning || 'absolute';
 
-            dragItemInfo = $helper.dragItem(scope);
+            dragItemInfo = $helper.dragItem(scope.itemScope);
             tagName = scope.itemScope.element.prop('tagName');
 
-            dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
-              .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
+            dragElement = angular.element($document[0].createElement(sortableScope.element.prop('tagName')))
+              .addClass(sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeHolder = createPlaceholder(scope.itemScope)
-              .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
+              .addClass(sortableConfig.placeHolderClass).addClass(sortableScope.options.additionalPlaceholderClass);
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
@@ -223,8 +229,8 @@
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
-            scope.sortableScope.$apply(function () {
-              scope.callbacks.dragStart(dragItemInfo.eventArgs());
+            sortableScope.$apply(function () {
+              callbacks.dragStart(dragItemInfo.eventArgs());
             });
             bindEvents();
           };
@@ -296,6 +302,8 @@
           dragMove = function (event) {
 
             var eventObj, targetX, targetY, targetScope, targetElement;
+            var sortableScope = scope.sortableScope ? scope.sortableScope : scope.itemScope.sortableScope;
+            var callbacks = scope.callbacks ? scope.callbacks : scope.itemScope.callbacks;
 
             if (hasTouch && $helper.isTouchInvalid(event)) {
               return;
@@ -312,9 +320,9 @@
 
               // checking if dragMove callback exists, to prevent application
               // rerenderings on each mouse move event
-              if (scope.callbacks.dragMove !== angular.noop) {
-                scope.sortableScope.$apply(function () {
-                  scope.callbacks.dragMove(itemPosition, containment, eventObj);
+              if (callbacks.dragMove !== angular.noop) {
+                sortableScope.$apply(function () {
+                  callbacks.dragMove(itemPosition, containment, eventObj);
                 });
               }
 
@@ -444,30 +452,36 @@
            * @param event - the event object.
            */
           dragEnd = function (event) {
+            var sortableScope = scope.sortableScope ? scope.sortableScope : scope.itemScope.sortableScope;
+            var callbacks = scope.callbacks ? scope.callbacks : scope.itemScope.callbacks;
+
             // Ignore event if not handled
-            if (!dragHandled) {
-              return;
-            }
+            if (!dragHandled) { return;}
+
             event.preventDefault();
+
             if (dragElement) {
               //rollback all the changes.
               rollbackDragChanges();
               // update model data
               dragItemInfo.apply();
-              scope.sortableScope.$apply(function () {
+              sortableScope.$apply(function () {
                 if (dragItemInfo.isSameParent()) {
                   if (dragItemInfo.isOrderChanged()) {
-                    scope.callbacks.orderChanged(dragItemInfo.eventArgs());
+                    callbacks.orderChanged(dragItemInfo.eventArgs());
                   }
                 } else {
-                  scope.callbacks.itemMoved(dragItemInfo.eventArgs());
+                  callbacks.itemMoved(dragItemInfo.eventArgs());
                 }
               });
-              scope.sortableScope.$apply(function () {
-                scope.callbacks.dragEnd(dragItemInfo.eventArgs());
+
+              sortableScope.$apply(function () {
+                callbacks.dragEnd(dragItemInfo.eventArgs());
               });
+
               dragItemInfo = null;
             }
+
             unBindEvents();
           };
 
@@ -477,6 +491,10 @@
            * @param event - the event object.
            */
           dragCancel = function (event) {
+            var sortableScope = scope.sortableScope ? scope.sortableScope : scope.itemScope.sortableScope;
+            var callbacks = scope.callbacks ? scope.callbacks : scope.itemScope.callbacks;
+
+
             // Ignore event if not handled
             if (!dragHandled) {
               return;
@@ -486,8 +504,8 @@
             if (dragElement) {
               //rollback all the changes.
               rollbackDragChanges();
-              scope.sortableScope.$apply(function () {
-                scope.callbacks.dragCancel(dragItemInfo.eventArgs());
+              sortableScope.$apply(function () {
+                callbacks.dragCancel(dragItemInfo.eventArgs());
               });
               dragItemInfo = null;
             }

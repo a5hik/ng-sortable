@@ -609,6 +609,7 @@
           }
 
           scope.itemScope = itemController.scope;
+          scope.callbacks = scope.callbacks || scope.itemScope.callbacks; //isolate directive scope issue.
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watch('sortableScope.isDisabled', function (newVal) {
@@ -698,6 +699,7 @@
             dragHandled = true;
             event.preventDefault();
             eventObj = $helper.eventObj(event);
+            scope.sortableScope = scope.sortableScope || scope.itemScope.sortableScope; //isolate directive scope issue.
 
             // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
             scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?

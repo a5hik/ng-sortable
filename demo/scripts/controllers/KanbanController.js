@@ -23,9 +23,10 @@ angular.module('demoApp').controller('KanbanController', ['$scope', 'BoardServic
 
   $scope.removeCard = function (column, card) {
     BoardService.removeCard($scope.kanbanBoard, column, card);
-  }
+  };
 
   $scope.addNewCard = function (column) {
     BoardService.addNewCard($scope.kanbanBoard, column);
   }
 }]);
+

@@ -20,6 +20,7 @@
     <script type="text/javascript" src="scripts/services/BoardService.js"></script>
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/SprintController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/CloneController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
 
 </head>
@@ -28,8 +29,12 @@
     <div class="container-fluid">
         <div class="board-header">
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#/kanban" ng-class="{active: isActive('#/kanban')}">Kanban</a></li>
-                <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}">Sprint</a></li>
+                <li><a href="#/kanban" ng-class="{active: isActive('#/kanban')}" style="
+    background-color: lightgrey;">Simple</a></li>
+                <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}" style="
+    background-color: darkgray;">Advanced</a></li>
+                <li><a href="#/clone" ng-class="{active: isActive('#/clone')}" style="
+    background-color: lightsteelblue;">Clone</a></li>
             </ul>
         </div>
     <div ng-view></div>

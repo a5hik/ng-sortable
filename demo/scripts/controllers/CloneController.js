@@ -19,6 +19,11 @@ angular.module('demoApp').controller('CloneController', ['$scope', function ($sc
         $scope.itemsList.items2.push({'Id': i, 'Label': 'Item B_' + i});
     }
     $scope.sortableOptions = {
-        containment: '#sortable-container'
+        containment: '#sortable-container',
+        allowDuplicates: true
+    };
+    $scope.sortableCloneOptions = {
+        containment: '#sortable-container',
+        clone: true
     };
 }]);

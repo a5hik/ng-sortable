@@ -1,4 +1,5 @@
 /*
+ ng-sortable v1.3.1
  The MIT License (MIT)
 
  Copyright (c) 2014 Muhammed Ashik
@@ -291,19 +292,13 @@
               };
             },
             apply: function () {
-
-              // If clone is not set, set it to false
-              if (typeof (this.sourceInfo.sortableScope.options.clone) === 'undefined') {
-                this.sourceInfo.sortableScope.options.clone = false;
-              }
-
               // If clone is not set to true, remove the item from the source model.
-              if (this.sourceInfo.sortableScope.options.clone === false) {
+              if (!this.sourceInfo.sortableScope.options.clone) {
                 this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);
               }
 
               // If the dragged item is not already there, insert the item. This avoids ng-repeat dupes error
-              if(this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
+              if(this.parent.options.allowDuplicates || this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
                 this.parent.insertItem(this.index, this.source.modelValue);
               }
 
@@ -369,7 +364,11 @@
      * @param itemData - the item model data.
      */
     $scope.insertItem = function (index, itemData) {
-      $scope.modelValue.splice(index, 0, itemData);
+      if ($scope.options.allowDuplicates) {
+        $scope.modelValue.splice(index, 0, angular.copy(itemData));
+      } else {
+        $scope.modelValue.splice(index, 0, itemData);
+      }
     };
 
     /**

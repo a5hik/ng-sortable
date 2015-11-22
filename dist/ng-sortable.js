@@ -727,12 +727,6 @@
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            // If clone option is true, hide the placeholder element in the source list. Note this will only be hidden
-            // while in the source list.
-            if (scope.itemScope.sortableScope.options.clone) {
-              placeHolder.css('display', 'none');
-            }
-
             placeElement = angular.element($document[0].createElement(tagName));
             if (sortableConfig.hiddenClass) {
               placeElement.addClass(sortableConfig.hiddenClass);
@@ -740,7 +734,10 @@
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             //fill the immediate vacuum.
-            scope.itemScope.element.after(placeHolder);
+            if (!scope.itemScope.sortableScope.options.clone) {
+              scope.itemScope.element.after(placeHolder);
+            }
+
             //hidden place element in original position.
             scope.itemScope.element.after(placeElement);
 
@@ -800,9 +797,10 @@
             if (placeHolder.css('display') !== 'table-row') {
               placeHolder.css('display', 'block');
             }
-
-            targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
-            dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
+            if (!targetScope.sortableScope.options.clone) {
+              targetElement[0].parentNode.insertBefore(placeHolder[0], targetElement[0]);
+              dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index());
+            }
           }
 
           /**
@@ -816,9 +814,10 @@
             if (placeHolder.css('display') !== 'table-row') {
               placeHolder.css('display', 'block');
             }
-
-            targetElement.after(placeHolder);
-            dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
+            if (!targetScope.sortableScope.options.clone) {
+              targetElement.after(placeHolder);
+              dragItemInfo.moveTo(targetScope.sortableScope, targetScope.index() + 1);
+            }
           }
 
           /**
@@ -897,7 +896,7 @@
                 if (targetScope.accept(scope, targetScope) &&
                   !isParent(targetScope.element[0], targetElement[0])) {
                   //moving over sortable bucket. not over item.
-                  if (!isPlaceHolderPresent(targetElement)) {
+                  if (!isPlaceHolderPresent(targetElement) && !targetScope.options.clone) {
                     targetElement[0].appendChild(placeHolder[0]);
                     dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }

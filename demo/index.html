@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.min.css">
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.style.min.css">
     <link rel="stylesheet" type="text/css" href="styles/board.css">
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
     <!--scripts-->
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/SprintController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CloneController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/HorizontalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
 
 </head>
@@ -34,7 +36,9 @@
                 <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}" style="
     background-color: darkgray;">Advanced</a></li>
                 <li><a href="#/clone" ng-class="{active: isActive('#/clone')}" style="
-    background-color: lightsteelblue;">Clone</a></li>
+    background-color: lightgrey;">Clone</a></li>
+                <li><a href="#/horizontal" ng-class="{active: isActive('#/horizontal')}" style="
+    background-color: darkgray;">Horizontal</a></li>
             </ul>
         </div>
     <div ng-view></div>

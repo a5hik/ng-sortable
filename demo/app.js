@@ -18,6 +18,7 @@ angular.module('demoApp', [
     $routeProvider.when('/kanban', {templateUrl: 'views/kanban.html', controller: 'KanbanController'});
     $routeProvider.when('/sprint', {templateUrl: 'views/sprint.html', controller: 'SprintController'});
     $routeProvider.when('/clone', {templateUrl: 'views/clone.html', controller: 'CloneController'});
+      $routeProvider.when('/horizontal', {templateUrl: 'views/horizontal.html', controller: 'HorizontalController'});
     //$routeProvider.otherwise({redirectTo: '/'});
   }]).
   controller('demoController', ['$scope', '$location', function ($scope, $location) {

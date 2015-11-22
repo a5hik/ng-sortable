@@ -34,6 +34,7 @@ Demo Includes:
 - Enable/Disable Drag at run time.
 - Drag Boundary can be defined.
 - Clone an item and drop.
+- Allows duplicate items to be dropped from the clones.
 
 #### Implementation Details:
 
@@ -178,6 +179,12 @@ Define your callbacks in the invoking controller.
         orderChanged: function(event) {//Do what you want},
         containment: '#board'//optional param.
         clone: true //optional param for clone feature.
+        allowDuplicates: false //optional param allows duplicates to be dropped.
+    };
+    
+    $scope.dragControlListeners1 = {
+            containment: '#board'//optional param.
+            allowDuplicates: true //optional param allows duplicates to be dropped.
     };
     
 That's what all you have to do.

@@ -28,20 +28,17 @@
 </head>
 <body ng-app="demoApp">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="DemoController">
         <div class="board-header">
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#/kanban" ng-class="{active: isActive('#/kanban')}" style="
-    background-color: lightgrey;">Simple</a></li>
-                <li><a href="#/sprint" ng-class="{active: isActive('#/sprint')}" style="
-    background-color: darkgray;">Advanced</a></li>
-                <li><a href="#/clone" ng-class="{active: isActive('#/clone')}" style="
-    background-color: lightgrey;">Clone</a></li>
-                <li><a href="#/horizontal" ng-class="{active: isActive('#/horizontal')}" style="
-    background-color: darkgray;">Horizontal</a></li>
+                <li><a href="#/kanban" ng-class="{active: isActive('/kanban')}">Simple</a></li>
+                <li><a href="#/sprint" ng-class="{active: isActive('/sprint')}">Advanced</a></li>
+                <li><a href="#/clone" ng-class="{active: isActive('/clone')}">Clone</a></li>
+                <li><a href="#/horizontal" ng-class="{active: isActive('/horizontal')}">Horizontal</a></li>
             </ul>
         </div>
     <div ng-view></div>
+        </div>
 </nav>
 </body>
 </html>

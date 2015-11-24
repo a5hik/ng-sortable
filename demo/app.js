@@ -21,10 +21,10 @@ angular.module('demoApp', [
       $routeProvider.when('/horizontal', {templateUrl: 'views/horizontal.html', controller: 'HorizontalController'});
     //$routeProvider.otherwise({redirectTo: '/'});
   }]).
-  controller('demoController', ['$scope', '$location', function ($scope, $location) {
+  controller('DemoController', ['$scope', '$location', function ($scope, $location) {
     $scope.isActive = function (viewLocation) {
       var active = false;
-      if ($location.path().indexOf(viewLocation) !== -1) {
+      if ($location.$$path.indexOf(viewLocation) !== -1) {
         active = true;
       }
       return active;

@@ -1,4 +1,19 @@
 #board { margin: 0; padding: 0 10px 0 10px;}
+
+.board-header >ul>li> a {
+    border-radius: 4px !important;
+    background-color: lightgrey;
+    border-color: darkgrey;
+}
+
+.board-header >ul>li> .active {
+    background-color: darkgrey;
+}
+
+.board-header >ul>li> a:hover {
+    border-color: #000;
+}
+
 #board table {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }

@@ -7,11 +7,11 @@
 }
 
 .board-header >ul>li> .active {
-    background-color: darkgrey;
+    background-color: #000;
 }
 
 .board-header >ul>li> a:hover {
-    border-color: #000;
+    border-color: darkgrey;
 }
 
 #board table {

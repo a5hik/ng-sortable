@@ -6,12 +6,13 @@
     border-color: darkgrey;
 }
 
-.board-header >ul>li> .active {
-    background-color: #000;
+.board-header >ul>li> .active{
+    background-color: darkgrey;
+    border-color: #000;
 }
 
 .board-header >ul>li> a:hover {
-    border-color: darkgrey;
+    border-color: #000;
 }
 
 #board table {

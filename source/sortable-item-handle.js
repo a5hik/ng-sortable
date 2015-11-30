@@ -453,8 +453,13 @@
             if (dragElement) {
               //rollback all the changes.
               rollbackDragChanges();
-              // update model data
-              dragItemInfo.apply();
+
+              // update model data only if item has really moved some where
+              if (!dragItemInfo.isSameParent() || dragItemInfo.isOrderChanged()) {
+                // update model data
+                dragItemInfo.apply();
+              }
+
               scope.sortableScope.$apply(function () {
                 if (dragItemInfo.isSameParent()) {
                   if (dragItemInfo.isOrderChanged()) {

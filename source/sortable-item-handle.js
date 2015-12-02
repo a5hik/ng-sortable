@@ -183,6 +183,7 @@
             // container positioning
             containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
 
+            dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
@@ -220,7 +221,6 @@
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
-            dragItemInfo = $helper.dragItem(scope, dragElement.x, dragElement.y);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -350,7 +350,8 @@
                 targetElement = targetScope.element;
 
                 // Fix #241 Drag and drop have trembling with blocks of different size
-                if (!dragItemInfo.canMove(dragElement, targetElement)) {
+                var targetElementOffset = $helper.offset(targetElement, scrollableContainer);
+                if (!dragItemInfo.canMove(itemPosition, targetElement, targetElementOffset)) {
                   return;
                 }
 

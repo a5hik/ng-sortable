@@ -257,16 +257,45 @@
                  *          sourceInfo: {index: *, itemScope: (*|.dragItem.sourceInfo.itemScope|$scope.itemScope|itemScope), sortableScope: *},
                  *         moveTo: moveTo, isSameParent: isSameParent, isOrderChanged: isOrderChanged, eventArgs: eventArgs, apply: apply}}
          */
-        dragItem: function (item) {
+        dragItem: function (item, posX, posY) {
 
           return {
             index: item.index(),
             parent: item.sortableScope,
             source: item,
+            posX: posX,
+            posY: posY,
+            dirX: 0,
+            dirY: 0,
+            targetElement: null,
             sourceInfo: {
               index: item.index(),
               itemScope: item.itemScope,
               sortableScope: item.sortableScope
+            },
+            /**
+             * Returns false if `dragElement` has been already moved to `targetElement` and moving direction has not been changed
+             * since last call. Otherwise, returns true.
+             */
+            canMove: function(dragElement, targetElement) {
+              var tmp;
+              var lastDirX = this.dirX;
+              var lastDirY = this.dirY;
+              var lastTargetElement = this.targetElement;
+
+              // NOTE direction could be changed to -1 or 1, zero could not change direction
+              this.dirX = (tmp = dragElement.x - this.posX) ? (tmp > 0 ? 1 : -1) : lastDirX;
+              this.dirY = (tmp = dragElement.y - this.posY) ? (tmp > 0 ? 1 : -1) : lastDirY;
+
+              this.posX = dragElement.x;
+              this.posY = dragElement.y;
+              this.targetElement = targetElement;
+
+              return !(
+                lastDirX === this.dirX &&
+                lastDirY === this.dirY &&
+                lastTargetElement === this.targetElement
+              );
             },
             moveTo: function (parent, index) { // Move the item to a new position
               this.parent = parent;
@@ -335,6 +364,7 @@
   ]);
 
 }());
+
 /*jshint undef: false, unused: false, indent: 2*/
 /*global angular: false */
 
@@ -714,7 +744,6 @@
             // container positioning
             containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
 
-            dragItemInfo = $helper.dragItem(scope);
             tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))
@@ -752,6 +781,7 @@
 
             containment.append(dragElement);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+            dragItemInfo = $helper.dragItem(scope, dragElement.x, dragElement.y);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -879,6 +909,11 @@
               if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
                 // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
+
+                // Fix #241 Drag and drop have trembling with blocks of different size
+                if (!dragItemInfo.canMove(dragElement, targetElement)) {
+                  return;
+                }
 
                 var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
                 if (placeholderIndex < 0) {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="/dist/ng-sortable.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+    <h1>ng-sortable flicker bug demo (when sortable items have different sizes)</h1>
+    <p>The categories are sortable, not the tools within each category. The drag handle is the category name inside the green border.</p>
+    <p>To help debug, .as-sortable-placeholder gets highlighted in red and .as-sortable-drag .as-sortable-item-handle gets highlighted in green (so we see the drag handle of the currently moving item.)</p>
+    <p>I copied the CSS display types from my app for accuracy, but managed to trigger the same issue in both the simple and advanced ng-sortable demos by writing more text in one of the items and making it bigger than the other neighbouring draggable items. So the flicker issue is not due to my CSS.</p>
+    <p>You will see you can swap over the 2 short categories perfectly, but it flickers when you drag a short category over the long category. The drag handle remains highlighted in green so it means the category is still being marked as '.as-sortable-drag', but if you look at the grab cursor, it changes shape briefly as you go over the long catefory, so something seems to happen to the drag handle but I can't figure out what.</p>
+    <p>To replicate the flicker issue in the simple ng-sortable demo: </br>
+    - go to http://a5hik.github.io/ng-sortable/plunker.html</br>
+    - write a long sentence in place of 'item x'</br>
+    - change "height: 50px;" to "height: auto;";
+    </p>
+
+	  <div ng-app="ngSortableFlickerDemo" id ="appContainer">
+		  <div ng-controller="demoController as demoCtrl">
+        <div id="toolList" data-as-sortable="demoCtrl.dragControlListeners" data-ng-model="demoCtrl.categories">
+          <div ng-repeat="category in demoCtrl.categories" data-as-sortable-item class="category" id="{{category}}">
+            <h2 class="categoryName" data-as-sortable-item-handle>{{category}}</h2>
+              <div class="toolsdByCategory">
+                <div ng-repeat="tool in demoCtrl.tools  | filter: {category: category}" class="tool">
+                    <a href="{{tool.url}}" target="_blank">
+                        <img ng-src="{{tool.iconSrc || 'http://placehold.it/140x140'}}" alt="{{tool.name}}" class="toolIcon">
+                        <p class="toolName"><span>{{tool.name}}</span></p>
+                    </a>
+                  </div>
+              </div>
+          </div>
+        </div>
+		  </div>
+	  </div>
+
+	<script data-require="angular.js@1.4.7" data-semver="1.4.7" src="https://code.angularjs.org/1.4.7/angular.js"></script>
+	<script data-require="angular-resource@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-resource.js"></script>
+	<script src="/dist/ng-sortable.js"></script>
+	<script src="script.js"></script>
+
+  </body>
+
+</html>

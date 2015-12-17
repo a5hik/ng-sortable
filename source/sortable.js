@@ -97,7 +97,7 @@
           scope.element = element;
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
 
-          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null};
+          callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove:null, dragCancel: null, dragEnd: null, onMove: null};
 
           /**
            * Invoked to decide whether to allow drop.
@@ -143,6 +143,14 @@
            * @param eventObj - the event object.
           */
           callbacks.dragMove = angular.noop;
+
+          /**
+           * Similar to dragMove, but not calling $apply() - faster
+           * because don't rerender app on mousemove
+           *
+           * @param event - the event object.
+           */
+          callbacks.onMove = angular.noop;
 
           /**
            * Invoked when the drag cancelled.

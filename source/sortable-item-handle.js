@@ -318,6 +318,10 @@
                 });
               }
 
+              if (scope.callbacks.onMove !== angular.noop) {
+                scope.callbacks.onMove(dragItemInfo.eventArgs());
+              }
+
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;

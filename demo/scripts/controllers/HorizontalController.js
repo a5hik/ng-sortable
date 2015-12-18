@@ -12,7 +12,7 @@ angular.module('demoApp').controller('HorizontalController', ['$scope', function
     };
 
     for (i = 0; i <= 5; i += 1) {
-        $scope.itemsList.items1.push({'Id': i, 'Label': 'Item A_' + i});
+        $scope.itemsList.items1.push({'Id': i, 'Label': 'Item A_' + i, width: 100 + Math.abs(i - 2) * 30 + 'px'});
     }
 
     for (i = 0; i <= 5; i += 1) {

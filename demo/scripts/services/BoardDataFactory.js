@@ -18,7 +18,7 @@ angular.module('demoApp').service('BoardDataFactory', function () {
           {"title": "Explore new IDE for Development",
             "details": "Testing Card Details"},
           {"title": "Get new resource for new Project",
-            "details": "Testing Card Details"}
+            "details": "Testing Card long long very long long very very long very long long long very very long long very long long very long long long very very long long long very very long long very long long very long long long very very long long very long very long long very long Details"}
         ]},
         {"name": "In progress", "cards": [
           {"title": "Develop ui for tracker module",
@@ -114,5 +114,3 @@ angular.module('demoApp').service('BoardDataFactory', function () {
     }
   };
 });
-
-

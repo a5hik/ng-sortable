@@ -349,6 +349,12 @@
                 // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
 
+                // Fix #241 Drag and drop have trembling with blocks of different size
+                var targetElementOffset = $helper.offset(targetElement, scrollableContainer);
+                if (!dragItemInfo.canMove(itemPosition, targetElement, targetElementOffset)) {
+                  return;
+                }
+
                 var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
                 if (placeholderIndex < 0) {
                   insertBefore(targetElement, targetScope);

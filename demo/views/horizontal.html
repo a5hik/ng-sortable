@@ -1,7 +1,7 @@
 
 <div id="horizontal-container" ng-controller="HorizontalController">
     <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
-        <div ng-repeat="item in itemsList.items1" as-sortable-item ng-style="{width: item.width}">
+        <div ng-repeat="item in itemsList.items1" as-sortable-item>
             <div as-sortable-item-handle>{{item.Label}}</div>
         </div>
     </div>

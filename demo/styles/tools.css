@@ -1,0 +1,96 @@
+
+/* The below mimics the display types in my real app */
+
+/* comes from bourbon neat */
+html { box-sizing: border-box; }
+*, *::after, *::before { box-sizing: inherit; }
+
+
+#appContainer
+{
+    max-width: 625px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#appContainer::after
+{
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.category
+{
+    display: block;
+    border: 1px solid red;
+}
+
+.categoryName
+{
+    display: block;
+    border: 1px solid green;
+    padding: 5px;
+    margin: 0 0 20px;
+}
+
+.categoryName::after
+{
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.toolsdByCategory
+{
+    display: block;
+}
+
+.toolsdByCategory::after
+{
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.tool
+{
+    float: left;
+    display: block;
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 20px 20px 0;
+}
+
+.tool:nth-child(4n)
+{
+    margin-right: 0;
+}
+
+.tool .toolIcon
+{
+    display: block;
+    width: 140px;
+    height: 140px;
+}
+
+.tool .toolName
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    background: #000;
+    color: #FFF;
+}
+
+.tool .toolName span
+{
+    display: block;
+    padding: 10px;
+}

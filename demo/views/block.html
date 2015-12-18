@@ -1,0 +1,16 @@
+<div id ="appContainer" ng-controller="BlockController as BlockCtrl">
+
+        <div id="toolList" data-as-sortable="BlockCtrl.dragControlListeners" data-ng-model="BlockCtrl.categories">
+            <div ng-repeat="category in BlockCtrl.categories" data-as-sortable-item class="category" id="{{category}}">
+                <h2 class="categoryName" data-as-sortable-item-handle>{{category}}</h2>
+                <div class="toolsdByCategory">
+                    <div ng-repeat="tool in BlockCtrl.tools  | filter: {category: category}" class="tool">
+                        <a href="{{tool.url}}" target="_blank">
+                            <img ng-src="{{tool.iconSrc || 'http://placehold.it/140x140'}}" alt="{{tool.name}}" class="toolIcon">
+                            <p class="toolName"><span>{{tool.name}}</span></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

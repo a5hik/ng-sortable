@@ -20,6 +20,7 @@ angular.module('demoApp', [
     $routeProvider.when('/clone', {templateUrl: 'views/clone.html', controller: 'CloneController'});
     $routeProvider.when('/horizontal', {templateUrl: 'views/horizontal.html', controller: 'HorizontalController'});
     $routeProvider.when('/grid', {templateUrl: 'views/grid.html', controller: 'GridController'});
+    $routeProvider.when('/block', {templateUrl: 'views/block.html', controller: 'BlockController'});
     $routeProvider.when('/table', {templateUrl: 'views/table.html', controller: 'TableController'});
     //$routeProvider.otherwise({redirectTo: '/'});
   }]).

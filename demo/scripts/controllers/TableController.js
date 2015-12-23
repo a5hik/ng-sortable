@@ -14,6 +14,7 @@ angular.module('demoApp').controller('TableController', ['$scope', function ($sc
         $scope.itemsList.items.push({'id': i, 'label': 'Item A_' + i});
     }
     $scope.sortableOptions = {
-        containment: '#table-container'
+        containment: '#table-container',
+        containerPositioning: 'relative'
     };
 }]);

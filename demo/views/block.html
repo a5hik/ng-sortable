@@ -1,16 +1,20 @@
-<div id ="appContainer" ng-controller="BlockController as BlockCtrl">
-
-        <div id="toolList" data-as-sortable="BlockCtrl.dragControlListeners" data-ng-model="BlockCtrl.categories">
-            <div ng-repeat="category in BlockCtrl.categories" data-as-sortable-item class="category" id="{{category}}">
-                <h2 class="categoryName" data-as-sortable-item-handle>{{category}}</h2>
-                <div class="toolsdByCategory">
-                    <div ng-repeat="tool in BlockCtrl.tools  | filter: {category: category}" class="tool">
-                        <a href="{{tool.url}}" target="_blank">
-                            <img ng-src="{{tool.iconSrc || 'http://placehold.it/140x140'}}" alt="{{tool.name}}" class="toolIcon">
-                            <p class="toolName"><span>{{tool.name}}</span></p>
-                        </a>
-                    </div>
-                </div>
+<div id="blocks" ng-controller="BlockController">
+    <div id="columns" class="row">
+        <div class="col-sm-6 col-xs-6" ng-repeat="column in columns">
+            <div class="column">
+                <ul class="cards card-list" as-sortable="dragControlListeners" data-ng-model="column.cards">
+                    <li class="card" ng-repeat="card in column.cards" as-sortable-item>
+                        <div as-sortable-item-handle>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="card-title">{{card.title}}</span>
+                                    <span class="card-title">{{card.details}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>

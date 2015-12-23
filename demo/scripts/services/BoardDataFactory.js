@@ -111,6 +111,38 @@ angular.module('demoApp').service('BoardDataFactory', function () {
           ]
         }
       ]
+    },
+    block: {
+      "columns": [
+        {"name": "Ideas", "cards": [
+          {"title": "Come up with a POC for new Project",
+            "details": "Testing Card Details Testing Card Details Testing Card Details Testing Card Details"},
+          {"title": "Design new framework for reporting module",
+            "details": "Testing Card Details"},
+          {"title": "Test user module",
+            "details": "Testing Card Details"},
+          {"title": "End to End Testing for user group module",
+            "details": "Testing Card Details Testing Card Details Testing Card Details Testing Card Details Testing Card Details" +
+            "Testing Card Details Testing Card Details Testing Card Details Testing Card Details Testing Card Details" +
+            "Testing Card Details Testing Card Details Testing Card Details Testing Card Details Testing Card Details"},
+          {"title": "CI for user module",
+            "details": "Testing Card Details Testing Card Details Testing Card Details"}
+        ]},
+        {"name": "Not started", "cards": [
+          {"title": "Explore new IDE for Development",
+            "details": "Testing Card Details Testing Card Details Testing Card Details"},
+          {"title": "Get new resource for new Project",
+            "details": "Testing Card Details"},
+          {"title": "Develop ui for tracker module",
+            "details": "Testing Card Details Testing Card Details Testing Card Details Testing Card Details Testing Card" +
+            "Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card" +
+            "Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card" +
+            "Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card" +
+            "Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card Big Card"},
+          {"title": "Develop backend for plan module",
+            "details": "Testing Card Details"}
+        ]}
+      ]
     }
   };
 });

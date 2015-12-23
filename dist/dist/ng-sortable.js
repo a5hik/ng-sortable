@@ -1,5 +1,5 @@
 /*
- ng-sortable v1.3.1
+ ng-sortable v1.3.2
  The MIT License (MIT)
 
  Copyright (c) 2014 Muhammed Ashik
@@ -263,10 +263,28 @@
             index: item.index(),
             parent: item.sortableScope,
             source: item,
+            targetElement: null,
+            targetElementOffset: null,
             sourceInfo: {
               index: item.index(),
               itemScope: item.itemScope,
               sortableScope: item.sortableScope
+            },
+            canMove: function(itemPosition, targetElement, targetElementOffset) {
+              // return true if targetElement has been changed since last call
+              if (this.targetElement !== targetElement) {
+                this.targetElement = targetElement;
+                this.targetElementOffset = targetElementOffset;
+                return true;
+              }
+              // return true if mouse is moving in the last moving direction of targetElement
+              if (itemPosition.dirX * (targetElementOffset.left - this.targetElementOffset.left) > 0 ||
+                  itemPosition.dirY * (targetElementOffset.top - this.targetElementOffset.top) > 0) {
+                this.targetElementOffset = targetElementOffset;
+                return true;
+              }
+              // return false otherwise
+              return false;
             },
             moveTo: function (parent, index) { // Move the item to a new position
               this.parent = parent;
@@ -335,6 +353,7 @@
   ]);
 
 }());
+
 /*jshint undef: false, unused: false, indent: 2*/
 /*global angular: false */
 
@@ -733,6 +752,8 @@
             }
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+
             //fill the immediate vacuum.
             if (!scope.itemScope.sortableScope.options.clone) {
               scope.itemScope.element.after(placeHolder);
@@ -751,7 +772,6 @@
             }
 
             containment.append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -850,16 +870,15 @@
                 });
               }
 
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
-
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
 
               //IE fixes: hide show element, call element from point twice to return pick correct element.
-              dragElement.addClass(sortableConfig.hiddenClass);
-              $document[0].elementFromPoint(targetX, targetY);
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
+              dragElement.addClass(sortableConfig.hiddenClass);
               dragElement.removeClass(sortableConfig.hiddenClass);
+
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
@@ -879,6 +898,12 @@
               if (targetScope.type === 'item' && targetScope.accept(scope, targetScope.sortableScope, targetScope)) {
                 // decide where to insert placeholder based on target element and current placeholder if is present
                 targetElement = targetScope.element;
+
+                // Fix #241 Drag and drop have trembling with blocks of different size
+                var targetElementOffset = $helper.offset(targetElement, scrollableContainer);
+                if (!dragItemInfo.canMove(itemPosition, targetElement, targetElementOffset)) {
+                  return;
+                }
 
                 var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
                 if (placeholderIndex < 0) {

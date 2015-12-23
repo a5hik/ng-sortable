@@ -1,0 +1,30 @@
+
+<div id="grid-container" class="container-fluid" ng-controller="GridController">
+    <div class="row">
+    <div class="col-md-1 grid-column" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
+        <div ng-repeat="item in itemsList.items1" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <div class="col-md-1 grid-column" as-sortable="sortableOptions" data-ng-model="itemsList.items2">
+        <div ng-repeat="item in itemsList.items2" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <div class="col-md-1 grid-column" as-sortable="sortableOptions" data-ng-model="itemsList.items3">
+        <div ng-repeat="item in itemsList.items3" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <div class="col-md-1 grid-column" as-sortable="sortableOptions" data-ng-model="itemsList.items4">
+        <div ng-repeat="item in itemsList.items4" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <div class="col-md-1 grid-column" as-sortable="sortableOptions" data-ng-model="itemsList.items5">
+        <div ng-repeat="item in itemsList.items5" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<table id="table-container" ng-controller="TableController">
+    <thead>
+    <tr>
+        <th>Table demo</th>
+    </tr>
+    </thead>
+    <tbody data-ng-model="itemsList.items" as-sortable>
+    <tr ng-repeat="item in itemsList.items" as-sortable-item>
+        <td as-sortable-item-handle>
+            <b>{{item.id}}</b>
+            <div>{{item.label}}</div>
+        </td>
+    </tr>
+    </tbody>
+</table>

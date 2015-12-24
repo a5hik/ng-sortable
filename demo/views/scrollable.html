@@ -1,6 +1,8 @@
-
-<div class="page-header">
-    <h3>Scroll the container..</h3>
+<div class="pre-scrollable">
+<div class="panel panel-default">
+    <div class="panel-body">
+        Scroll the container...
+    </div>
 </div>
 <div id="scrollable-container" ng-controller="ScrollableController">
     <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
@@ -14,4 +16,5 @@
             <div as-sortable-item-handle>{{item.Label}}</div>
         </div>
     </div>
+</div>
 </div>

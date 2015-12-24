@@ -24,3 +24,7 @@
     overflow: auto;
     border: solid 1px gray;
 }
+
+.pre-scrollable .panel {
+    margin-top: 20px;
+}

@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="dist/ng-sortable.style.min.css">
     <link rel="stylesheet" type="text/css" href="styles/board.css">
     <link rel="stylesheet" type="text/css" href="styles/app.css">
+    <link rel="stylesheet" type="text/css" href="styles/scrollableContainer.css">
     <!--scripts-->
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
@@ -26,6 +27,7 @@
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/GridController.js"></script>
     <script type="text/javascript" src="scripts/controllers/BlockController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ScrollableController.js"></script>
     <script type="text/javascript" src="scripts/controllers/TableController.js"></script>
 
 </head>
@@ -40,7 +42,9 @@
                 <li><a href="#/horizontal" ng-class="{active: isActive('/horizontal')}">Horizontal</a></li>
                 <li><a href="#/grid" ng-class="{active: isActive('/grid')}">Grid</a></li>
                 <li><a href="#/block" ng-class="{active: isActive('/block')}">Block</a></li>
+                <li><a href="#/scrollable" ng-class="{active: isActive('/scrollable')}">Scrollable</a></li>
                 <li><a href="#/table" ng-class="{active: isActive('/table')}">Table</a></li>
+
             </ul>
         </div>
     <div ng-view></div>

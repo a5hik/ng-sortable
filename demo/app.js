@@ -21,6 +21,7 @@ angular.module('demoApp', [
     $routeProvider.when('/horizontal', {templateUrl: 'views/horizontal.html', controller: 'HorizontalController'});
     $routeProvider.when('/grid', {templateUrl: 'views/grid.html', controller: 'GridController'});
     $routeProvider.when('/block', {templateUrl: 'views/block.html', controller: 'BlockController'});
+    $routeProvider.when('/scrollable', {templateUrl: 'views/scrollable.html', controller: 'ScrollableController'});
     $routeProvider.when('/table', {templateUrl: 'views/table.html', controller: 'TableController'});
     //$routeProvider.otherwise({redirectTo: '/'});
   }]).

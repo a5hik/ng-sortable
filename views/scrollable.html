@@ -1,0 +1,20 @@
+<div class="pre-scrollable">
+<div class="panel panel-default">
+    <div class="panel-body">
+        Scroll the container...
+    </div>
+</div>
+<div id="scrollable-container" ng-controller="ScrollableController">
+    <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
+        <div ng-repeat="item in itemsList.items1" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+    <hr/>
+    <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items2">
+        <div ng-repeat="item in itemsList.items2" as-sortable-item>
+            <div as-sortable-item-handle>{{item.Label}}</div>
+        </div>
+    </div>
+</div>
+</div>

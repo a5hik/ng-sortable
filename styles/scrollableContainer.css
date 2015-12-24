@@ -15,12 +15,16 @@
     visibility: hidden;
 }*/
 
-#sortable-container {
+#scrollable-container {
     position: absolute;
-    top: 50px;
+    top: 150px;
     left: 50px;
     height: 200px;
     width: 200px;
     overflow: auto;
     border: solid 1px gray;
+}
+
+.pre-scrollable .panel {
+    margin-top: 20px;
 }

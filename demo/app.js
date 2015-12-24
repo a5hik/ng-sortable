@@ -27,7 +27,7 @@ angular.module('demoApp', [
   controller('DemoController', ['$scope', '$location', function ($scope, $location) {
     $scope.isActive = function (viewLocation) {
       var active = false;
-      if ($location.$$path.indexOf(viewLocation) !== -1) {
+      if ($location.$$path.endsWith(viewLocation)) {
         active = true;
       }
       return active;

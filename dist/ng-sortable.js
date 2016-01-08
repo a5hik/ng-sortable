@@ -286,10 +286,11 @@
               // return false otherwise
               return false;
             },
-            moveTo: function (parent, index) { // Move the item to a new position
+            moveTo: function (parent, index) {
+              // move the item to a new position
               this.parent = parent;
-              //If source Item is in the same Parent.
-              if (this.isSameParent() && this.source.index() < index) { // and target after
+              // if the source item is in the same parent, the target index is after the source index and we're not cloning
+              if (this.isSameParent() && this.source.index() < index && !this.sourceInfo.sortableScope.cloning) {
                 index = index - 1;
               }
               this.index = index;
@@ -310,16 +311,18 @@
               };
             },
             apply: function () {
-              // If clone is not set to true, remove the item from the source model.
-              if (!this.sourceInfo.sortableScope.options.clone) {
+              if (!this.sourceInfo.sortableScope.cloning) {
+                // if not cloning, remove the item from the source model.
                 this.sourceInfo.sortableScope.removeItem(this.sourceInfo.index);
-              }
 
-              // If the dragged item is not already there, insert the item. This avoids ng-repeat dupes error
-              if(this.parent.options.allowDuplicates || this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
-                this.parent.insertItem(this.index, this.source.modelValue);
+                // if the dragged item is not already there, insert the item. This avoids ng-repeat dupes error
+                if (this.parent.options.allowDuplicates || this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
+                  this.parent.insertItem(this.index, this.source.modelValue);
+                }
+              } else {
+                // clone the model value as well
+                this.parent.insertItem(this.index, angular.copy(this.source.modelValue));
               }
-
             }
           };
         },
@@ -719,6 +722,14 @@
             scope.sortableScope = scope.sortableScope || scope.itemScope.sortableScope; //isolate directive scope issue.
             scope.callbacks = scope.callbacks || scope.itemScope.callbacks; //isolate directive scope issue.
 
+            if (scope.itemScope.sortableScope.options.clone || (scope.itemScope.sortableScope.options.ctrlClone && event.ctrlKey)) {
+                // Clone option is true
+                // or Ctrl clone option is true & the ctrl key was pressed when the user innitiated drag
+              scope.itemScope.sortableScope.cloning = true;
+            } else {
+              scope.itemScope.sortableScope.cloning = false;
+            }
+
             // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
             scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
               $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
@@ -754,20 +765,19 @@
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
-            //fill the immediate vacuum.
+            // fill the immediate vacuum.
             if (!scope.itemScope.sortableScope.options.clone) {
               scope.itemScope.element.after(placeHolder);
             }
 
-            //hidden place element in original position.
-            scope.itemScope.element.after(placeElement);
-
-            if (scope.itemScope.sortableScope.options.clone) {
-              // clone option is true, so clone the element.
+            if (scope.itemScope.sortableScope.cloning) {
+              // clone option is enabled or triggered, so clone the element.
               dragElement.append(scope.itemScope.element.clone());
             }
             else {
-              // Not cloning, so use the original element.
+              // add hidden placeholder element in original position.
+              scope.itemScope.element.after(placeElement);
+              // not cloning, so use the original element.
               dragElement.append(scope.itemScope.element);
             }
 
@@ -986,7 +996,9 @@
            */
 
           function rollbackDragChanges() {
-            placeElement.replaceWith(scope.itemScope.element);
+            if (!scope.itemScope.sortableScope.cloning) {
+              placeElement.replaceWith(scope.itemScope.element);
+            }
             placeHolder.remove();
             dragElement.remove();
             dragElement = null;

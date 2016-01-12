@@ -278,7 +278,7 @@
                 if (this.parent.options.allowDuplicates || this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
                   this.parent.insertItem(this.index, this.source.modelValue);
                 }
-              } else {
+              } else if (!this.parent.options.clone) { // prevent drop inside sortables that specify options.clone = true
                 // clone the model value as well
                 this.parent.insertItem(this.index, angular.copy(this.source.modelValue));
               }

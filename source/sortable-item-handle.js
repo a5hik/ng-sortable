@@ -169,6 +169,14 @@
             scope.sortableScope = scope.sortableScope || scope.itemScope.sortableScope; //isolate directive scope issue.
             scope.callbacks = scope.callbacks || scope.itemScope.callbacks; //isolate directive scope issue.
 
+            if (scope.itemScope.sortableScope.options.clone || (scope.itemScope.sortableScope.options.ctrlClone && event.ctrlKey)) {
+                // Clone option is true
+                // or Ctrl clone option is true & the ctrl key was pressed when the user innitiated drag
+              scope.itemScope.sortableScope.cloning = true;
+            } else {
+              scope.itemScope.sortableScope.cloning = false;
+            }
+
             // (optional) Scrollable container as reference for top & left offset calculations, defaults to Document
             scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
               $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
@@ -204,20 +212,19 @@
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
-            //fill the immediate vacuum.
+            // fill the immediate vacuum.
             if (!scope.itemScope.sortableScope.options.clone) {
               scope.itemScope.element.after(placeHolder);
             }
 
-            //hidden place element in original position.
-            scope.itemScope.element.after(placeElement);
-
-            if (scope.itemScope.sortableScope.options.clone) {
-              // clone option is true, so clone the element.
+            if (scope.itemScope.sortableScope.cloning) {
+              // clone option is enabled or triggered, so clone the element.
               dragElement.append(scope.itemScope.element.clone());
             }
             else {
-              // Not cloning, so use the original element.
+              // add hidden placeholder element in original position.
+              scope.itemScope.element.after(placeElement);
+              // not cloning, so use the original element.
               dragElement.append(scope.itemScope.element);
             }
 
@@ -436,7 +443,9 @@
            */
 
           function rollbackDragChanges() {
-            placeElement.replaceWith(scope.itemScope.element);
+            if (!scope.itemScope.sortableScope.cloning) {
+              placeElement.replaceWith(scope.itemScope.element);
+            }
             placeHolder.remove();
             dragElement.remove();
             dragElement = null;

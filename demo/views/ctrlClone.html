@@ -1,0 +1,28 @@
+<div id="sortable-container" ng-controller="CtrlCloneController">
+    <div id="columns" class="row">
+        <div class="col-sm-6 col-xs-6">
+            <div class="column">
+                <div class="columnHeader">
+                    <span>List A</span>
+                </div>
+                <div class="sortable-row" as-sortable="sortableCloneOptions1" data-ng-model="itemsList.items1">
+                    <div ng-repeat="item in itemsList.items1" as-sortable-item>
+                        <div as-sortable-item-handle>{{item.Label}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <div class="column">
+                <div class="columnHeader">
+                    <span>List B</span>
+                </div>
+                <div class="sortable-row" as-sortable="sortableCloneOptions2" data-ng-model="itemsList.items2">
+                    <div ng-repeat="item in itemsList.items2" as-sortable-item>
+                        <div as-sortable-item-handle>{{item.Label}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

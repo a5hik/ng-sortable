@@ -14,9 +14,9 @@ considering the conflict with the sortable module from bootstrap-ui.]
 
 #### Demo Page:
 
-[Simple] (http://a5hik.github.io/ng-sortable/plunker.html)
+[Simple] (http://a5hik.github.io/ng-sortable/#/kanban)
 
-[Advanced] (http://a5hik.github.io/ng-sortable/)
+[Advanced] (http://a5hik.github.io/ng-sortable/#/sprint)
 
 Demo Includes:
 

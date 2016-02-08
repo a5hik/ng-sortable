@@ -70,7 +70,7 @@
             isDisabled = false, // drag enabled
             escapeListen; // escape listen event
 
-          hasTouch = $window.hasOwnProperty('ontouchstart');
+          hasTouch = 'ontouchstart' in $window;
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -112,6 +112,7 @@
            * @param event - the event object.
            */
           dragListen = function (event) {
+            event.preventDefault();
 
             var unbindMoveListen = function () {
               angular.element($document).unbind('mousemove', moveListen);
@@ -514,16 +515,22 @@
            * Binds the drag start events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragListen);
-            element.bind('mousedown', dragListen);
+            if (hasTouch) {
+              element.bind('contextmenu', dragListen);
+            } else {
+              element.bind('mousedown', dragListen);
+            }
           };
 
           /**
            * Unbinds the drag start events.
            */
           unbindDrag = function () {
-            element.unbind('touchstart', dragListen);
-            element.unbind('mousedown', dragListen);
+            if (hasTouch) {
+              element.unbind('touchstart', dragListen);
+            } else {
+              element.unbind('mousedown', dragListen);
+            }
           };
 
           //bind drag start events.

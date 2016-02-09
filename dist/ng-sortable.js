@@ -620,6 +620,7 @@
             isIOS, // is iOS device.
             longTouchStart, // long touch start event
             longTouchEnd, // long touch end event
+            longTouchMove,
             longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
@@ -1076,6 +1077,7 @@
             if (hasTouch) {
               if (isIOS) {
                 element.bind('touchstart', longTouchStart);
+                element.bind('touchmove', longTouchMove);
                 element.bind('touchend', longTouchEnd);
               } else {
                 element.bind('contextmenu', dragListen);
@@ -1109,6 +1111,11 @@
             }
           };
 
+          longTouchMove = function(event) {
+            if ($timeout.cancel(longTouchTimer) === true) {
+              angular.element(event.target).trigger('click');
+            }
+          };
           /**
            * Unbinds the drag start events.
            */

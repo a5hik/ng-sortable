@@ -210,7 +210,6 @@
             }
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
             // fill the immediate vacuum.
             if (!scope.itemScope.sortableScope.options.clone) {
@@ -229,6 +228,7 @@
             }
 
             containment.append(dragElement);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());

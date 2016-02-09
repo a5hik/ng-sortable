@@ -619,7 +619,7 @@
             hasTouch,// has touch support.
             isIOS, // is iOS device.
             longTouchStart, // long touch start event
-            longTouchEnd, // long touch end event
+            longTouchCancel, // cancel long touch
             longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
@@ -1076,7 +1076,8 @@
             if (hasTouch) {
               if (isIOS) {
                 element.bind('touchstart', longTouchStart);
-                element.bind('touchend', longTouchEnd);
+                element.bind('touchend', longTouchCancel);
+                element.bind('touchmove', longTouchCancel);
               } else {
                 element.bind('contextmenu', dragListen);
               }
@@ -1092,21 +1093,16 @@
            * @param event - the event object.
            */
           longTouchStart = function(event) {
-            //event.preventDefault();
             longTouchTimer = $timeout(function() {
               dragListen(event);
             }, 500);
           };
 
           /**
-           * resets the timer. If touch ends before 500ms, the element click will be fired.
-           *
-           * @param event - the event object.
+           * cancel the long touch and its timer.
            */
-          longTouchEnd = function(event) {
-            if ($timeout.cancel(longTouchTimer) === true) {
-              angular.element(event.target).trigger('click');
-            }
+          longTouchCancel = function() {
+            $timeout.cancel(longTouchTimer);
           };
 
           /**
@@ -1116,7 +1112,8 @@
             if (hasTouch) {
               if (isIOS) {
                 element.unbind('touchstart', longTouchStart);
-                element.unbind('touchend', longTouchEnd);
+                element.unbind('touchend', longTouchCancel);
+                element.unbind('touchmove', longTouchCancel);
               } else {
                 element.unbind('touchstart', dragListen);
               }

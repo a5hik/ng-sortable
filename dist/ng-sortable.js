@@ -1113,7 +1113,7 @@
 
           longTouchMove = function(event) {
             if ($timeout.cancel(longTouchTimer) === true) {
-              angular.element(event.target).trigger('click');
+              angular.element(event.target).trigger('touchmove');
             }
           };
           /**

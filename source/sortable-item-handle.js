@@ -65,6 +65,8 @@
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             isIOS, // is iOS device.
+            longTouchStart, // long touch start event
+            longTouchEnd, // long touch end event
             longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
@@ -541,7 +543,7 @@
             longTouchTimer = $timeout(function() {
               dragListen(event);
             }, 500);
-          }
+          };
 
           /**
            * resets the timer. If touch ends before 500ms, the element click will be fired.
@@ -552,7 +554,7 @@
             if ($timeout.cancel(longTouchTimer) === true) {
               angular.element(event.target).trigger('click');
             }
-          }
+          };
 
           /**
            * Unbinds the drag start events.

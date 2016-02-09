@@ -35,8 +35,8 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
-    function (sortableConfig, $helper, $window, $document) {
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$timeout',
+    function (sortableConfig, $helper, $window, $document, $timeout) {
       return {
         require: '^asSortableItem',
         scope: true,
@@ -64,13 +64,18 @@
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
+            isIOS, // is iOS device.
+            longTouchStart, // long touch start event
+            longTouchCancel, // cancel long touch
+            longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen; // escape listen event
 
-          hasTouch = $window.hasOwnProperty('ontouchstart');
+          hasTouch = 'ontouchstart' in $window;
+          isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -112,6 +117,7 @@
            * @param event - the event object.
            */
           dragListen = function (event) {
+            event.preventDefault();
 
             var unbindMoveListen = function () {
               angular.element($document).unbind('mousemove', moveListen);
@@ -514,16 +520,53 @@
            * Binds the drag start events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragListen);
-            element.bind('mousedown', dragListen);
+            if (hasTouch) {
+              if (isIOS) {
+                element.bind('touchstart', longTouchStart);
+                element.bind('touchend', longTouchCancel);
+                element.bind('touchmove', longTouchCancel);
+              } else {
+                element.bind('contextmenu', dragListen);
+              }
+            } else {
+              element.bind('mousedown', dragListen);
+            }
+          };
+
+          /**
+           * starts a timer to detect long touch on iOS devices. If touch held for more than 500ms,
+           * it would be considered as long touch.
+           *
+           * @param event - the event object.
+           */
+          longTouchStart = function(event) {
+            longTouchTimer = $timeout(function() {
+              dragListen(event);
+            }, 500);
+          };
+
+          /**
+           * cancel the long touch and its timer.
+           */
+          longTouchCancel = function() {
+            $timeout.cancel(longTouchTimer);
           };
 
           /**
            * Unbinds the drag start events.
            */
           unbindDrag = function () {
-            element.unbind('touchstart', dragListen);
-            element.unbind('mousedown', dragListen);
+            if (hasTouch) {
+              if (isIOS) {
+                element.unbind('touchstart', longTouchStart);
+                element.unbind('touchend', longTouchCancel);
+                element.unbind('touchmove', longTouchCancel);
+              } else {
+                element.unbind('touchstart', dragListen);
+              }
+            } else {
+              element.unbind('mousedown', dragListen);
+            }
           };
 
           //bind drag start events.

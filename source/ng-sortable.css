@@ -9,6 +9,7 @@
 .as-sortable-item {
     -ms-touch-action: none;
     touch-action: none;
+    -webkit-touch-callout: none;
 }
 
 .as-sortable-item-handle {

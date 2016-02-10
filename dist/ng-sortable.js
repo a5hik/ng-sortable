@@ -678,7 +678,7 @@
            * @param event - the event object.
            */
           dragListen = function (event) {
-
+            event.preventDefault();
             var unbindMoveListen = function () {
               angular.element($document).unbind('mousemove', moveListen);
               angular.element($document).unbind('touchmove', moveListen);

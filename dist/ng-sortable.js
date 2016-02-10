@@ -376,7 +376,9 @@
     $scope.modelValue = null; // sortable list.
     $scope.callbacks = null;
     $scope.type = 'sortable';
-    $scope.options = {};
+    $scope.options = {
+      longTouch: false
+    };
     $scope.isDisabled = false;
 
     /**
@@ -434,6 +436,7 @@
    * Sortable directive - defines callbacks.
    * Parent directive for draggable and sortable items.
    * Sets modelValue, callbacks, element in scope.
+   * sortOptions also includes a longTouch option which activates longTouch when set to true (default is false).
    */
   mainModule.directive('asSortable',
     function () {
@@ -588,8 +591,8 @@
   /**
    * Directive for sortable item handle.
    */
-  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document',
-    function (sortableConfig, $helper, $window, $document) {
+  mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$timeout',
+    function (sortableConfig, $helper, $window, $document, $timeout) {
       return {
         require: '^asSortableItem',
         scope: true,
@@ -617,13 +620,18 @@
             bindEvents,//bind the drag events.
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
+            isIOS,// is iOS device.
+            longTouchStart, // long touch start event
+            longTouchCancel, // cancel long touch
+            longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
             createPlaceholder,//create place holder.
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen; // escape listen event
 
-          hasTouch = $window.hasOwnProperty('ontouchstart');
+          hasTouch = 'ontouchstart' in $window;
+          isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -641,6 +649,11 @@
                 bindDrag();
               }
             }
+          });
+
+          scope.$watch('sortableScope.options.longTouchActive', function () {
+            unbindDrag();
+            bindDrag();
           });
 
           scope.$on('$destroy', function () {
@@ -1067,20 +1080,57 @@
            * Binds the drag start events.
            */
           bindDrag = function () {
-            element.bind('touchstart', dragListen);
-            element.bind('mousedown', dragListen);
+            if (hasTouch) {
+              if (scope.sortableScope.options.longTouchActive) {
+                if (isIOS) {
+                  element.bind('touchstart', longTouchStart);
+                  element.bind('touchend', longTouchCancel);
+                  element.bind('touchmove', longTouchCancel);
+                } else {
+                  element.bind('contextmenu', dragListen);
+                }
+              } else {
+                element.bind('touchstart', dragListen);
+              }
+            } else {
+              element.bind('mousedown', dragListen);
+            }
           };
 
           /**
            * Unbinds the drag start events.
            */
           unbindDrag = function () {
+            element.unbind('touchstart', longTouchStart);
+            element.unbind('touchend', longTouchCancel);
+            element.unbind('touchmove', longTouchCancel);
+            element.unbind('contextmenu', dragListen);
             element.unbind('touchstart', dragListen);
             element.unbind('mousedown', dragListen);
           };
 
+          /**
+           * starts a timer to detect long touch on iOS devices. If touch held for more than 500ms,
+           * it would be considered as long touch.
+           *
+           * @param event - the event object.
+           */
+          longTouchStart = function(event) {
+            longTouchTimer = $timeout(function() {
+              dragListen(event);
+            }, 500);
+          };
+
+          /**
+           * cancel the long touch and its timer.
+           */
+          longTouchCancel = function() {
+            $timeout.cancel(longTouchTimer);
+          };
+
           //bind drag start events.
-          bindDrag();
+          //put in a watcher since this method is now depending on the longtouch option from sortable.sortOptions
+          //bindDrag();
 
           //Cancel drag on escape press.
           escapeListen = function (event) {

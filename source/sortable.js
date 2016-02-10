@@ -17,7 +17,9 @@
     $scope.modelValue = null; // sortable list.
     $scope.callbacks = null;
     $scope.type = 'sortable';
-    $scope.options = {};
+    $scope.options = {
+      longTouch: false
+    };
     $scope.isDisabled = false;
 
     /**
@@ -75,6 +77,7 @@
    * Sortable directive - defines callbacks.
    * Parent directive for draggable and sortable items.
    * Sets modelValue, callbacks, element in scope.
+   * sortOptions also includes a longTouch option which activates longTouch when set to true (default is false).
    */
   mainModule.directive('asSortable',
     function () {

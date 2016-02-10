@@ -95,7 +95,7 @@
             }
           });
 
-          scope.$watch('sortableScope.options.longTouchActive', function () {
+          scope.$watch('sortableScope.options.longTouch', function () {
             unbindDrag();
             bindDrag();
           });
@@ -525,7 +525,7 @@
            */
           bindDrag = function () {
             if (hasTouch) {
-              if (scope.sortableScope.options.longTouchActive) {
+              if (scope.sortableScope.options.longTouch) {
                 if (isIOS) {
                   element.bind('touchstart', longTouchStart);
                   element.bind('touchend', longTouchCancel);

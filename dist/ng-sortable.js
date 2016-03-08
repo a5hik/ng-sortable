@@ -628,7 +628,8 @@
             createPlaceholder,//create place holder.
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
-            escapeListen; // escape listen event
+            escapeListen, // escape listen event
+            isLongTouch = false; //long touch disabled.
 
           hasTouch = 'ontouchstart' in $window;
           isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
@@ -640,20 +641,20 @@
           scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
-          scope.$watch('sortableScope.isDisabled', function (newVal) {
-            if (isDisabled !== newVal) {
-              isDisabled = newVal;
+          scope.$watch('[sortableScope.isDisabled, sortableScope.options.longTouch]',
+              function (newValues) {
+            if (isDisabled !== newValues[0]) {
+              isDisabled = newValues[0];
               if (isDisabled) {
                 unbindDrag();
-              } else {
-                bindDrag();
               }
+            } else if (isLongTouch !== newValues[1]) {
+              isLongTouch = newValues[1];
+              unbindDrag();
+              bindDrag();
+            } else {
+              bindDrag();
             }
-          });
-
-          scope.$watch('sortableScope.options.longTouch', function () {
-            unbindDrag();
-            bindDrag();
           });
 
           scope.$on('$destroy', function () {
@@ -1081,7 +1082,7 @@
            */
           bindDrag = function () {
             if (hasTouch) {
-              if (scope.sortableScope.options.longTouch) {
+              if (isLongTouch) {
                 if (isIOS) {
                   element.bind('touchstart', longTouchStart);
                   element.bind('touchend', longTouchCancel);

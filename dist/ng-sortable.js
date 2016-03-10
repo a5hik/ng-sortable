@@ -647,6 +647,8 @@
               isDisabled = newValues[0];
               if (isDisabled) {
                 unbindDrag();
+              } else {
+                bindDrag();
               }
             } else if (isLongTouch !== newValues[1]) {
               isLongTouch = newValues[1];

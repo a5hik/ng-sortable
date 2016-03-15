@@ -188,7 +188,7 @@ Define your callbacks in the invoking controller.
             allowDuplicates: true //optional param allows duplicates to be dropped.
     };
     
-That's what all you have to do.
+That's all you have to do.
 
 ##### Restrict Moving between Columns:
 

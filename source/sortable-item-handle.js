@@ -539,9 +539,8 @@
               } else {
                 element.bind('touchstart', dragListen);
               }
-            } else {
-              element.bind('mousedown', dragListen);
             }
+            element.bind('mousedown', dragListen);
           };
 
           /**

@@ -1,5 +1,5 @@
 /*
- ng-sortable v1.3.3
+ ng-sortable v1.3.4
  The MIT License (MIT)
 
  Copyright (c) 2014 Muhammed Ashik
@@ -1095,9 +1095,8 @@
               } else {
                 element.bind('touchstart', dragListen);
               }
-            } else {
-              element.bind('mousedown', dragListen);
             }
+            element.bind('mousedown', dragListen);
           };
 
           /**

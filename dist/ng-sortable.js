@@ -1,5 +1,5 @@
 /*
- ng-sortable v1.3.3
+ ng-sortable v1.3.4
  The MIT License (MIT)
 
  Copyright (c) 2014 Muhammed Ashik
@@ -641,12 +641,14 @@
           scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
-          scope.$watch('[sortableScope.isDisabled, sortableScope.options.longTouch]',
+          scope.$watchGroup(['sortableScope.isDisabled', 'sortableScope.options.longTouch'],
               function (newValues) {
             if (isDisabled !== newValues[0]) {
               isDisabled = newValues[0];
               if (isDisabled) {
                 unbindDrag();
+              } else {
+                bindDrag();
               }
             } else if (isLongTouch !== newValues[1]) {
               isLongTouch = newValues[1];
@@ -1093,9 +1095,8 @@
               } else {
                 element.bind('touchstart', dragListen);
               }
-            } else {
-              element.bind('mousedown', dragListen);
             }
+            element.bind('mousedown', dragListen);
           };
 
           /**

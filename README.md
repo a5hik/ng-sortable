@@ -237,7 +237,7 @@ The move failure Impl here just reverts the moved item to its original location.
 
 Horizontal Drag and Drop can be achieved using the same Library. The Column display can be tweaked to have horizontal items and the same can be achieved via some CSS tweaks (like making the column display style to "inline-block"). Added a sample in the demo source (refer plunker.css/js/html).
 
-Plunkr example link: http://plnkr.co/edit/OcaMzBV3c0K3CL1nw9L4?p=preview
+Plunkr example link: http://a5hik.github.io/ng-sortable/#/horizontal
 
 ##### Scroll page after reaching end of visible area.
 
@@ -287,8 +287,6 @@ To access the local server, enter the following URL into your web browser:
 ##### NG Modules Link:
 
 If you use this module you can give it a thumbs up at [http://ngmodules.org/modules/ng-sortable](http://ngmodules.org/modules/ng-sortable).
-
-Let [me](https://github.com/a5hik) know if you have any questions.
 
 For Bug report, and feature request File an Issue here: [issue](https://github.com/a5hik/ng-sortable/issues).
 

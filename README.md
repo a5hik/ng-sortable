@@ -8,9 +8,7 @@ If you use this module you can give it a thumbs up at [http://ngmodules.org/modu
 
 #### Release:
 
-Latest release version 1.3.4
-[Module name is modified from 'ui.sortable' to 'as.sortable' from versions 1.3.x,
-considering the conflict with the sortable module from bootstrap-ui.]
+Latest release version 1.3.5
 
 #### Demo Page:
 

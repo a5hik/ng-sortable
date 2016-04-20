@@ -4,7 +4,7 @@
 
 'use strict';
 
-angular.module('demoApp').controller('NewCardController', ['$scope', '$modalInstance', 'column', function ($scope, $modalInstance, column) {
+angular.module('demoApp').controller('NewCardController', ['$scope', '$uibModalInstance', 'column', function ($scope, $uibModalInstance, column) {
 
   function initScope(scope) {
     scope.columnName = column.name;
@@ -17,11 +17,11 @@ angular.module('demoApp').controller('NewCardController', ['$scope', '$modalInst
     if (!this.newCardForm.$valid) {
       return false;
     }
-    $modalInstance.close({title: this.title, column: column, details: this.details});
+    $uibModalInstance.close({title: this.title, column: column, details: this.details});
   };
 
   $scope.close = function () {
-    $modalInstance.close();
+    $uibModalInstance.close();
   };
 
   initScope($scope);

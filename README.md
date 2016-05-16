@@ -226,7 +226,7 @@ The move failure Impl here just reverts the moved item to its original location.
            */
           moveFailure = function() {   
                eventObj.dest.sortableScope.removeItem(eventObj.dest.index);
-               eventObj.source.itemScope.sortableScope.insertItem(eventObj.source.index, eventObj.source.itemScope.task);
+               eventObj.source.itemScope.sortableScope.insertItem(eventObj.source.index, eventObj.source.itemScope.item);
           };
     }
 

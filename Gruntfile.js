@@ -191,7 +191,7 @@ module.exports = function (grunt) {
               info: 'Create a build of (tested) the source files'
             },
             {
-              name: 'server',
+              name: 'serve',
               info: 'Build the project, watch file changes and start a web server'
             },
             {
@@ -211,7 +211,7 @@ module.exports = function (grunt) {
   // default
   grunt.registerTask('default', ['tasks_list:project']);
   grunt.registerTask('build', ['jshint:source', 'clean:build', 'concat:build', 'cssmin', 'uglify:build', 'copy']);
-  grunt.registerTask('server', ['open', 'connect:demo', 'watch']);
+  grunt.registerTask('serve', ['open', 'connect:demo', 'watch']);
   grunt.registerTask('test', ['karma:single']);
   grunt.registerTask('test:continuous', ['karma:continuous']);
 };

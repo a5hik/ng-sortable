@@ -214,7 +214,7 @@
 
             placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
-            if(scope.sortableScope.options.setPlaceholderWidth != false) {
+            if(scope.sortableScope.options.setPlaceholderWidth !== false) {
               placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             }
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');

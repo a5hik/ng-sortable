@@ -770,7 +770,9 @@
 
             placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
-            placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+            if(scope.sortableScope.options.setPlaceholderWidth != false) {
+              placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+            }
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeElement = angular.element($document[0].createElement(tagName));

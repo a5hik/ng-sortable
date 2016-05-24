@@ -204,7 +204,7 @@
             // container positioning
             containerPositioning = scope.sortableScope.options.containerPositioning || 'absolute';
 
-            dragItemInfo = $helper.dragItem(scope);
+            dragItemInfo = $helper.dragItem(scope.itemScope);
             tagName = scope.itemScope.element.prop('tagName');
 
             dragElement = angular.element($document[0].createElement(scope.sortableScope.element.prop('tagName')))

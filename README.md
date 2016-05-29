@@ -121,6 +121,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
 - Pressing 'Esc' key will Cancel the Drag Event, and moves back the Item to it's Original location.
 - Right Click on mouse is prevented on draggable Item.
 - A child element inside a draggable Item can be made as non draggable.
+- The setPlaceholderWidth (set to false) option can be used to avoid setting the width of the placeholder element in situations where a fixed width is not idea (like in a flexbox).
 
 ##### Usage:
 
@@ -177,6 +178,7 @@ Define your callbacks in the invoking controller.
         containment: '#board'//optional param.
         clone: true //optional param for clone feature.
         allowDuplicates: false //optional param allows duplicates to be dropped.
+        setPlaceholderWidth: false // Disable setting explicit width on placeholder element
     };
     
     $scope.dragControlListeners1 = {

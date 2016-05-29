@@ -770,7 +770,9 @@
 
             placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
-            placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+            if(scope.sortableScope.options.setPlaceholderWidth !== false) {
+              placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
+            }
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
             placeElement = angular.element($document[0].createElement(tagName));
@@ -898,7 +900,7 @@
 
               targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-
+            
               //IE fixes: hide show element, call element from point twice to return pick correct element.
               dragElement.addClass(sortableConfig.hiddenClass);
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
@@ -1029,6 +1031,7 @@
            * @param event - the event object.
            */
           dragEnd = function (event) {
+            
             // Ignore event if not handled
             if (!dragHandled) {
               return;

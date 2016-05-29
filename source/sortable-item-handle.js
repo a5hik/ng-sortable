@@ -475,6 +475,7 @@
            * @param event - the event object.
            */
           dragEnd = function (event) {
+            
             // Ignore event if not handled
             if (!dragHandled) {
               return;

@@ -229,12 +229,12 @@
 
             if (element.x < bounds.left) {
               element.x = bounds.left;
-            } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
+            } else if (bounds.width > 0 && element.x >= bounds.width + bounds.left - this.offset(element).width) {
               element.x = bounds.width + bounds.left - this.offset(element).width;
             }
             if (element.y < bounds.top) {
               element.y = bounds.top;
-            } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
+            } else if (bounds.height > 0 && element.y >= bounds.height + bounds.top - this.offset(element).height) {
               element.y = bounds.height + bounds.top - this.offset(element).height;
             }
           }

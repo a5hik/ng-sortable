@@ -166,7 +166,7 @@
          * @param containerPositioning - absolute or relative positioning.
          * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer) {
+        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer, allowOverflow) {
           var bounds;
           var useRelative = (containerPositioning === 'relative');
 
@@ -186,15 +186,17 @@
               bounds.top = 0;
             }
 
-            if (element.x < bounds.left) {
-              element.x = bounds.left;
-            } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
-              element.x = bounds.width + bounds.left - this.offset(element).width;
-            }
-            if (element.y < bounds.top) {
-              element.y = bounds.top;
-            } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
-              element.y = bounds.height + bounds.top - this.offset(element).height;
+            if(!allowOverflow){
+              if (element.x < bounds.left) {
+                element.x = bounds.left;
+              } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
+                element.x = bounds.width + bounds.left - this.offset(element).width;
+              }
+              if (element.y < bounds.top) {
+                element.y = bounds.top;
+              } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
+                element.y = bounds.height + bounds.top - this.offset(element).height;
+              }
             }
           }
 

@@ -1,5 +1,5 @@
 /*
- ng-sortable v1.3.6
+ ng-sortable v1.3.7
  The MIT License (MIT)
 
  Copyright (c) 2014 Muhammed Ashik

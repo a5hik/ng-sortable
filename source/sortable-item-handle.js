@@ -112,6 +112,9 @@
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });
 
+          element.on('mouseenter', function(){scope.itemScope.DraggableOn();});
+          element.on('mouseleave', function(){scope.itemScope.DraggableOff();});
+
           createPlaceholder = function (itemScope) {
             if (typeof scope.sortableScope.options.placeholder === 'function') {
               return angular.element(scope.sortableScope.options.placeholder(itemScope));
@@ -617,4 +620,19 @@
         }
       };
     }]);
+
+  mainModule.directive('noDrag', [function () {
+    return {
+      require: ['^asSortableItem', '^asSortableItemHandle'],
+      scope: true,
+      restrict: 'A',
+      link: function (scope, element, attrs, Controllers) {
+        var itemScope = Controllers[0].scope;
+
+        element.on('mouseenter', function(){itemScope.DraggableOff();});
+        element.on('mouseleave', function(){itemScope.DraggableOn();});
+
+      }
+    };
+  }]);
 }());

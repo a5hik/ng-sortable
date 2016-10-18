@@ -62,7 +62,18 @@
           } else {
             scope.modelValue = sortableController.scope.modelValue[scope.$index];
           }
+
           scope.element = element;
+          var isDraggable = false;
+          scope.DraggableOn = function(){
+            isDraggable = true;
+            element.addClass('as-sortable-item-draggable');
+          };
+          scope.DraggableOff = function(){
+            isDraggable = false;
+            element.removeClass('as-sortable-item-draggable');
+          };
+
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
         }
       };

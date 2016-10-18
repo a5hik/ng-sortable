@@ -669,6 +669,9 @@
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });
 
+          element.on('mouseenter', function(){scope.itemScope.DraggableOn();});
+          element.on('mouseleave', function(){scope.itemScope.DraggableOff();});
+
           createPlaceholder = function (itemScope) {
             if (typeof scope.sortableScope.options.placeholder === 'function') {
               return angular.element(scope.sortableScope.options.placeholder(itemScope));
@@ -1174,6 +1177,21 @@
         }
       };
     }]);
+
+  mainModule.directive('noDrag', [function () {
+    return {
+      require: ['^asSortableItem', '^asSortableItemHandle'],
+      scope: true,
+      restrict: 'A',
+      link: function (scope, element, attrs, Controllers) {
+        var itemScope = Controllers[0].scope;
+
+        element.on('mouseenter', function(){itemScope.DraggableOff();});
+        element.on('mouseleave', function(){itemScope.DraggableOn();});
+
+      }
+    };
+  }]);
 }());
 
 /*jshint indent: 2 */
@@ -1240,7 +1258,18 @@
           } else {
             scope.modelValue = sortableController.scope.modelValue[scope.$index];
           }
+
           scope.element = element;
+          var isDraggable = false;
+          scope.DraggableOn = function(){
+            isDraggable = true;
+            element.addClass('as-sortable-item-draggable');
+          };
+          scope.DraggableOff = function(){
+            isDraggable = false;
+            element.removeClass('as-sortable-item-draggable');
+          };
+
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
         }
       };

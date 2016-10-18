@@ -105,11 +105,7 @@
           });
 
           scope.index = function () {
-            for(var curScope = scope; curScope.$parent; curScope = curScope.$parent){
-              if(curScope.hasOwnProperty('$index')) {
-                return curScope.$index;
-              }
-            }
+            return scope.itemScope.$index;
           };
 
           scope.$on('$destroy', function () {

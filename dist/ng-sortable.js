@@ -260,14 +260,6 @@
                  *         moveTo: moveTo, isSameParent: isSameParent, isOrderChanged: isOrderChanged, eventArgs: eventArgs, apply: apply}}
          */
         dragItem: function (item) {
-          function getAncestorProperty(object, property){
-            for(var curScope = object; curScope.$parent; curScope = curScope.$parent){
-              if(curScope.hasOwnProperty(property)) {
-                return curScope[property];
-              }
-            }
-          }
-
           return {
             index: item.index(),
             parent: item.sortableScope,
@@ -326,7 +318,7 @@
 
                 // if the dragged item is not already there, insert the item. This avoids ng-repeat dupes error
                 if (this.parent.options.allowDuplicates || this.parent.modelValue.indexOf(this.source.modelValue) < 0) {
-                  this.parent.insertItem(this.index, getAncestorProperty(this.source, 'modelValue'));
+                  this.parent.insertItem(this.index, this.source.modelValue);
                 }
               } else if (!this.parent.options.clone) { // prevent drop inside sortables that specify options.clone = true
                 // clone the model value as well
@@ -670,11 +662,7 @@
           });
 
           scope.index = function () {
-            for(var curScope = scope; curScope.$parent; curScope = curScope.$parent){
-              if(curScope.hasOwnProperty('$index')) {
-                return curScope.$index;
-              }
-            }
+            return scope.itemScope.$index;
           };
 
           scope.$on('$destroy', function () {

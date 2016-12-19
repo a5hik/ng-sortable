@@ -226,7 +226,7 @@
             targetElementOffset: null,
             sourceInfo: {
               index: item.index(),
-              itemScope: item.itemScope,
+              itemScope: item,
               sortableScope: item.sortableScope
             },
             canMove: function(itemPosition, targetElement, targetElementOffset) {

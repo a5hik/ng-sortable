@@ -207,7 +207,7 @@
          * @param containerPositioning - absolute or relative positioning.
          * @param {Object} [scrollableContainer] (optional) Scrollable container object
          */
-        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer) {
+        movePosition: function (event, element, pos, container, containerPositioning, scrollableContainer, allowOverflow) {
           var bounds;
           var useRelative = (containerPositioning === 'relative');
 
@@ -227,15 +227,17 @@
               bounds.top = 0;
             }
 
-            if (element.x < bounds.left) {
-              element.x = bounds.left;
-            } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
-              element.x = bounds.width + bounds.left - this.offset(element).width;
-            }
-            if (element.y < bounds.top) {
-              element.y = bounds.top;
-            } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
-              element.y = bounds.height + bounds.top - this.offset(element).height;
+            if(!allowOverflow){
+              if (element.x < bounds.left) {
+                element.x = bounds.left;
+              } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
+                element.x = bounds.width + bounds.left - this.offset(element).width;
+              }
+              if (element.y < bounds.top) {
+                element.y = bounds.top;
+              } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
+                element.y = bounds.height + bounds.top - this.offset(element).height;
+              }
             }
           }
 
@@ -258,7 +260,6 @@
                  *         moveTo: moveTo, isSameParent: isSameParent, isOrderChanged: isOrderChanged, eventArgs: eventArgs, apply: apply}}
          */
         dragItem: function (item) {
-
           return {
             index: item.index(),
             parent: item.sortableScope,
@@ -629,7 +630,8 @@
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen, // escape listen event
-            isLongTouch = false; //long touch disabled.
+            isLongTouch = false, //long touch disabled.
+            allowOverflow; //allow dragged element to overflow containment
 
           hasTouch = 'ontouchstart' in $window;
           isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
@@ -659,9 +661,16 @@
             }
           });
 
+          scope.index = function () {
+            return scope.itemScope.$index;
+          };
+
           scope.$on('$destroy', function () {
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });
+
+          element.on('mouseenter', function(){scope.itemScope.DraggableOn();});
+          element.on('mouseleave', function(){scope.itemScope.DraggableOff();});
 
           createPlaceholder = function (itemScope) {
             if (typeof scope.sortableScope.options.placeholder === 'function') {
@@ -796,8 +805,10 @@
               dragElement.append(scope.itemScope.element);
             }
 
+            allowOverflow = !!scope.sortableScope.options.allowOverflow;
+
             containment.append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer, allowOverflow);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -904,7 +915,7 @@
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
 
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer, allowOverflow);
 
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);
@@ -1166,6 +1177,21 @@
         }
       };
     }]);
+
+  mainModule.directive('noDrag', [function () {
+    return {
+      require: ['^asSortableItem', '^asSortableItemHandle'],
+      scope: true,
+      restrict: 'A',
+      link: function (scope, element, attrs, Controllers) {
+        var itemScope = Controllers[0].scope;
+
+        element.on('mouseenter', function(){itemScope.DraggableOff();});
+        element.on('mouseleave', function(){itemScope.DraggableOn();});
+
+      }
+    };
+  }]);
 }());
 
 /*jshint indent: 2 */
@@ -1232,7 +1258,18 @@
           } else {
             scope.modelValue = sortableController.scope.modelValue[scope.$index];
           }
+
           scope.element = element;
+          var isDraggable = false;
+          scope.DraggableOn = function(){
+            isDraggable = true;
+            element.addClass('as-sortable-item-draggable');
+          };
+          scope.DraggableOff = function(){
+            isDraggable = false;
+            element.removeClass('as-sortable-item-draggable');
+          };
+
           element.data('_scope',scope); // #144, work with angular debugInfoEnabled(false)
         }
       };

@@ -89,6 +89,7 @@ e.g.
     .as-sortable-dragging{
        border: 1px dotted #000 !important;
     }
+- When the "as-sortable-item" can be dragged from that mouse position, the CSS class "as-sortable-item-draggable" is added to that element.
           
 
 #### Callbacks:

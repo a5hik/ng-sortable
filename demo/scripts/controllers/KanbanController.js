@@ -18,7 +18,8 @@ angular.module('demoApp').controller('KanbanController', ['$scope', 'BoardServic
     },
     orderChanged: function (event) {
     },
-    containment: '#board'
+    containment: '#board',
+    allowOverflow: true
   };
 
   $scope.removeCard = function (column, card) {

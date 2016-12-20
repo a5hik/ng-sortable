@@ -103,6 +103,14 @@
             }
           });
 
+          scope.index = function () {
+            for(var curScope = scope; curScope.$parent; curScope = curScope.$parent){
+              if(curScope.hasOwnProperty('$index')) {
+                return curScope.$index;
+              }
+            }
+          };
+
           scope.$on('$destroy', function () {
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });

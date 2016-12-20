@@ -73,7 +73,8 @@
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen, // escape listen event
-            isLongTouch = false; //long touch disabled.
+            isLongTouch = false, //long touch disabled.
+            allowOverflow; //allow dragged element to overflow containment
 
           hasTouch = 'ontouchstart' in $window;
           isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
@@ -102,6 +103,10 @@
               bindDrag();
             }
           });
+
+          scope.index = function () {
+            return scope.itemScope.$index;
+          };
 
           scope.$on('$destroy', function () {
             angular.element($document[0].body).unbind('keydown', escapeListen);
@@ -240,8 +245,10 @@
               dragElement.append(scope.itemScope.element);
             }
 
+            allowOverflow = !!scope.sortableScope.options.allowOverflow;
+
             containment.append(dragElement);
-            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+            $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer, allowOverflow);
 
             scope.sortableScope.$apply(function () {
               scope.callbacks.dragStart(dragItemInfo.eventArgs());
@@ -348,7 +355,7 @@
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
               dragElement.removeClass(sortableConfig.hiddenClass);
 
-              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
+              $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer, allowOverflow);
 
               //Set Class as dragging starts
               dragElement.addClass(sortableConfig.dragging);

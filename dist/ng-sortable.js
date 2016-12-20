@@ -621,6 +621,7 @@
             unBindEvents,//unbind the drag events.
             hasTouch,// has touch support.
             isIOS,// is iOS device.
+            isIE,// is MS browser.
             longTouchStart, // long touch start event
             longTouchCancel, // cancel long touch
             longTouchTimer, // timer promise for the long touch on iOS devices
@@ -633,6 +634,7 @@
 
           hasTouch = 'ontouchstart' in $window;
           isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
+          isIE = /MSIE|Trident\/|Edge\//.test($window.navigator.userAgent);
 
           if (sortableConfig.handleClass) {
             element.addClass(sortableConfig.handleClass);
@@ -900,9 +902,15 @@
               targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
 
               //IE fixes: hide show element, call element from point twice to return pick correct element.
-              dragElement.addClass(sortableConfig.hiddenClass);
+              if (isIE) {
+                dragElement.addClass(sortableConfig.hiddenClass);
+              }
+
               targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
-              dragElement.removeClass(sortableConfig.hiddenClass);
+
+              if (isIE) {
+                dragElement.removeClass(sortableConfig.hiddenClass);
+              }
 
               $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
 

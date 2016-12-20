@@ -625,7 +625,9 @@
             longTouchCancel, // cancel long touch
             longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
+            createElementByOptionOrTagName, //generic function to generate element by optional template or tagName
             createPlaceholder,//create place holder.
+            createHiddenElement,//create hidden place element.
             isPlaceHolderPresent,//is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen, // escape listen event
@@ -663,14 +665,22 @@
             angular.element($document[0].body).unbind('keydown', escapeListen);
           });
 
-          createPlaceholder = function (itemScope) {
-            if (typeof scope.sortableScope.options.placeholder === 'function') {
-              return angular.element(scope.sortableScope.options.placeholder(itemScope));
-            } else if (typeof scope.sortableScope.options.placeholder === 'string') {
-              return angular.element(scope.sortableScope.options.placeholder);
+          createElementByOptionOrTagName = function (itemScope, optionName) {
+            if (typeof scope.sortableScope.options[optionName] === 'function') {
+              return angular.element(scope.sortableScope.options[optionName](itemScope));
+            } else if (typeof scope.sortableScope.options[optionName] === 'string') {
+              return angular.element(scope.sortableScope.options[optionName]);
             } else {
               return angular.element($document[0].createElement(itemScope.element.prop('tagName')));
             }
+          };
+
+          createPlaceholder = function (itemScope) {
+            return createElementByOptionOrTagName(itemScope, 'placeholder');
+          };
+
+          createHiddenElement = function (itemScope) {
+            return createElementByOptionOrTagName(itemScope, 'hiddenElementTemplate');
           };
 
           /**
@@ -773,7 +783,7 @@
             placeHolder.css('width', $helper.width(scope.itemScope.element) + 'px');
             placeHolder.css('height', $helper.height(scope.itemScope.element) + 'px');
 
-            placeElement = angular.element($document[0].createElement(tagName));
+            placeElement = createHiddenElement(scope.itemScope);
             if (sortableConfig.hiddenClass) {
               placeElement.addClass(sortableConfig.hiddenClass);
             }

@@ -284,7 +284,8 @@
            */
           function insertBefore(targetElement, targetScope) {
             // Ensure the placeholder is visible in the target (unless it's a table row)
-            if (placeHolder.css('display') !== 'table-row') {
+            var placeHolderDisplayVal = placeHolder[0].currentStyle ? placeHolder[0].currentStyle.display : getComputedStyle(placeHolder[0], null).display;
+            if (placeHolder.css('display') !== 'table-row' && placeHolderDisplayVal !== 'table-row') {
               placeHolder.css('display', 'block');
             }
             if (!targetScope.sortableScope.options.clone) {
@@ -301,7 +302,8 @@
            */
           function insertAfter(targetElement, targetScope) {
             // Ensure the placeholder is visible in the target (unless it's a table row)
-            if (placeHolder.css('display') !== 'table-row') {
+            var placeHolderDisplayVal = placeHolder[0].currentStyle ? placeHolder[0].currentStyle.display : getComputedStyle(placeHolder[0], null).display;
+            if (placeHolder.css('display') !== 'table-row' && placeHolderDisplayVal !== 'table-row') {
               placeHolder.css('display', 'block');
             }
             if (!targetScope.sortableScope.options.clone) {

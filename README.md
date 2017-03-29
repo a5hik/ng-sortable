@@ -68,11 +68,15 @@ The directives are structured like below.
 - CSS styling may be applied via the `as-sortable-placeholder` class
 - Additional classes may be applied via the `additionalPlaceholderClass` option provided to the as-sortable item. e.g.
     in JS:
-```$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };```
+```js
+$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };
+```
     in HTML:
-```<div as-sortable="sortableOptions">
+```html
+<div as-sortable="sortableOptions">
    ...
-</div>```
+</div>
+```
 - A customized placeholder can be provided by specifying the `placeholder` option provided to the as-sortable item. `placeholder` can be both a template string or a function returning a template string.
 
 #### Dragging element CSS
@@ -80,16 +84,18 @@ The directives are structured like below.
 - When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements.
 e.g.
     in HTML
-```<!--not dragging-->````
-```<div class="as-sortable-item"></div>````
-```<!--when dragging as-sortable-item-->```
-```<div class="as-sortable-item as-sortable-dragging"></div>````
-
+```html
+<!--not dragging-->
+<div class="as-sortable-item"></div>
+<!--when dragging as-sortable-item-->
+<div class="as-sortable-item as-sortable-dragging"></div>
+```
     in CSS
+```css
     .as-sortable-dragging{
        border: 1px dotted #000 !important;
     }
-          
+```
 
 #### Callbacks:
 

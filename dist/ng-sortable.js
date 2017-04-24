@@ -29,7 +29,7 @@
 (function () {
   'use strict';
   angular.module('as.sortable', [])
-    .constant('sortableConfig', {
+    .value('sortableConfig', {
       itemClass: 'as-sortable-item',
       handleClass: 'as-sortable-item-handle',
       placeHolderClass: 'as-sortable-placeholder',

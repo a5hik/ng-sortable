@@ -260,6 +260,8 @@
         dragItem: function (item) {
 
           return {
+            startIndex: item.index(),
+            startParent: item.sortableScope,
             index: item.index(),
             parent: item.sortableScope,
             source: item,
@@ -285,6 +287,11 @@
               }
               // return false otherwise
               return false;
+            },
+            rollbackPosition: function() {
+              // rollback dragItem do initial position
+              this.parent = this.startParent;
+              this.index = this.startIndex;
             },
             moveTo: function (parent, index) {
               // move the item to a new position
@@ -872,7 +879,6 @@
            * @param event - the event object.
            */
           dragMove = function (event) {
-
             var eventObj, targetX, targetY, targetScope, targetElement;
 
             if (hasTouch && $helper.isTouchInvalid(event)) {
@@ -912,8 +918,16 @@
               targetScope = fetchScope(targetElement);
 
               if (!targetScope || !targetScope.type) {
+                if (!scope.itemScope.sortableScope.cloning) {
+                  placeElement.replaceWith(scope.itemScope.element);
+                }
+
+                // if targetScope is undefined, remove placeHolder and back dragItemInfo index and parent to default
+                placeHolder.remove();
+                dragItemInfo.rollbackPosition();
                 return;
               }
+
               if (targetScope.type === 'handle') {
                 targetScope = targetScope.itemScope;
               }
@@ -943,15 +957,21 @@
                 }
               }
 
-              if (targetScope.type === 'sortable') {//sortable scope.
+              else if (targetScope.type === 'sortable') {//sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
-                  !isParent(targetScope.element[0], targetElement[0])) {
+                    !isParent(targetScope.element[0], targetElement[0])) {
                   //moving over sortable bucket. not over item.
                   if (!isPlaceHolderPresent(targetElement) && !targetScope.options.clone) {
                     targetElement[0].appendChild(placeHolder[0]);
                     dragItemInfo.moveTo(targetScope, targetScope.modelValue.length);
                   }
                 }
+              }
+
+              else {
+                // back dragItemInfo index and parent to default
+                placeHolder.remove();
+                dragItemInfo.rollbackPosition();
               }
             }
           };

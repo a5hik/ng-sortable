@@ -918,10 +918,6 @@
               targetScope = fetchScope(targetElement);
 
               if (!targetScope || !targetScope.type) {
-                if (!scope.itemScope.sortableScope.cloning) {
-                  placeElement.replaceWith(scope.itemScope.element);
-                }
-
                 // if targetScope is undefined, remove placeHolder and back dragItemInfo index and parent to default
                 placeHolder.remove();
                 dragItemInfo.rollbackPosition();

@@ -1110,6 +1110,7 @@
                 }
               } else {
                 element.bind('touchstart', dragListen);
+                element.bind('touchmove', function() {});
               }
             }
             element.bind('mousedown', dragListen);

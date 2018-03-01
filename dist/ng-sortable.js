@@ -937,9 +937,12 @@
                 } else {
                   // FIX: needed to check if placeholder is at the end so we
                   // allow it to be inserted after the last element.
-                  if(
+                  if (
                     placeholderIndex <= targetScope.index() ||
-                    placeholderIndex === targetScope.sortableScope.modelValue.length
+                    (
+                      targetScope.index() !== 0 &&
+                      placeholderIndex === targetScope.sortableScope.modelValue.length
+                    )
                   ) {
                     insertAfter(targetElement, targetScope);
                   } else {

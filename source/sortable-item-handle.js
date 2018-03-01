@@ -379,7 +379,12 @@
                 if (placeholderIndex < 0) {
                   insertBefore(targetElement, targetScope);
                 } else {
-                  if (placeholderIndex <= targetScope.index()) {
+                  // FIX: needed to check if placeholder is at the end so we
+                  // allow it to be inserted after the last element.
+                  if(
+                    placeholderIndex <= targetScope.index() ||
+                    placeholderIndex === targetScope.sortableScope.modelValue.length
+                  ) {
                     insertAfter(targetElement, targetScope);
                   } else {
                     insertBefore(targetElement, targetScope);

@@ -718,18 +718,19 @@
            * @param event the event object.
            */
           dragStart = function (event) {
-            element.removeClass(sortableConfig.touching);
-
             var eventObj, tagName;
 
             if (!hasTouch && (event.button === 2 || event.which === 3)) {
+              element.removeClass(sortableConfig.touching);
               // disable right click
               return;
             }
             if (hasTouch && $helper.isTouchInvalid(event)) {
+              element.removeClass(sortableConfig.touching);
               return;
             }
             if (dragHandled || !isDraggable(event)) {
+              element.removeClass(sortableConfig.touching);
               // event has already fired in other scope.
               return;
             }
@@ -769,6 +770,8 @@
               .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
+            // no longer need touching class
+            element.removeClass(sortableConfig.touching);
 
             placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);

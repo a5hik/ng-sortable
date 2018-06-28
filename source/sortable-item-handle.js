@@ -570,8 +570,8 @@
            * @param event - the event object.
            */
           longTouchStart = function(event) {
-            element.addClass('as-sortable-touching');
             longTouchTimer = $timeout(function() {
+              element.addClass('as-sortable-touching');
               dragListen(event);
             }, 500);
           };

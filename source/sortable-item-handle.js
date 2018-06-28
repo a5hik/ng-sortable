@@ -570,6 +570,7 @@
            * @param event - the event object.
            */
           longTouchStart = function(event) {
+            element.addClass('as-sortable-touching');
             longTouchTimer = $timeout(function() {
               dragListen(event);
             }, 500);
@@ -579,6 +580,7 @@
            * cancel the long touch and its timer.
            */
           longTouchCancel = function() {
+            element.remmoveClass('as-sortable-touching');
             $timeout.cancel(longTouchTimer);
           };
 

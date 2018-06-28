@@ -35,7 +35,8 @@
       placeHolderClass: 'as-sortable-placeholder',
       dragClass: 'as-sortable-drag',
       hiddenClass: 'as-sortable-hidden',
-      dragging: 'as-sortable-dragging'
+      dragging: 'as-sortable-dragging',
+      touching: 'as-sortable-touching'
     });
 }());
 
@@ -717,6 +718,7 @@
            * @param event the event object.
            */
           dragStart = function (event) {
+            element.removeClass(sortableConfig.touching);
 
             var eventObj, tagName;
 
@@ -1126,8 +1128,8 @@
            * @param event - the event object.
            */
           longTouchStart = function(event) {
-            element.addClass('as-sortable-touching');
             longTouchTimer = $timeout(function() {
+              element.addClass(sortableConfig.touching);
               dragListen(event);
             }, 500);
           };
@@ -1136,7 +1138,7 @@
            * cancel the long touch and its timer.
            */
           longTouchCancel = function() {
-            element.remmoveClass('as-sortable-touching');
+            element.remmoveClass(sortableConfig.touching);
             $timeout.cancel(longTouchTimer);
           };
 

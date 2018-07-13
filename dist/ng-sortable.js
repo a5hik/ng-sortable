@@ -1141,7 +1141,7 @@
            * cancel the long touch and its timer.
            */
           longTouchCancel = function() {
-            element.remmoveClass(sortableConfig.touching);
+            element.removeClass(sortableConfig.touching);
             $timeout.cancel(longTouchTimer);
           };
 

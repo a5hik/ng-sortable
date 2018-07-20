@@ -21,11 +21,11 @@
 
   //Check if a node is parent to another node
   function isParent(possibleParent, elem) {
-    if(!elem || elem.nodeName === 'HTML') {
+    if (!elem || elem.nodeName === 'HTML') {
       return false;
     }
 
-    if(elem.parentNode === possibleParent) {
+    if (elem.parentNode === possibleParent) {
       return true;
     }
 
@@ -46,31 +46,31 @@
 
           var dragElement, //drag item element.
             placeHolder, //place holder class element.
-            placeElement,//hidden place element.
+            placeElement, //hidden place element.
             itemPosition, //drag item element position.
             dragItemInfo, //drag item data.
-            containment,//the drag container.
+            containment, //the drag container.
             containerPositioning, // absolute or relative positioning.
-            dragListen,// drag listen event.
+            dragListen, // drag listen event.
             scrollableContainer, //the scrollable container
-            dragStart,// drag start event.
-            dragMove,//drag move event.
-            dragEnd,//drag end event.
-            dragCancel,//drag cancel event.
-            isDraggable,//is element draggable.
-            placeHolderIndex,//placeholder index in items elements.
-            bindDrag,//bind drag events.
-            unbindDrag,//unbind drag events.
-            bindEvents,//bind the drag events.
-            unBindEvents,//unbind the drag events.
-            hasTouch,// has touch support.
-            isIOS,// is iOS device.
+            dragStart, // drag start event.
+            dragMove, //drag move event.
+            dragEnd, //drag end event.
+            dragCancel, //drag cancel event.
+            isDraggable, //is element draggable.
+            placeHolderIndex, //placeholder index in items elements.
+            bindDrag, //bind drag events.
+            unbindDrag, //unbind drag events.
+            bindEvents, //bind the drag events.
+            unBindEvents, //unbind the drag events.
+            hasTouch, // has touch support.
+            isIOS, // is iOS device.
             longTouchStart, // long touch start event
             longTouchCancel, // cancel long touch
             longTouchTimer, // timer promise for the long touch on iOS devices
             dragHandled, //drag handled.
-            createPlaceholder,//create place holder.
-            isPlaceHolderPresent,//is placeholder present.
+            createPlaceholder, //create place holder.
+            isPlaceHolderPresent, //is placeholder present.
             isDisabled = false, // drag enabled
             escapeListen, // escape listen event
             isLongTouch = false; //long touch disabled.
@@ -86,22 +86,22 @@
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
           scope.$watchGroup(['sortableScope.isDisabled', 'sortableScope.options.longTouch'],
-              function (newValues) {
-            if (isDisabled !== newValues[0]) {
-              isDisabled = newValues[0];
-              if (isDisabled) {
+            function (newValues) {
+              if (isDisabled !== newValues[0]) {
+                isDisabled = newValues[0];
+                if (isDisabled) {
+                  unbindDrag();
+                } else {
+                  bindDrag();
+                }
+              } else if (isLongTouch !== newValues[1]) {
+                isLongTouch = newValues[1];
                 unbindDrag();
+                bindDrag();
               } else {
                 bindDrag();
               }
-            } else if (isLongTouch !== newValues[1]) {
-              isLongTouch = newValues[1];
-              unbindDrag();
-              bindDrag();
-            } else {
-              bindDrag();
-            }
-          });
+            });
 
           scope.$on('$destroy', function () {
             angular.element($document[0].body).unbind('keydown', escapeListen);
@@ -139,7 +139,10 @@
               e.preventDefault();
               var eventObj = $helper.eventObj(e);
               if (!startPosition) {
-                startPosition = { clientX: eventObj.clientX, clientY: eventObj.clientY };
+                startPosition = {
+                  clientX: eventObj.clientX,
+                  clientY: eventObj.clientY
+                };
               }
               if (Math.abs(eventObj.clientX - startPosition.clientX) + Math.abs(eventObj.clientY - startPosition.clientY) > 10) {
                 unbindMoveListen();
@@ -183,8 +186,8 @@
             scope.callbacks = scope.callbacks || scope.itemScope.callbacks; //isolate directive scope issue.
 
             if (scope.itemScope.sortableScope.options.clone || (scope.itemScope.sortableScope.options.ctrlClone && event.ctrlKey)) {
-                // Clone option is true
-                // or Ctrl clone option is true & the ctrl key was pressed when the user innitiated drag
+              // Clone option is true
+              // or Ctrl clone option is true & the ctrl key was pressed when the user innitiated drag
               scope.itemScope.sortableScope.cloning = true;
             } else {
               scope.itemScope.sortableScope.cloning = false;
@@ -194,7 +197,7 @@
             scrollableContainer = angular.element($document[0].querySelector(scope.sortableScope.options.scrollableContainer)).length > 0 ?
               $document[0].querySelector(scope.sortableScope.options.scrollableContainer) : $document[0].documentElement;
 
-            containment = (scope.sortableScope.options.containment)? $helper.findAncestor(element, scope.sortableScope.options.containment):angular.element($document[0].body);
+            containment = (scope.sortableScope.options.containment) ? $helper.findAncestor(element, scope.sortableScope.options.containment) : angular.element($document[0].body);
             //capture mouse move on containment.
             containment.css('cursor', 'move');
             containment.css('cursor', '-webkit-grabbing');
@@ -232,8 +235,7 @@
             if (scope.itemScope.sortableScope.cloning) {
               // clone option is enabled or triggered, so clone the element.
               dragElement.append(scope.itemScope.element.clone());
-            }
-            else {
+            } else {
               // add hidden placeholder element in original position.
               scope.itemScope.element.after(placeElement);
               // not cloning, so use the original element.
@@ -387,7 +389,7 @@
                 }
               }
 
-              if (targetScope.type === 'sortable') {//sortable scope.
+              if (targetScope.type === 'sortable') { //sortable scope.
                 if (targetScope.accept(scope, targetScope) &&
                   !isParent(targetScope.element[0], targetElement[0])) {
                   //moving over sortable bucket. not over item.
@@ -426,7 +428,7 @@
           placeHolderIndex = function (targetElement) {
             var itemElements, i;
             // targetElement is placeHolder itself, return index 0
-            if (targetElement.hasClass(sortableConfig.placeHolderClass)){
+            if (targetElement.hasClass(sortableConfig.placeHolderClass)) {
               return 0;
             }
             // find index in target children
@@ -561,8 +563,8 @@
            *
            * @param event - the event object.
            */
-          longTouchStart = function(event) {
-            longTouchTimer = $timeout(function() {
+          longTouchStart = function (event) {
+            longTouchTimer = $timeout(function () {
               dragListen(event);
             }, 500);
           };
@@ -570,7 +572,7 @@
           /**
            * cancel the long touch and its timer.
            */
-          longTouchCancel = function() {
+          longTouchCancel = function () {
             $timeout.cancel(longTouchTimer);
           };
 
@@ -595,6 +597,10 @@
             angular.element($document).bind('touchcancel', dragCancel);
             angular.element($document).bind('mousemove', dragMove);
             angular.element($document).bind('mouseup', dragEnd);
+            // webkit https://bugs.webkit.org/show_bug.cgi?id=184250
+            $window.addEventListener('touchmove', movefun, {
+              passive: false
+            });
           };
 
           /**
@@ -606,8 +612,13 @@
             angular.element($document).unbind('touchmove', dragMove);
             angular.element($document).unbind('mouseup', dragEnd);
             angular.element($document).unbind('mousemove', dragMove);
+            // webkit https://bugs.webkit.org/show_bug.cgi?id=184250
+            $window.removeEventListener('touchmove', movefun, {
+              passive: false
+            });
           };
         }
       };
-    }]);
+    }
+  ]);
 }());

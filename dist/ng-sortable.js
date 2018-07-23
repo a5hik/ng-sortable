@@ -35,7 +35,8 @@
       placeHolderClass: 'as-sortable-placeholder',
       dragClass: 'as-sortable-drag',
       hiddenClass: 'as-sortable-hidden',
-      dragging: 'as-sortable-dragging'
+      dragging: 'as-sortable-dragging',
+      touching: 'as-sortable-touching'
     });
 }());
 
@@ -717,17 +718,19 @@
            * @param event the event object.
            */
           dragStart = function (event) {
-
             var eventObj, tagName;
 
             if (!hasTouch && (event.button === 2 || event.which === 3)) {
+              element.removeClass(sortableConfig.touching);
               // disable right click
               return;
             }
             if (hasTouch && $helper.isTouchInvalid(event)) {
+              element.removeClass(sortableConfig.touching);
               return;
             }
             if (dragHandled || !isDraggable(event)) {
+              element.removeClass(sortableConfig.touching);
               // event has already fired in other scope.
               return;
             }
@@ -767,6 +770,8 @@
               .addClass(scope.sortableScope.element.attr('class')).addClass(sortableConfig.dragClass);
             dragElement.css('width', $helper.width(scope.itemScope.element) + 'px');
             dragElement.css('height', $helper.height(scope.itemScope.element) + 'px');
+            // no longer need touching class
+            element.removeClass(sortableConfig.touching);
 
             placeHolder = createPlaceholder(scope.itemScope)
               .addClass(sortableConfig.placeHolderClass).addClass(scope.sortableScope.options.additionalPlaceholderClass);
@@ -935,7 +940,15 @@
                 if (placeholderIndex < 0) {
                   insertBefore(targetElement, targetScope);
                 } else {
-                  if (placeholderIndex <= targetScope.index()) {
+                  // FIX: needed to check if placeholder is at the end so we
+                  // allow it to be inserted after the last element.
+                  if (
+                    placeholderIndex <= targetScope.index() ||
+                    (
+                      targetScope.index() !== 0 &&
+                      placeholderIndex === targetScope.sortableScope.modelValue.length
+                    )
+                  ) {
                     insertAfter(targetElement, targetScope);
                   } else {
                     insertBefore(targetElement, targetScope);
@@ -1119,6 +1132,7 @@
            */
           longTouchStart = function(event) {
             longTouchTimer = $timeout(function() {
+              element.addClass(sortableConfig.touching);
               dragListen(event);
             }, 500);
           };
@@ -1127,6 +1141,7 @@
            * cancel the long touch and its timer.
            */
           longTouchCancel = function() {
+            element.removeClass(sortableConfig.touching);
             $timeout.cancel(longTouchTimer);
           };
 

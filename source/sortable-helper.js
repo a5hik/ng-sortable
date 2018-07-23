@@ -219,13 +219,13 @@
         dragItem: function (item) {
 
           return {
-            index: item.index(),
+            index: item.index,
             parent: item.sortableScope,
             source: item,
             targetElement: null,
             targetElementOffset: null,
             sourceInfo: {
-              index: item.index(),
+              index: item.index,
               itemScope: item.itemScope,
               sortableScope: item.sortableScope
             },
@@ -249,7 +249,7 @@
               // move the item to a new position
               this.parent = parent;
               // if the source item is in the same parent, the target index is after the source index and we're not cloning
-              if (this.isSameParent() && this.source.index() < index && !this.sourceInfo.sortableScope.cloning) {
+              if (this.isSameParent() && this.source.index < index && !this.sourceInfo.sortableScope.cloning) {
                 index = index - 1;
               }
               this.index = index;

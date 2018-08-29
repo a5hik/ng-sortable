@@ -164,7 +164,7 @@
 
             var eventObj, tagName;
 
-            if (!hasTouch && (event.button === 2 || event.which === 3)) {
+            if (event.button === 2 || event.which === 3) {
               // disable right click
               return;
             }

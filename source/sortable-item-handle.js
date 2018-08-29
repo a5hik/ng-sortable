@@ -221,6 +221,9 @@
             if (sortableConfig.hiddenClass) {
               placeElement.addClass(sortableConfig.hiddenClass);
             }
+            if (scope.sortableScope.options.additionalHiddenClass) {
+              placeElement.addClass(scope.sortableScope.options.additionalHiddenClass);
+            }
 
             itemPosition = $helper.positionStarted(eventObj, scope.itemScope.element, scrollableContainer);
 

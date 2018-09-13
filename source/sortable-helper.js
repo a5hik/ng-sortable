@@ -219,6 +219,8 @@
         dragItem: function (item) {
 
           return {
+            startIndex: item.index(),
+            startParent: item.sortableScope,
             index: item.index(),
             parent: item.sortableScope,
             source: item,
@@ -244,6 +246,11 @@
               }
               // return false otherwise
               return false;
+            },
+            rollbackPosition: function() {
+              // rollback dragItem do initial position
+              this.parent = this.startParent;
+              this.index = this.startIndex;
             },
             moveTo: function (parent, index) {
               // move the item to a new position

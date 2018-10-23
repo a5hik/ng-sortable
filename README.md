@@ -76,17 +76,17 @@ The directives are structured like below.
 - A customized placeholder can be provided by specifying the `placeholder` option provided to the as-sortable item. `placeholder` can be both a template string or a function returning a template string.
 
 #### Dragging element CSS
-- CSS styling may be applied via the "as-sortable-dragging" class
-- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements.
+- CSS styling may be applied via the "as-sortable-drag" class
+- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-drag" is added to all elements.
 e.g.
     in HTML
 ```<!--not dragging-->````
 ```<div class="as-sortable-item"></div>````
 ```<!--when dragging as-sortable-item-->```
-```<div class="as-sortable-item as-sortable-dragging"></div>````
+```<div class="as-sortable-item as-sortable-drag"></div>````
 
     in CSS
-    .as-sortable-dragging{
+    .as-sortable-drag{
        border: 1px dotted #000 !important;
     }
           

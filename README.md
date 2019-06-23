@@ -173,11 +173,11 @@ Invoke the Directives using below html structure.
 Define your callbacks in the invoking controller.
 
     $scope.dragControlListeners = {
-        accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
-        itemMoved: function (event) {//Do what you want},
-        orderChanged: function(event) {//Do what you want},
-        containment: '#board'//optional param.
-        clone: true //optional param for clone feature.
+        accept: function (sourceItemHandleScope, destSortableScope) {return false}, //override to determine drag is allowed or not. default is true.
+        itemMoved: function (event) {}, //Do what you want
+        orderChanged: function(event) {}, //Do what you want
+        containment: '#board', //optional param.
+        clone: true, //optional param for clone feature.
         allowDuplicates: false //optional param allows duplicates to be dropped.
     };
     

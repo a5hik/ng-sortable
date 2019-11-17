@@ -62,10 +62,10 @@
          */
         eventObj: function (event) {
           var obj = event;
-          if (event.targetTouches !== undefined) {
-            obj = event.targetTouches.item(0);
-          } else if (event.originalEvent !== undefined && event.originalEvent.targetTouches !== undefined) {
-            obj = event.originalEvent.targetTouches.item(0);
+          if (event.changedTouches !== undefined) {
+            obj = event.changedTouches.item(0);
+          } else if (event.originalEvent !== undefined && event.originalEvent.changedTouches !== undefined) {
+            obj = event.originalEvent.changedTouches.item(0);
           }
           return obj;
         },

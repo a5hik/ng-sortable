@@ -72,7 +72,8 @@ The directives are structured like below.
     in HTML:
 ```<div as-sortable="sortableOptions">
    ...
-</div>```
+</div>
+```
 - A customized placeholder can be provided by specifying the `placeholder` option provided to the as-sortable item. `placeholder` can be both a template string or a function returning a template string.
 
 #### Dragging element CSS

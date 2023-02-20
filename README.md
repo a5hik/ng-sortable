@@ -66,30 +66,33 @@ The directives are structured like below.
 #### Placeholder:
 - By default a placeholder element is created using the same tag as the as-sortable-item element
 - CSS styling may be applied via the `as-sortable-placeholder` class
-- Additional classes may be applied via the `additionalPlaceholderClass` option provided to the as-sortable item. e.g.
+- Additional classes may be applied via the `additionalPlaceholderClass` option provided to the as-sortable item. e.g.  
     in JS:
-```$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };```
+```$scope.sortableOptions = { additionalPlaceholderClass: 'some-class' };```  
     in HTML:
-```<div as-sortable="sortableOptions">
-   ...
-</div>```
+```<div as-sortable="sortableOptions">```
+    ...
+```</div>```
 - A customized placeholder can be provided by specifying the `placeholder` option provided to the as-sortable item. `placeholder` can be both a template string or a function returning a template string.
 
 #### Dragging element CSS
 - CSS styling may be applied via the "as-sortable-dragging" class
-- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements.
-e.g.
-    in HTML
-```<!--not dragging-->````
-```<div class="as-sortable-item"></div>````
-```<!--when dragging as-sortable-item-->```
-```<div class="as-sortable-item as-sortable-dragging"></div>````
+- When the "as-sortable-item" is being dragged, the CSS class "as-sortable-dragging" is added to all elements.  
 
-    in CSS
-    .as-sortable-dragging{
-       border: 1px dotted #000 !important;
-    }
-          
+e.g.  
+in HTML  
+```
+<!--not dragging-->
+<div class="as-sortable-item"></div>
+<!--when dragging as-sortable-item-->
+<div class="as-sortable-item as-sortable-dragging"></div>
+```
+in CSS  
+```
+.as-sortable-dragging{
+    border: 1px dotted #000 !important;
+}
+```          
 
 #### Callbacks:
 
@@ -97,7 +100,7 @@ Following callbacks are defined, and should be overridden to perform custom logi
 
 - callbacks.accept = function (sourceItemHandleScope, destSortableScope, destItemScope) {}; //used to determine drag zone is allowed are not.
 
-###### Parameters:
+##### Parameters:
      sourceItemScope - the scope of the item being dragged.
      destScope - the sortable destination scope, the list.
      destItemScope - the destination item scope, this is an optional Param.(Must check for undefined).
